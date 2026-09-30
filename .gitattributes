@@ -1,0 +1,18 @@
+# Normalize line endings on checkin so contributors on Windows and POSIX do not
+# produce whole-file diffs.
+* text=auto eol=lf
+
+# The generated data payload is written by the pipeline exporter; keep it as LF
+# and mark it so tooling can regenerate it deliberately.
+data/scaleup_data.json text eol=lf
+data/scaleup_data.js text eol=lf
+
+# Binary-safe, in case images or fonts are added later.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.pdf binary

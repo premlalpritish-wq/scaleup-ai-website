@@ -1,0 +1,684 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ScaleUp AI — turn scientific literature into structured process knowledge</title>
+    <meta
+      name="description"
+      content="ScaleUp AI turns a scientific paper into a structured, machine-readable process representation with page-located evidence, process topology, and preserved uncertainty."
+    />
+    <meta name="color-scheme" content="dark" />
+    <meta property="og:title" content="ScaleUp AI — scientific process intelligence" />
+    <meta
+      property="og:description"
+      content="Turn scientific literature into structured, machine-readable process knowledge."
+    />
+    <link rel="stylesheet" href="assets/styles.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='5' fill='%23070a0e'/%3E%3Ccircle cx='9' cy='9' r='3' fill='%234ecdc4'/%3E%3Ccircle cx='23' cy='16' r='3' fill='none' stroke='%23e0b155' stroke-width='1.6'/%3E%3Ccircle cx='9' cy='24' r='3' fill='%236b7a8c'/%3E%3Cpath d='M9 9 L23 16 L9 24' stroke='%232a3543' stroke-width='1.6' fill='none'/%3E%3C/svg%3E"
+    />
+  </head>
+
+  <body>
+    <!-- ============================================================ NAV -->
+    <nav class="nav">
+      <div class="wrap nav-in">
+        <a class="brand" href="#top">
+          <svg width="19" height="19" viewBox="0 0 32 32" aria-hidden="true">
+            <circle cx="8" cy="8" r="3" fill="#4ecdc4" />
+            <circle cx="24" cy="16" r="3" fill="none" stroke="#e0b155" stroke-width="1.7" />
+            <circle cx="8" cy="25" r="3" fill="#6b7a8c" />
+            <path d="M8 8 L24 16 L8 25" stroke="#2a3543" stroke-width="1.7" fill="none" />
+          </svg>
+          ScaleUp AI
+          <small>v0.1</small>
+        </a>
+        <div class="nav-links">
+          <a href="#problem">Problem</a>
+          <a href="#demo">See it work</a>
+          <a href="#output">Output</a>
+          <a href="#graph">Graph</a>
+          <a href="#evidence">Evidence</a>
+          <a href="#uncertainty">Uncertainty</a>
+          <a href="#validation">Validation</a>
+          <a href="#vision">Vision</a>
+          <a href="#team">Team</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ============================================================ HERO -->
+    <header class="hero" id="top">
+      <div class="wrap hero-grid">
+        <div>
+          <p class="eyebrow"><b>Scientific process intelligence</b></p>
+          <h1>
+            Turn scientific literature into
+            <span class="accent">structured, machine-readable</span> process
+            knowledge.
+          </h1>
+          <p class="lead hero-sub">
+            ScaleUp AI reads a process paper and returns a
+            <span class="mono" style="color: var(--known)">ProcessState</span>:
+            typed fields, a process graph, and a page-located evidence record for
+            every claim — including what the paper did <em>not</em> report.
+          </p>
+          <div class="hero-cta">
+            <a class="btn btn-primary" href="#demo">
+              See how it works
+              <svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true">
+                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+            <a class="btn btn-ghost" href="#validation">Explore the research</a>
+          </div>
+          <p class="hero-note" id="hero-note">
+            Below: a real <span id="hero-pages">—</span>-page paper from this
+            repository, processed by the real pipeline. Every number on this page
+            is read from that run.
+          </p>
+        </div>
+
+        <!-- live pipeline strip, filled from data -->
+        <div class="pipeline">
+          <div class="pipeline-hd">
+            <span><span class="dot"></span>run&nbsp;·&nbsp;<span id="pl-paper">—</span></span>
+            <span id="pl-stamp">—</span>
+          </div>
+          <ol class="stage-list" id="pipeline-stages">
+            <li class="stage">
+              <span class="stage-id">01</span>
+              <span class="stage-name"
+                >Paper<span class="stage-desc" id="st-1d"
+                  >page-preserving text</span
+                ></span
+              >
+              <span class="stage-num" id="st-1n">—<small>pages</small></span>
+            </li>
+            <li class="stage">
+              <span class="stage-id">02</span>
+              <span class="stage-name"
+                >Extraction<span class="stage-desc" id="st-2d"
+                  >page-bounded, evidence-validated</span
+                ></span
+              >
+              <span class="stage-num" id="st-2n">—<small>chunks</small></span>
+            </li>
+            <li class="stage">
+              <span class="stage-id">03</span>
+              <span class="stage-name"
+                >ProcessState<span class="stage-desc" id="st-3d"
+                  >typed, partial by design</span
+                ></span
+              >
+              <span class="stage-num" id="st-3n">—<small>parameters</small></span>
+            </li>
+            <li class="stage">
+              <span class="stage-id">04</span>
+              <span class="stage-name"
+                >ProcessGraph<span class="stage-desc" id="st-4d"
+                  >operations &amp; material states</span
+                ></span
+              >
+              <span class="stage-num" id="st-4n">—<small>nodes</small></span>
+            </li>
+            <li class="stage s-evidence">
+              <span class="stage-id">05</span>
+              <span class="stage-name"
+                >Evidence<span class="stage-desc" id="st-5d"
+                  >page-located excerpts</span
+                ></span
+              >
+              <span class="stage-num" id="st-5n">—<small>items</small></span>
+            </li>
+            <li class="stage s-uncert">
+              <span class="stage-id">06</span>
+              <span class="stage-name"
+                >Uncertainty<span class="stage-desc" id="st-6d"
+                  >gaps kept, not filled</span
+                ></span
+              >
+              <span class="stage-num" id="st-6n">—<small>findings</small></span>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </header>
+
+    <!-- ============================================================ PROBLEM -->
+    <section id="problem">
+      <div class="wrap">
+        <p class="eyebrow"><b>01</b> The problem</p>
+        <div class="sec-head">
+          <h2>The process is in the paper. The process is not in the data.</h2>
+          <p class="lead muted">
+            A published bioprocess is split across methods, tables, figures and
+            supplementary text. Reading one parameter out of it is easy. Getting
+            a faithful, machine-readable picture of the
+            <em>whole</em> process is not.
+          </p>
+        </div>
+
+        <div class="prob-grid">
+          <div class="prob">
+            <h4><i>01</i>Scattered</h4>
+            <p>
+              Operating conditions live in methods prose, mass balances in
+              tables, and the sequence of operations in a figure. No single
+              field holds the process.
+            </p>
+          </div>
+          <div class="prob">
+            <h4><i>02</i>Interdependent</h4>
+            <p>
+              A parameter is only meaningful with its unit, its stage, and the
+              operation it belongs to. A bare number loses all three.
+            </p>
+          </div>
+          <div class="prob">
+            <h4><i>03</i>Incompletely reported</h4>
+            <p>
+              Papers omit setpoints, inducer identity, agitation and aeration.
+              The gaps are real, and a value-filled schema would hide them.
+            </p>
+          </div>
+          <div class="prob">
+            <h4><i>04</i>Internally inconsistent</h4>
+            <p>
+              The same quantity can be stated one way in Methods and another in
+              Results. Flattening that to a single value destroys the conflict.
+            </p>
+          </div>
+        </div>
+
+        <div class="require">
+          <h4>Useful process knowledge has to carry five things at once</h4>
+          <div class="chips">
+            <span class="chip">parameters</span>
+            <span class="chip">relationships</span>
+            <span class="chip">evidence</span>
+            <span class="chip">provenance</span>
+            <span class="chip">uncertainty</span>
+            <span class="chip">missing information</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ DEMO -->
+    <section id="demo">
+      <div class="wrap">
+        <p class="eyebrow"><b>02</b> See it work</p>
+        <div class="sec-head">
+          <h2>One real paper, six steps</h2>
+          <p class="lead muted">
+            This is <span class="mono" id="dm-source">—</span>, the paper
+            bundled with the repository. Step through what the pipeline does to
+            it.
+          </p>
+        </div>
+
+        <div class="stepper">
+          <div class="step-nav" role="tablist" aria-label="Pipeline stages">
+            <button class="step-btn" role="tab" aria-selected="true" aria-controls="p1" id="t1">
+              <b>01</b> Paper
+            </button>
+            <button class="step-btn" role="tab" aria-selected="false" aria-controls="p2" id="t2">
+              <b>02</b> Extraction
+            </button>
+            <button class="step-btn" role="tab" aria-selected="false" aria-controls="p3" id="t3">
+              <b>03</b> ProcessState
+            </button>
+            <button class="step-btn" role="tab" aria-selected="false" aria-controls="p4" id="t4">
+              <b>04</b> Graph
+            </button>
+            <button class="step-btn" role="tab" aria-selected="false" aria-controls="p5" id="t5">
+              <b>05</b> Evidence
+            </button>
+            <button class="step-btn" role="tab" aria-selected="false" aria-controls="p6" id="t6">
+              <b>06</b> Uncertainty
+            </button>
+          </div>
+
+          <!-- 01 PAPER -->
+          <div class="step-panel on" role="tabpanel" id="p1" aria-labelledby="t1">
+            <div class="step-title"><h3>Page-preserving ingestion</h3></div>
+            <p class="step-note">
+              The PDF is read with a page-aware reader. Every character keeps its
+              one-based PDF page number, because that number is what later makes
+              an evidence citation checkable.
+            </p>
+            <div class="kv" id="d1-kv"></div>
+            <p class="eyebrow" style="margin: 22px 0 12px"><b>Characters per page</b></p>
+            <div id="d1-bars"></div>
+            <p class="eyebrow" style="margin: 24px 0 12px"><b>Page 2 as read</b></p>
+            <pre class="code" id="d1-text"></pre>
+          </div>
+
+          <!-- 02 EXTRACTION -->
+          <div class="step-panel" role="tabpanel" id="p2" aria-labelledby="t2">
+            <div class="step-title"><h3>Bounded chunks, one page at a time</h3></div>
+            <p class="step-note">
+              A document over the single-call limit is split into page-bounded
+              chunks. Chunking never crosses a page boundary and never drops the
+              page label, so any excerpt a model returns can be checked against
+              the exact page it claims.
+            </p>
+            <div class="kv" id="d2-kv"></div>
+            <p class="eyebrow" style="margin: 22px 0 12px"><b>Chunk plan</b></p>
+            <div id="d2-bars"></div>
+            <p class="eyebrow" style="margin: 24px 0 12px"><b>What the boundary enforces</b></p>
+            <ul class="rules" id="d2-rules"></ul>
+          </div>
+
+          <!-- 03 PROCESSSTATE -->
+          <div class="step-panel" role="tabpanel" id="p3" aria-labelledby="t3">
+            <div class="step-title"><h3>A typed, deliberately partial ProcessState</h3></div>
+            <p class="step-note">
+              Extraction materializes into the canonical
+              <span class="mono">ProcessState</span>. Fields stay unset when the
+              paper does not support them. Every parameter carries its own
+              provenance tag.
+            </p>
+            <div class="kv" id="d3-kv"></div>
+            <p class="eyebrow" style="margin: 22px 0 12px"><b>Identity fields</b></p>
+            <div class="rules" id="d3-scalars"></div>
+            <p class="eyebrow" style="margin: 24px 0 12px"><b>Provenance vocabulary</b></p>
+            <div class="chips" id="d3-prov"></div>
+          </div>
+
+          <!-- 04 GRAPH -->
+          <div class="step-panel" role="tabpanel" id="p4" aria-labelledby="t4">
+            <div class="step-title"><h3>Operations, material states, and relations</h3></div>
+            <p class="step-note">
+              The graph separates what the process
+              <em>does</em> (<span class="mono">operation</span>) from what
+              flows through it (<span class="mono">material_state</span>). Relation
+              kinds are typed, and endpoints are validated against node kinds.
+            </p>
+            <div class="kv" id="d4-kv"></div>
+            <ul class="rules" id="d4-rules" style="margin-top: 18px"></ul>
+            <p style="margin-top: 18px">
+              <a href="#graph">Inspect the full graph &rarr;</a>
+            </p>
+          </div>
+
+          <!-- 05 EVIDENCE -->
+          <div class="step-panel" role="tabpanel" id="p5" aria-labelledby="t5">
+            <div class="step-title"><h3>Every value points back at a page</h3></div>
+            <p class="step-note">
+              A literature value is only accepted with an evidence excerpt that
+              the validator can find on the stated page. If the excerpt is not
+              there, the value is rejected — the claim does not get softened or
+              kept on trust.
+            </p>
+            <div class="kv" id="d5-kv"></div>
+            <p class="eyebrow" style="margin: 22px 0 12px"><b>Evidence coverage by page</b></p>
+            <div id="d5-bars"></div>
+            <p class="eyebrow" style="margin: 24px 0 12px"><b>Example record</b></p>
+            <pre class="code" id="d5-ex"></pre>
+          </div>
+
+          <!-- 06 UNCERTAINTY -->
+          <div class="step-panel" role="tabpanel" id="p6" aria-labelledby="t6">
+            <div class="step-title"><h3>What the paper did not establish</h3></div>
+            <p class="step-note">
+              Three separate lists, never merged: information the source does not
+              report, information it reports ambiguously, and information it
+              reports inconsistently. They are outputs of the pipeline, not
+              footnotes.
+            </p>
+            <div class="kv" id="d6-kv"></div>
+            <p style="margin-top: 6px">
+              <a href="#uncertainty">See all findings &rarr;</a>
+            </p>
+          </div>
+        </div>
+
+        <div class="notice" style="margin-top: 18px">
+          <span class="ico">NOTE</span>
+          <span>
+            <b>What this walkthrough is.</b> The values below come from the
+            repository's deterministic Zieliński fixture: a set of facts manually
+            verified against the bundled PDF, then pushed through the real
+            extraction, evidence-validation and materialization code. No model is
+            called. This is a labeled reference result, not a live provider
+            response — and the live record is published in
+            <a href="#validation">the validation section</a>, including where it
+            currently fails.
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ OUTPUT / WORKBENCH -->
+    <section id="output">
+      <div class="wrap">
+        <p class="eyebrow"><b>03</b> The actual output</p>
+        <div class="sec-head">
+          <h2>Not a summary. A structured record you can interrogate.</h2>
+          <p class="lead muted">
+            Select any field to see its value, its provenance, and the exact
+            excerpt on the page it came from.
+          </p>
+        </div>
+
+        <div class="wb">
+          <div class="wb-side">
+            <div class="wb-bar">
+              <input
+                type="search"
+                id="wb-search"
+                placeholder="filter 56 parameters…"
+                aria-label="Filter fields"
+                autocomplete="off"
+              />
+              <span class="wb-count" id="wb-count">—</span>
+            </div>
+            <ul class="wb-list" id="wb-list"></ul>
+          </div>
+          <div class="wb-main" id="wb-main">
+            <div class="detail-empty">
+              <span class="big">◧</span>
+              Select a field to inspect its evidence.
+            </div>
+          </div>
+        </div>
+
+        <p class="hero-note" style="margin-top: 14px">
+          Rendered from
+          <span class="mono" id="wb-stamp">—</span> — generated by
+          <span class="mono">scripts/export_website_data.py</span> reading the
+          real pipeline output. Nothing on this page is hand-entered.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================================ GRAPH -->
+    <section id="graph">
+      <div class="wrap">
+        <p class="eyebrow"><b>04</b> Process topology</p>
+        <div class="sec-head">
+          <h2>The process as a typed graph</h2>
+          <p class="lead muted">
+            Sequence along the paper's Fig. 1 path, plus the two material flows the
+            source actually supports. Click any node to see its evidence.
+          </p>
+        </div>
+
+        <div class="graph-wrap">
+          <div class="graph-hd">
+            <div class="legend">
+              <span><i class="op"></i> operation</span>
+              <span><i class="mat"></i> material_state</span>
+              <span><i class="unres"></i> unresolved relation</span>
+            </div>
+            <span id="graph-stats">—</span>
+          </div>
+          <div class="graph-scroll" id="graph-scroll">
+            <svg id="graph-svg" role="img" aria-label="Process graph"></svg>
+          </div>
+        </div>
+
+        <div id="graph-detail" style="margin-top: 16px"></div>
+
+        <p class="eyebrow" style="margin: 30px 0 12px"><b>Directed relations</b></p>
+        <div class="tbl-scroll">
+          <table class="rel-table" id="rel-table">
+            <thead>
+              <tr>
+                <th>Source</th>
+                <th>Relation</th>
+                <th>Target</th>
+                <th>Evidence</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <div class="notice plain" style="margin-top: 22px">
+          <span class="ico">SCOPE</span>
+          <span>
+            <b>What this graph is.</b> The topology above is a separately
+            audited representation of the paper's Fig.&nbsp;1 operation path,
+            built from manually verified evidence. The current extraction path
+            does <em>not</em> yet attach a graph to
+            <span class="mono">ProcessState</span> automatically — graph
+            materialization from extraction candidates is still open work, and
+            figure-arrow geometry is not verified by a text validator.
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ EVIDENCE -->
+    <section id="evidence">
+      <div class="wrap">
+        <p class="eyebrow"><b>05</b> Evidence &amp; trust</p>
+        <div class="sec-head">
+          <h2>You can inspect why the system believes something.</h2>
+          <p class="lead muted">
+            The claim is never the unit of trust. The unit is the chain: claim →
+            source → page → excerpt → status → limitation.
+          </p>
+        </div>
+
+        <div class="chain" id="chain"></div>
+
+        <p class="eyebrow" style="margin: 34px 0 12px"><b>Worked example</b></p>
+        <div class="val" id="ev-example" style="padding: 0"></div>
+
+        <p class="eyebrow" style="margin: 34px 0 12px"><b>Stable identity</b></p>
+        <p class="step-note" style="margin-bottom: 16px">
+          Nodes are keyed by a scoped, content-derived ID rather than a display
+          label or an array position, so the same operation keeps the same
+          identity across runs. Reconciliation assigns these canonical IDs from a
+          source-supported occurrence key.
+        </p>
+        <div class="tbl-scroll" id="recon-table-wrap"></div>
+      </div>
+    </section>
+
+    <!-- ============================================================ UNCERTAINTY -->
+    <section id="uncertainty">
+      <div class="wrap">
+        <p class="eyebrow"><b>06</b> Uncertainty &amp; missing information</p>
+        <div class="sec-head">
+          <h2>The system does not fill in what the paper left out.</h2>
+          <p class="lead muted">
+            These are three distinct, separately stored lists in
+            <span class="mono">ProcessState</span>. A field that is absent is
+            reported as absent, not defaulted.
+          </p>
+        </div>
+        <div class="unc-grid" id="unc-grid"></div>
+
+        <div class="notice" style="margin-top: 22px">
+          <span class="ico">WHY</span>
+          <span>
+            <b>Discipline over completeness.</b> A schema that always fills every
+            field will always look more useful than one that admits a gap. For
+            process development, a confidently wrong setpoint is worse than a
+            recorded absence — so the absence is part of the output.
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ VALIDATION -->
+    <section id="validation">
+      <div class="wrap">
+        <p class="eyebrow"><b>07</b> Validation record</p>
+        <div class="sec-head">
+          <h2>Where the system rejects the model</h2>
+          <p class="lead muted">
+            A structured schema is easy to generate and easy to get subtly wrong.
+            The interesting question is not whether the pipeline produces output,
+            but what it refuses. These are the recorded results of repeated live
+            extraction runs against this paper, including the failures.
+          </p>
+        </div>
+
+        <div class="val-grid" id="val-grid"></div>
+
+        <div class="notice" style="margin-top: 22px">
+          <span class="ico">LIMIT</span>
+          <span>
+            <b>Read these narrowly.</b> One paper, one model
+            (<span class="mono" id="val-model">—</span>), one prompt version, a
+            <span id="val-runs">—</span>-run sample. No accuracy, precision,
+            recall or hallucination rate is claimed or implied. Raw provider
+            output was not retained in these artifacts; only counts, locations,
+            lengths and digests were.
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ VISION -->
+    <section id="vision">
+      <div class="wrap">
+        <p class="eyebrow"><b>08</b> Direction</p>
+        <div class="sec-head">
+          <h2>From literature to computable process</h2>
+          <p class="lead muted">
+            The current artifact is a knowledge layer. Where it is meant to lead
+            is stated separately, and only one step of it exists today.
+          </p>
+        </div>
+
+        <div class="vision-track">
+          <div class="vstep now">
+            <div class="vn">01</div>
+            <h4>Understand</h4>
+            <p>
+              Literature becomes a structured process representation with
+              evidence and preserved gaps. Implemented.
+            </p>
+          </div>
+          <div class="vstep next">
+            <div class="vn">02</div>
+            <h4>Model</h4>
+            <p>
+              Representations that carry units, ranges and stage membership
+              become usable as model inputs. Research direction.
+            </p>
+          </div>
+          <div class="vstep next">
+            <div class="vn">03</div>
+            <h4>Simulate</h4>
+            <p>
+              Predict process behaviour against a mechanistic or data-driven
+              model. Research direction.
+            </p>
+          </div>
+          <div class="vstep next">
+            <div class="vn">04</div>
+            <h4>Optimize</h4>
+            <p>
+              Search operating space against real constraints and objectives.
+              Research direction.
+            </p>
+          </div>
+          <div class="vstep next">
+            <div class="vn">05</div>
+            <h4>Scale</h4>
+            <p>
+              Transfer knowledge from bench to production. Research direction.
+            </p>
+          </div>
+        </div>
+
+        <div class="notice" style="margin-top: 22px">
+          <span class="ico">BOUND</span>
+          <span>
+            <b>Not built.</b> No process simulation, autonomous optimisation,
+            industrial scale-up, experimental planning, closed-loop operation or
+            process-development automation exists in the codebase today.
+            <span class="mono">ModelResult</span> and
+            <span class="mono">Recommendation</span> are reserved fields on the
+            schema and are empty in every run shown here. Treat steps 02–05 as
+            intent, not capability.
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ TEAM -->
+    <section id="team">
+      <div class="wrap">
+        <p class="eyebrow"><b>09</b> Team</p>
+        <div class="sec-head">
+          <h2>Three people building the interpretation layer</h2>
+        </div>
+        <div class="team">
+          <div class="person">
+            <div class="av">PP</div>
+            <h4>Pritish Premlal</h4>
+            <div class="role">CEO</div>
+          </div>
+          <div class="person">
+            <div class="av">SN</div>
+            <h4>Samarpit Nag</h4>
+            <div class="role">CTO</div>
+          </div>
+          <div class="person">
+            <div class="av">SP</div>
+            <h4>Sahil Pawar</h4>
+            <div class="role">CPO</div>
+          </div>
+        </div>
+        <p class="hero-note" style="margin-top: 16px">
+          Listed by name and role only. The repository records no per-person
+          contributions, so no prior employers, degrees, awards, publications or
+          institutional affiliations are claimed here.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================================ CTA -->
+    <div class="cta" id="contact">
+      <div class="wrap">
+        <p class="eyebrow" style="justify-content: center"><b>10</b> Next</p>
+        <h2>Look at the artifact, not the pitch.</h2>
+        <p class="lead muted">
+          This is a working prototype with a reference artifact and a published
+          validation record. If you work on biological or chemical process
+          development, the fastest way to evaluate it is to point it at a paper
+          you already know well.
+        </p>
+        <div class="cta-btns">
+          <a class="btn btn-primary" href="#demo">Explore the prototype</a>
+          <a class="btn btn-ghost" href="#validation">See the validation record</a>
+        </div>
+        <div class="notice">
+          <span class="ico">MATURITY</span>
+          <span>
+            <b>What is not claimed here.</b> No customers, partnerships, funding,
+            commercial deployment, industrial validation or production
+            readiness. The pipeline is pre-release research code operating on a
+            single bundled paper.
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ FOOTER -->
+    <footer>
+      <div class="wrap foot-in">
+        <div>
+          <strong style="color: var(--text-hi)">ScaleUp AI</strong> — scientific
+          process intelligence. Pre-release.
+        </div>
+        <div class="foot-links">
+          <span id="f-stats">—</span>
+        </div>
+      </div>
+    </footer>
+
+    <script src="assets/app.js"></script>
+  </body>
+</html>

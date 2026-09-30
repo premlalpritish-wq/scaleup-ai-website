@@ -1,0 +1,31 @@
+# Dependencies (dev-only; the site itself has no runtime dependency)
+node_modules/
+
+# Local environment / secrets — must never be committed
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+id_rsa
+id_ed25519
+.netrc
+
+# OS and editor noise
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+.idea/
+.vscode/
+
+# Logs and debug output
+*.log
+npm-debug.log*
+yarn-error.log*
+
+# Build and coverage output, in case tooling is added later
+dist/
+build/
+coverage/
+.cache/
