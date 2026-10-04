@@ -127,6 +127,24 @@ ok("respects prefers-reduced-motion", /prefers-reduced-motion/.test(css));
 /* --- 10. mobile nav stays scrollable rather than wrapping into the content --- */
 ok("nav links scroll horizontally", /@media[^{]*\.nav-links/.test(css) || /\.nav-links\s*\{[^}]*overflow-x:\s*auto/.test(css));
 
+/* --- 11. the active-section indicator must be able to reach the nav edge ---
+   On a phone the nav is a horizontal scroller, so the marker is drawn as an
+   absolutely positioned rule rather than a border: a border would add width to
+   the item and, on the last one, widen the scrollable area. */
+const activeRule = css.match(/\.nav-links a\[aria-current="true"\][^{]*\{[^}]*\}/);
+ok("nav has an active-section style", !!activeRule, activeRule ? activeRule[0].slice(0, 46) : "no rule");
+ok("active nav marker does not add width", !!activeRule && !/border|outline/.test(activeRule[0]));
+ok("active nav marker uses the accent colour", !!activeRule && /var\(--known\)/.test(activeRule[0]));
+
+/* --- 12. in-page anchors must clear the sticky header ---
+   scroll-padding-top on the scroll container is the correct mechanism. It must
+   not also be applied as scroll-margin-top on the sections: the two offsets add,
+   which lands every anchor at twice the intended clearance. */
+ok("anchors clear the sticky header", /html\s*\{[^}]*scroll-padding-top/.test(css));
+const secRule = css.match(/^section\s*\{[^}]*\}/m);
+ok("anchor offset is not applied twice", !secRule || !/scroll-margin-top/.test(secRule[0]),
+   secRule ? secRule[0].slice(0, 60) : "no section rule");
+
 /* --- report --- */
 const failed = checks.filter((c) => !c.pass);
 checks.forEach((c) => console.log(`${c.pass ? "PASS" : "FAIL"}  ${c.name}${c.detail ? `  [${c.detail}]` : ""}`));

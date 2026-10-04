@@ -188,6 +188,170 @@
 
   /* ================================================================= render */
 
+  /* --------------------------------------------------- active section state */
+
+  /* Marks which nav item matches the section currently being viewed.
+   *
+   * "Current" means the last section whose top has passed a reading line placed
+   * at the scroll anchor offset — the same position a heading comes to rest at
+   * after a nav link is followed. Everything is measured from live layout, so
+   * this stays correct across header height, section spacing, breakpoints and
+   * content that reflows taller. No hard-coded scroll positions are involved.
+   *
+   * resolve() is the single source of truth and always yields at most one
+   * section, because it walks the sections in document order and keeps the last
+   * match. IntersectionObserver, scroll, resize and content reflow all feed the
+   * same resolver; the observer is there to make boundary crossings cheap to
+   * notice, not to be the only signal, so coalesced or missed callbacks during a
+   * fast fling cannot leave the highlight stale. */
+  function wireSectionTracking() {
+    const links = $$(".nav-links a[href^='#']");
+    if (!links.length || typeof IntersectionObserver !== "function") return;
+
+    const pairs = links
+      .map((a) => ({ a, el: document.getElementById(a.getAttribute("href").slice(1)) }))
+      .filter((p) => p.el);
+    if (!pairs.length) return;
+
+    const nav = $(".nav-links");
+    const header = $(".nav");
+    let active = null;
+    let queued = false;
+
+    /* The reading line is the y position at which a section heading comes to rest
+       after an in-page link is followed — i.e. the same offset the stylesheet
+       uses for scroll-padding-top. It has to track that offset and not merely
+       the header height: the anchor offset is larger than the header, so a line
+       placed at the header edge would sit *above* a just-clicked section's top
+       and leave the highlight one section behind.
+
+       A clicked section comes to rest exactly on the anchor offset, which makes
+       `top <= line` a knife edge that sub-pixel scroll settling can fall on
+       either side of. The epsilon pushes the line a few px lower, so a section
+       that has arrived is unambiguously active, and costs nothing when scrolling
+       by hand.
+
+       Read from the stylesheet so the scroll position and the highlight can
+       never disagree. The header height is the fallback. */
+    const line = () => {
+      const raw = getComputedStyle(document.documentElement)
+        .getPropertyValue("--anchor-offset")
+        .trim();
+      const offset = parseFloat(raw);
+      const h = header ? header.getBoundingClientRect().height : 0;
+      if (Number.isFinite(offset) && offset > 0) return offset + 4;
+      return Math.max(h + 2, 2);
+    };
+
+    const apply = (id) => {
+      if (active === id) return;
+      active = id;
+      links.forEach((a) => {
+        const on = a.getAttribute("href") === `#${id}`;
+        if (on) {
+          a.setAttribute("aria-current", "true");
+        } else {
+          a.removeAttribute("aria-current");
+        }
+      });
+      if (!id || !nav || nav.scrollWidth <= nav.clientWidth + 1) return;
+      /* On narrow screens the nav is a horizontal scroller, so bring the active
+         item into view. Adjusting scrollLeft directly keeps the page itself
+         still, which scrollIntoView would not. */
+      const link = links.find((a) => a.getAttribute("href") === `#${id}`);
+      if (!link) return;
+      const r = link.getBoundingClientRect();
+      const nr = nav.getBoundingClientRect();
+      const pad = 16;
+      if (r.left < nr.left + pad || r.right > nr.right - pad) {
+        nav.scrollLeft += r.left - nr.left - (nr.width - r.width) / 2;
+      }
+    };
+
+    /* Resolve from live geometry: the last section whose top is at or above the
+       line. Falls out of the DOM order the nav already encodes. */
+    const resolve = () => {
+      const y = line();
+      let id = null;
+      pairs.forEach((p) => {
+        if (p.el.getBoundingClientRect().top <= y) id = p.el.id;
+      });
+      /* In the hero, above every tracked section, nothing is active. */
+      if (pairs.length && pairs[0].el.getBoundingClientRect().top > y) id = null;
+      apply(id);
+    };
+
+    /* Coalesce to one measurement per frame, so a fast scroll or a fling cannot
+       queue redundant layout reads. */
+    const schedule = () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(() => {
+        queued = false;
+        resolve();
+      });
+    };
+
+    /* Sections change height as content renders, filters and graph selections
+       repaint, and the viewport changes size, so the reading line moves for
+       reasons that have nothing to do with scrolling. Re-resolving on those
+       keeps the highlight attached to what the reader is actually looking at. */
+    if (typeof ResizeObserver === "function") {
+      const ro = new ResizeObserver(schedule);
+      pairs.forEach((p) => ro.observe(p.el));
+    }
+
+    const io = new IntersectionObserver(schedule, {
+      /* Shrink the root to the band under the header. Negative top pulls the
+         band down; the bottom inset keeps it one pixel tall. */
+      rootMargin: `-${line()}px 0px -${Math.max(
+        0,
+        window.innerHeight - line() - 1
+      )}px 0px`,
+      threshold: 0,
+    });
+    pairs.forEach((p) => io.observe(p.el));
+
+    /* scroll/resize also drive the resolver directly: the observer alone can
+       coalesce several boundary crossings into a single callback during a fast
+       fling, and does not fire at all when a section changes height without
+       moving. resolve() is rAF-throttled and reads one rect per section, so this
+       stays cheap. */
+    addEventListener("scroll", schedule, { passive: true });
+    addEventListener("resize", schedule, { passive: true });
+    addEventListener("hashchange", schedule);
+
+    /* Following an in-page link scrolls smoothly, so mid-animation the state
+       reflects wherever the page happens to be passing. Poll until the scroll
+       position stops changing and resolve once, at the destination. The timeout
+       is a floor: it guarantees a resolve even if the final frames are skipped
+       or the animation never reports a stable pair. */
+    links.forEach((a) =>
+      a.addEventListener("click", () => {
+        let last = -1;
+        let stable = 0;
+        let raf = 0;
+
+        const stop = () => {
+          cancelAnimationFrame(raf);
+          clearTimeout(timer);
+          schedule();
+        };
+        const settle = () => {
+          const y = Math.round(window.scrollY);
+          stable = y === last ? stable + 1 : 0;
+          last = y;
+          if (stable >= 2) return stop();
+          raf = requestAnimationFrame(settle);
+        };
+        const timer = setTimeout(stop, 1600);
+        raf = requestAnimationFrame(settle);
+      })
+    );
+
+    schedule();
+  }
+
   function renderAll() {
     renderHero();
     renderPaperStep();
@@ -203,6 +367,7 @@
     renderUncertainty();
     renderFooter();
     wireTabs();
+    wireSectionTracking();
   }
 
   /* ------------------------------------------------------------ hero strip */

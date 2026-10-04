@@ -255,6 +255,25 @@ setTimeout(() => {
   ok("responsive: nav links present", n(".nav-links a") >= 8, String(n(".nav-links a")));
   ok("responsive: workbench has scrollable list", !!d.querySelector("#wb-list"));
 
+  /* --------------------------------------------- active section navigation */
+  /* The tracker binds to the nav links that point at real sections and marks the
+     current one with aria-current. It resolves from live geometry, so the
+     behaviour itself needs a real browser; what this suite can verify is that
+     the wiring is present and well-formed. */
+  const navLinks = [...d.querySelectorAll('.nav-links a[href^="#"]')];
+  ok("nav: every link resolves to a section",
+     navLinks.length > 0 && navLinks.every((a) => d.getElementById(a.getAttribute("href").slice(1))),
+     String(navLinks.length));
+  ok("nav: at most one active marker at rest", n('.nav-links a[aria-current="true"]') <= 1,
+     String(n('.nav-links a[aria-current="true"]')));
+  ok("nav: the active marker uses a valid aria-current value",
+     [...d.querySelectorAll(".nav-links a[aria-current]")]
+       .every((a) => a.getAttribute("aria-current") === "true"));
+  ok("nav is labelled for assistive tech", !!d.querySelector(".nav[aria-label]"));
+  /* Must degrade safely rather than throw where the observer is unavailable. */
+  ok("nav: tracker guards against a missing IntersectionObserver",
+     /typeof IntersectionObserver/.test(appjs));
+
   /* ------------------------------------------------------------------ report */
   const nulls = [...new Set(window.__NULLS || [])];
   if (nulls.length) console.log(`\nNULL SELECTORS: ${nulls.join(", ")}`);

@@ -36,12 +36,46 @@
 
   --mono: ui-monospace, "SF Mono", "Cascadia Mono", "JetBrains Mono", "Roboto Mono",
     Consolas, monospace;
-  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, "Helvetica Neue",
-    Arial, sans-serif;
+  /* One family system. Inter is the face this design is drawn against — neutral,
+     slightly narrow, designed for dense technical UI — and it is used whenever
+     it is installed. Otherwise the platform UI font, which is the same kind of
+     grotesque, is used instead. No webfont request, so nothing about the page
+     changes when a network is slow or absent. */
+  --sans: Inter, "Inter var", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text",
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  /* Type scale. Every text rule below resolves to one of these, so the page has
+     a readable number of distinct sizes rather than dozens of ad-hoc rem values.
+     --fs-micro machine labels · --fs-cap captions · --fs-sm card body ·
+     --fs-base body copy · --fs-lg data readouts · --fs-h1…4 headings. */
+  --fs-micro: 0.72rem;
+  --fs-cap: 0.79rem;
+  --fs-sm: 0.86rem;
+  --fs-base: 1rem;
+  --fs-lg: 1.06rem;
+  --fs-lead: clamp(1.02rem, 1.5vw, 1.16rem);
+  --fs-h4: 0.95rem;
+  --fs-h3: 1.16rem;
+  --fs-h2: clamp(1.55rem, 2.9vw, 2.15rem);
+  --fs-h1: clamp(2.05rem, 4.6vw, 3.35rem);
+
+  /* Leading. Headings set tighter than body so they read as display type. */
+  --lh-display: 1.15;
+  --lh-heading: 1.28;
+  --lh-body: 1.6;
+  --lh-prose: 1.62;
 
   --maxw: 1180px;
   --r: 3px;
   --ease: cubic-bezier(0.2, 0.7, 0.3, 1);
+
+  /* Sticky header height, and the scroll offset that keeps a section heading
+     clear of it when an in-page link is followed. This is applied once, on the
+     scroll container (scroll-padding-top). It must NOT also be applied as
+     scroll-margin-top on the sections themselves: the two offsets add, which
+     would land every anchor 168px down instead of 84px. */
+  --nav-h: 56px;
+  --anchor-offset: 84px;
 }
 
 *,
@@ -52,7 +86,9 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 84px;
+  /* Every in-page link and scrollIntoView lands below the sticky header with
+     clearance, so a section heading is never hidden behind it. */
+  scroll-padding-top: var(--anchor-offset);
   -webkit-text-size-adjust: 100%;
 }
 
@@ -61,10 +97,16 @@ body {
   background: var(--ink-900);
   color: var(--text);
   font-family: var(--sans);
-  font-size: 16px;
-  line-height: 1.6;
+  font-size: var(--fs-base);
+  line-height: var(--lh-body);
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  /* Metrics that vary per face, pinned so mixed sans/mono runs line up
+     predictably instead of inheriting whatever the platform font ships with. */
+  font-kerning: normal;
+  font-variant-ligatures: common-ligatures;
+  font-optical-sizing: auto;
 }
 
 /* Subtle engineered grid — reads as graph paper, not decoration. */
@@ -110,6 +152,8 @@ a:hover {
 
 /* ---------------------------------------------------------------- typography */
 
+/* Four heading levels on one ramp: each step down is both smaller and tighter
+   set, so the eye can rank them without reading. */
 h1,
 h2,
 h3,
@@ -117,34 +161,40 @@ h4 {
   color: var(--text-hi);
   font-weight: 600;
   letter-spacing: -0.018em;
-  line-height: 1.18;
+  line-height: var(--lh-heading);
   margin: 0;
+  /* Long headings wrap on meaning rather than on width. */
+  text-wrap: balance;
 }
 
 h1 {
-  font-size: clamp(2rem, 4.6vw, 3.35rem);
-  letter-spacing: -0.032em;
+  font-size: var(--fs-h1);
+  line-height: var(--lh-display);
+  letter-spacing: -0.03em;
 }
 h2 {
-  font-size: clamp(1.5rem, 2.9vw, 2.1rem);
-  letter-spacing: -0.024em;
+  font-size: var(--fs-h2);
+  line-height: var(--lh-display);
+  letter-spacing: -0.022em;
 }
 h3 {
-  font-size: 1.12rem;
+  font-size: var(--fs-h3);
   letter-spacing: -0.012em;
 }
 h4 {
-  font-size: 0.95rem;
+  font-size: var(--fs-h4);
+  letter-spacing: -0.008em;
 }
 
 p {
   margin: 0 0 1em;
+  text-wrap: pretty;
 }
 
 .lead {
-  font-size: clamp(1.02rem, 1.5vw, 1.16rem);
+  font-size: var(--fs-lead);
   color: var(--text);
-  line-height: 1.62;
+  line-height: var(--lh-prose);
 }
 
 .muted {
@@ -156,10 +206,16 @@ p {
   font-size: 0.86em;
   font-variant-ligatures: none;
 }
+/* A .mono span inside something that is already monospace must not shrink
+   again — that compounds into unreadably small text. */
+:is(.hero-note, .ev-foot, .eyebrow, .stage-num, .wb-count, .graph-hd, .pipeline-hd, .val-sub, .bar-row, .rel-table) .mono {
+  font-size: inherit;
+}
 
 .eyebrow {
   font-family: var(--mono);
-  font-size: 0.7rem;
+  font-size: var(--fs-micro);
+  font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--text-xlo);
@@ -176,7 +232,7 @@ p {
 }
 .eyebrow b {
   color: var(--known);
-  font-weight: 500;
+  font-weight: 600;
 }
 
 /* ---------------------------------------------------------------- nav */
@@ -193,7 +249,7 @@ p {
   display: flex;
   align-items: center;
   gap: 20px;
-  height: 56px;
+  height: var(--nav-h);
 }
 .brand {
   display: flex;
@@ -201,7 +257,7 @@ p {
   gap: 9px;
   font-weight: 600;
   color: var(--text-hi);
-  font-size: 0.95rem;
+  font-size: var(--fs-base);
   letter-spacing: -0.01em;
   white-space: nowrap;
 }
@@ -210,10 +266,13 @@ p {
 }
 .brand svg {
   flex: none;
+  /* The logo mark is optically centred on the text rather than mathematically
+     centred: it sits a touch high, which reads as aligned next to lowercase. */
+  align-self: center;
 }
 .brand small {
   font-family: var(--mono);
-  font-size: 0.62rem;
+  font-size: var(--fs-micro);
   font-weight: 400;
   color: var(--text-xlo);
   letter-spacing: 0.1em;
@@ -228,22 +287,54 @@ p {
   gap: 4px;
   overflow-x: auto;
   scrollbar-width: none;
+  /* Keep the links optically centred in the bar rather than starting flush to
+     the brand, so the row reads as one block at every width. */
+  padding: 2px 0;
 }
 .nav-links::-webkit-scrollbar {
   display: none;
 }
 .nav-links a {
+  /* Deliberately its own size rather than a scale token: at nine items across a
+     56px bar this is the size that fits the full set without truncation or
+     horizontal scrolling on a laptop. */
   font-size: 0.79rem;
+  /* 400 at rest and 600 when active: the weight change is what makes the
+     current section readable at a glance, and because the tracking is uniform
+     the width shift is contained by white-space: nowrap. */
+  font-weight: 400;
   color: var(--text-lo);
   padding: 6px 10px;
   border-radius: var(--r);
   white-space: nowrap;
+  position: relative;
   transition: color 0.15s, background 0.15s;
 }
 .nav-links a:hover {
   color: var(--text-hi);
   background: var(--ink-780);
   text-decoration: none;
+}
+
+/* Active section. Same accent vocabulary the stepper and workbench already use
+   for their current item: accent-coloured label plus a 2px accent rule. The
+   rule is drawn on the link itself so it stays flush with the type at any
+   nav size, and it is the only element that carries colour, so the active item
+   is unambiguous rather than merely bolder. */
+.nav-links a[aria-current="true"] {
+  color: var(--known);
+  background: var(--ink-780);
+  font-weight: 600;
+}
+.nav-links a[aria-current="true"]::after {
+  content: "";
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: -2px;
+  height: 2px;
+  background: var(--known);
+  border-radius: 1px;
 }
 
 /* ---------------------------------------------------------------- buttons */
@@ -255,13 +346,17 @@ p {
   gap: 8px;
   padding: 11px 20px;
   border-radius: var(--r);
-  font-size: 0.87rem;
-  font-weight: 550;
+  font-size: var(--fs-sm);
+  font-weight: 600;
   font-family: inherit;
+  letter-spacing: -0.005em;
   border: 1px solid transparent;
   cursor: pointer;
   transition: all 0.16s var(--ease);
   white-space: nowrap;
+}
+.btn svg {
+  flex: none;
 }
 .btn-primary {
   background: var(--known);
@@ -315,11 +410,11 @@ p {
   margin-bottom: 20px;
 }
 .hero-note {
-  font-size: 0.78rem;
+  font-size: var(--fs-cap);
   color: var(--text-xlo);
   font-family: var(--mono);
-  line-height: 1.55;
-  max-width: 60ch;
+  line-height: 1.6;
+  max-width: 66ch;
 }
 
 /* Live pipeline strip */
@@ -338,7 +433,7 @@ p {
   border-bottom: 1px solid var(--line-soft);
   background: var(--ink-780);
   font-family: var(--mono);
-  font-size: 0.68rem;
+  font-size: var(--fs-micro);
   letter-spacing: 0.09em;
   text-transform: uppercase;
   color: var(--text-xlo);
@@ -372,7 +467,7 @@ p {
 }
 .stage-id {
   font-family: var(--mono);
-  font-size: 0.66rem;
+  font-size: var(--fs-micro);
   color: var(--text-xlo);
   border: 1px solid var(--line-strong);
   border-radius: 2px;
@@ -381,29 +476,30 @@ p {
   line-height: 1.3;
 }
 .stage-name {
-  font-size: 0.87rem;
+  font-size: var(--fs-sm);
   color: var(--text-hi);
-  font-weight: 500;
+  font-weight: 600;
+  letter-spacing: -0.008em;
   min-width: 0;
 }
 .stage-desc {
-  font-size: 0.74rem;
+  font-size: var(--fs-micro);
   color: var(--text-lo);
   display: block;
   font-weight: 400;
-  margin-top: 1px;
-  line-height: 1.45;
+  margin-top: 2px;
+  line-height: 1.5;
 }
 .stage-num {
   font-family: var(--mono);
-  font-size: 0.95rem;
+  font-size: var(--fs-h4);
   color: var(--known);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
 .stage-num small {
   color: var(--text-xlo);
-  font-size: 0.68rem;
+  font-size: var(--fs-micro);
   display: block;
   text-align: right;
   letter-spacing: 0.04em;
@@ -435,7 +531,7 @@ section {
   margin-bottom: 34px;
 }
 .sec-head h2 {
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 /* ---------------------------------------------------------------- problem */
@@ -448,6 +544,12 @@ section {
   border: 1px solid var(--line-soft);
   border-radius: var(--r);
   overflow: hidden;
+}
+/* Equal-height rows, with each card's content distributed from the top so the
+   four read as one band rather than four independently-floating blocks. */
+.prob-grid,
+.prob {
+  align-content: start;
 }
 .prob {
   background: var(--ink-850);
@@ -462,15 +564,15 @@ section {
 .prob h4 i {
   font-family: var(--mono);
   font-style: normal;
-  font-size: 0.68rem;
+  font-size: var(--fs-micro);
   color: var(--text-xlo);
   font-weight: 400;
 }
 .prob p {
   margin: 0;
-  font-size: 0.83rem;
+  font-size: var(--fs-sm);
   color: var(--text-lo);
-  line-height: 1.55;
+  line-height: var(--lh-body);
 }
 .require {
   margin-top: 26px;
@@ -491,7 +593,7 @@ section {
 }
 .chip {
   font-family: var(--mono);
-  font-size: 0.72rem;
+  font-size: var(--fs-micro);
   color: var(--known);
   background: rgba(78, 205, 196, 0.07);
   border: 1px solid rgba(78, 205, 196, 0.2);
@@ -509,15 +611,15 @@ section {
   border-left: 2px solid var(--evidence);
   border-radius: var(--r);
   background: rgba(224, 177, 85, 0.045);
-  font-size: 0.83rem;
-  line-height: 1.58;
+  font-size: var(--fs-sm);
+  line-height: 1.6;
   color: var(--text);
 }
 .notice .ico {
   flex: none;
   color: var(--evidence);
   font-family: var(--mono);
-  font-size: 0.72rem;
+  font-size: var(--fs-micro);
   letter-spacing: 0.08em;
   padding-top: 2px;
   font-weight: 600;
@@ -558,7 +660,7 @@ section {
   border-right: 1px solid var(--line-soft);
   color: var(--text-lo);
   font-family: var(--mono);
-  font-size: 0.7rem;
+  font-size: var(--fs-micro);
   letter-spacing: 0.05em;
   text-transform: uppercase;
   padding: 12px 14px;
@@ -568,6 +670,12 @@ section {
   align-items: center;
   gap: 8px;
   transition: all 0.15s var(--ease);
+}
+/* Selected tab: accent type plus an accent rule, matching the nav's active
+   section treatment so the two "you are here" signals read the same way. */
+.step-btn b {
+  color: var(--text-xlo);
+  font-weight: 500;
 }
 .step-btn:last-child {
   border-right: 0;
@@ -584,6 +692,7 @@ section {
   background: var(--ink-750);
   color: var(--known);
   box-shadow: inset 0 -2px 0 var(--known);
+  font-weight: 500;
 }
 .step-btn[aria-selected="true"] b {
   color: var(--known);
@@ -614,14 +723,14 @@ section {
   flex-wrap: wrap;
 }
 .step-title h3 {
-  font-size: 1.16rem;
+  font-size: var(--fs-h3);
 }
 .step-note {
-  font-size: 0.85rem;
+  font-size: var(--fs-sm);
   color: var(--text-lo);
   max-width: 72ch;
   margin-bottom: 20px;
-  line-height: 1.6;
+  line-height: var(--lh-body);
 }
 
 /* ---------------------------------------------------------------- data atoms */
@@ -642,7 +751,7 @@ section {
 }
 .kv dt {
   font-family: var(--mono);
-  font-size: 0.65rem;
+  font-size: var(--fs-micro);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-xlo);
@@ -650,7 +759,7 @@ section {
 }
 .kv dd {
   margin: 0;
-  font-size: 1.02rem;
+  font-size: var(--fs-lg);
   color: var(--text-hi);
   font-variant-numeric: tabular-nums;
   line-height: 1.3;
@@ -658,7 +767,7 @@ section {
 }
 .kv dd small {
   display: block;
-  font-size: 0.72rem;
+  font-size: var(--fs-cap);
   color: var(--text-lo);
   font-weight: 400;
   margin-top: 2px;
@@ -682,7 +791,7 @@ pre.code {
   border: 1px solid var(--line-soft);
   border-radius: var(--r);
   overflow-x: auto;
-  font-size: 0.74rem;
+  font-size: var(--fs-micro);
   line-height: 1.62;
   color: var(--text);
   max-height: 340px;
@@ -708,7 +817,7 @@ pre.code .b {
   gap: 10px;
   margin-bottom: 5px;
   font-family: var(--mono);
-  font-size: 0.7rem;
+  font-size: var(--fs-micro);
   color: var(--text-lo);
 }
 .bar {
@@ -745,7 +854,7 @@ pre.code .b {
 .rules li {
   background: var(--ink-800);
   padding: 11px 15px;
-  font-size: 0.82rem;
+  font-size: var(--fs-sm);
   color: var(--text-lo);
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -754,14 +863,14 @@ pre.code .b {
 }
 .rules li b {
   color: var(--text-hi);
-  font-weight: 500;
+  font-weight: 600;
   display: block;
   margin-bottom: 2px;
-  font-size: 0.84rem;
+  font-size: var(--fs-sm);
 }
 .rules li .tag {
   font-family: var(--mono);
-  font-size: 0.68rem;
+  font-size: var(--fs-micro);
   color: var(--known);
   white-space: nowrap;
   text-align: right;
@@ -807,7 +916,7 @@ pre.code .b {
   border-radius: var(--r);
   color: var(--text-hi);
   font-family: var(--mono);
-  font-size: 0.78rem;
+  font-size: var(--fs-cap);
   padding: 7px 10px;
 }
 .wb-bar input[type="search"]::placeholder {
@@ -819,7 +928,7 @@ pre.code .b {
 }
 .wb-count {
   font-family: var(--mono);
-  font-size: 0.68rem;
+  font-size: var(--fs-micro);
   color: var(--text-xlo);
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
@@ -849,7 +958,7 @@ pre.code .b {
   border-radius: 2px;
   color: var(--text);
   font-family: inherit;
-  font-size: 0.81rem;
+  font-size: var(--fs-sm);
   padding: 8px 11px;
   cursor: pointer;
   display: grid;
@@ -874,7 +983,7 @@ pre.code .b {
 }
 .wb-item .vl {
   font-family: var(--mono);
-  font-size: 0.7rem;
+  font-size: var(--fs-micro);
   color: var(--text-xlo);
   max-width: 46%;
   overflow: hidden;
@@ -887,7 +996,7 @@ pre.code .b {
 }
 .wb-group {
   font-family: var(--mono);
-  font-size: 0.63rem;
+  font-size: var(--fs-micro);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--text-xlo);
@@ -895,6 +1004,7 @@ pre.code .b {
   display: flex;
   align-items: center;
   gap: 8px;
+  white-space: nowrap;
 }
 .wb-group::after {
   content: "";
@@ -905,7 +1015,7 @@ pre.code .b {
 .wb-empty {
   padding: 26px 14px;
   color: var(--text-xlo);
-  font-size: 0.82rem;
+  font-size: var(--fs-sm);
   text-align: center;
 }
 
@@ -916,7 +1026,7 @@ pre.code .b {
 }
 .detail-empty {
   color: var(--text-xlo);
-  font-size: 0.87rem;
+  font-size: var(--fs-sm);
   text-align: center;
   padding: 70px 20px;
   border: 1px dashed var(--line);
@@ -930,14 +1040,16 @@ pre.code .b {
 }
 
 .d-name {
-  font-size: 1.1rem;
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  letter-spacing: -0.012em;
   color: var(--text-hi);
   margin-bottom: 3px;
   line-height: 1.3;
 }
 .d-val {
   font-family: var(--mono);
-  font-size: 0.95rem;
+  font-size: var(--fs-h4);
   color: var(--known);
   background: rgba(78, 205, 196, 0.06);
   border: 1px solid rgba(78, 205, 196, 0.16);
@@ -955,7 +1067,7 @@ pre.code .b {
 }
 .badge {
   font-family: var(--mono);
-  font-size: 0.67rem;
+  font-size: var(--fs-micro);
   letter-spacing: 0.05em;
   padding: 3px 8px;
   border-radius: 2px;
@@ -986,7 +1098,7 @@ pre.code .b {
 
 .ev-head {
   font-family: var(--mono);
-  font-size: 0.66rem;
+  font-size: var(--fs-micro);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--text-xlo);
@@ -1014,7 +1126,7 @@ pre.code .b {
   gap: 8px 14px;
   align-items: center;
   font-family: var(--mono);
-  font-size: 0.71rem;
+  font-size: var(--fs-micro);
   color: var(--text-lo);
   margin-bottom: 10px;
 }
@@ -1026,9 +1138,8 @@ pre.code .b {
   border-radius: 2px;
 }
 .ev-quote {
-  font-size: 0.83rem;
+  font-size: var(--fs-sm);
   line-height: 1.62;
-  color: var(--text);
   border-left: 2px solid var(--evidence);
   padding: 3px 0 3px 13px;
   margin: 0;
@@ -1039,7 +1150,7 @@ pre.code .b {
   margin-top: 10px;
   padding-top: 9px;
   border-top: 1px dashed var(--line-soft);
-  font-size: 0.72rem;
+  font-size: var(--fs-cap);
   color: var(--text-xlo);
   font-family: var(--mono);
   line-height: 1.5;
@@ -1067,7 +1178,7 @@ pre.code .b {
   border-bottom: 1px solid var(--line-soft);
   background: var(--ink-800);
   font-family: var(--mono);
-  font-size: 0.69rem;
+  font-size: var(--fs-micro);
   color: var(--text-xlo);
   letter-spacing: 0.05em;
 }
@@ -1076,15 +1187,20 @@ pre.code .b {
   flex-wrap: wrap;
   gap: 6px 15px;
 }
+/* Legend swatches share one optical size, so the three keys line up with each
+   other and with the caption text baseline rather than each drifting inside its
+   own box. The diamond is drawn at a smaller scale inside the same 12px frame,
+   which is what keeps the rotated shape from overflowing its slot. */
 .legend span {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   color: var(--text-lo);
+  line-height: 1.4;
 }
 .legend i {
-  width: 11px;
-  height: 11px;
+  width: 12px;
+  height: 12px;
   border-radius: 2px;
   flex: none;
 }
@@ -1095,6 +1211,9 @@ pre.code .b {
 .legend i.mat {
   background: transparent;
   border: 1px dashed var(--evidence);
+  width: 9px;
+  height: 9px;
+  margin: 1.5px;
   transform: rotate(45deg);
 }
 .legend i.unres {
@@ -1103,6 +1222,11 @@ pre.code .b {
   border-top: 1px dashed var(--ambig);
   border-radius: 0;
 }
+/* The graph is a fixed-width diagram in a fluid frame. Centring the SVG with
+   auto inline margins — rather than text-align or a flex wrapper — keeps it
+   horizontally centred on wide viewports and degrades to the normal left-anchored
+   scroll origin on narrow ones, where the diagram is wider than its frame —
+   `margin-inline: auto` resolves to 0 in that case, so nothing is clipped. */
 .graph-scroll {
   overflow: auto;
   overscroll-behavior-x: contain;
@@ -1112,6 +1236,7 @@ pre.code .b {
 }
 .graph-scroll svg {
   display: block;
+  margin-inline: auto;
 }
 .gnode {
   cursor: pointer;
@@ -1197,13 +1322,13 @@ pre.code .b {
 .rel-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.78rem;
+  font-size: var(--fs-sm);
   margin-top: 16px;
 }
 .rel-table th {
   text-align: left;
   font-family: var(--mono);
-  font-size: 0.64rem;
+  font-size: var(--fs-micro);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-xlo);
@@ -1229,13 +1354,13 @@ pre.code .b {
 }
 .rel-table .k {
   font-family: var(--mono);
-  font-size: 0.71rem;
+  font-size: var(--fs-micro);
   color: var(--evidence);
   white-space: nowrap;
 }
 .rel-table .pg {
   font-family: var(--mono);
-  font-size: 0.7rem;
+  font-size: var(--fs-micro);
   color: var(--text-xlo);
   white-space: nowrap;
 }
@@ -1273,7 +1398,7 @@ pre.code .b {
   border-bottom: 1px solid var(--line-soft);
 }
 .unc-hd h4 {
-  font-size: 0.82rem;
+  font-size: var(--fs-micro);
   letter-spacing: 0.04em;
   text-transform: uppercase;
   font-family: var(--mono);
@@ -1282,15 +1407,15 @@ pre.code .b {
 .unc-hd .n {
   margin-left: auto;
   font-family: var(--mono);
-  font-size: 0.78rem;
+  font-size: var(--fs-cap);
   padding: 1px 8px;
   border-radius: 2px;
   border: 1px solid var(--line-strong);
   color: var(--text-lo);
 }
 .unc-item {
-  font-size: 0.83rem;
-  line-height: 1.58;
+  font-size: var(--fs-sm);
+  line-height: 1.6;
   color: var(--text);
   padding: 10px 0;
   border-bottom: 1px dashed var(--line-soft);
@@ -1302,7 +1427,7 @@ pre.code .b {
 .unc-item .val {
   display: block;
   font-family: var(--mono);
-  font-size: 0.72rem;
+  font-size: var(--fs-micro);
   color: var(--text-xlo);
   margin-top: 5px;
 }
@@ -1356,11 +1481,11 @@ pre.code .b {
   flex-wrap: wrap;
 }
 .val-hd h4 {
-  font-size: 0.9rem;
+  font-size: var(--fs-h4);
 }
 .val-hd .tag {
   font-family: var(--mono);
-  font-size: 0.63rem;
+  font-size: var(--fs-micro);
   color: var(--conflict);
   border: 1px solid var(--conflict-dim);
   background: rgba(224, 104, 122, 0.08);
@@ -1370,7 +1495,7 @@ pre.code .b {
 }
 .val-sub {
   font-family: var(--mono);
-  font-size: 0.69rem;
+  font-size: var(--fs-micro);
   color: var(--text-xlo);
   margin-bottom: 14px;
   line-height: 1.5;
@@ -1390,7 +1515,7 @@ pre.code .b {
   justify-content: space-between;
   gap: 12px;
   padding: 7px 11px;
-  font-size: 0.78rem;
+  font-size: var(--fs-cap);
 }
 .rows > div .k {
   color: var(--text-lo);
@@ -1409,9 +1534,9 @@ pre.code .b {
   color: var(--known);
 }
 .val-foot {
-  font-size: 0.76rem;
+  font-size: var(--fs-cap);
   color: var(--text-xlo);
-  line-height: 1.55;
+  line-height: var(--lh-body);
   margin: 0;
 }
 
@@ -1437,21 +1562,21 @@ pre.code .b {
 }
 .vstep .vn {
   font-family: var(--mono);
-  font-size: 0.65rem;
+  font-size: var(--fs-micro);
   color: var(--text-xlo);
   letter-spacing: 0.1em;
   margin-bottom: 10px;
 }
 .vstep h4 {
   margin-bottom: 7px;
-  font-size: 0.95rem;
+  font-size: var(--fs-h4);
   color: var(--text-hi);
 }
 .vstep p {
   margin: 0;
-  font-size: 0.78rem;
+  font-size: var(--fs-cap);
   color: var(--text-lo);
-  line-height: 1.55;
+  line-height: 1.6;
 }
 .vstep.now {
   background: rgba(78, 205, 196, 0.05);
@@ -1465,7 +1590,7 @@ pre.code .b {
   top: 14px;
   right: 14px;
   font-family: var(--mono);
-  font-size: 0.58rem;
+  font-size: var(--fs-micro);
   letter-spacing: 0.09em;
   color: var(--known);
   border: 1px solid var(--known-dim);
@@ -1478,7 +1603,7 @@ pre.code .b {
   top: 14px;
   right: 14px;
   font-family: var(--mono);
-  font-size: 0.58rem;
+  font-size: var(--fs-micro);
   letter-spacing: 0.09em;
   color: var(--text-xlo);
   border: 1px solid var(--line-strong);
@@ -1508,18 +1633,18 @@ pre.code .b {
   display: grid;
   place-items: center;
   font-family: var(--mono);
-  font-size: 0.88rem;
+  font-size: var(--fs-cap);
   color: var(--known);
   margin-bottom: 14px;
   letter-spacing: 0.02em;
 }
 .person h4 {
   margin-bottom: 3px;
-  font-size: 1rem;
+  font-size: var(--fs-base);
 }
 .person .role {
   font-family: var(--mono);
-  font-size: 0.72rem;
+  font-size: var(--fs-micro);
   color: var(--known);
   letter-spacing: 0.07em;
   text-transform: uppercase;
@@ -1528,9 +1653,9 @@ pre.code .b {
   margin-top: 12px;
   padding-top: 12px;
   border-top: 1px solid var(--line-soft);
-  font-size: 0.79rem;
+  font-size: var(--fs-cap);
   color: var(--text-lo);
-  line-height: 1.55;
+  line-height: var(--lh-body);
 }
 
 /* ---------------------------------------------------------------- cta */
@@ -1565,7 +1690,8 @@ pre.code .b {
 footer {
   border-top: 1px solid var(--line-soft);
   padding: 34px 0 46px;
-  font-size: 0.79rem;
+  font-size: var(--fs-cap);
+  line-height: var(--lh-body);
   color: var(--text-xlo);
 }
 .foot-in {
@@ -1640,7 +1766,7 @@ footer {
   }
   .bar-row {
     grid-template-columns: 58px minmax(0, 1fr) 54px;
-    font-size: 0.66rem;
+    font-size: var(--fs-micro);
   }
   .hero-cta .btn,
   .cta-btns .btn {
@@ -1648,6 +1774,14 @@ footer {
   }
   .step-btn {
     min-width: 108px;
+  }
+  /* The legend keys wrap onto their own lines before they can collide with the
+     node/relation count, so the two never sit on one cramped row. */
+  .graph-hd {
+    justify-content: flex-start;
+  }
+  .legend {
+    flex: 1 1 100%;
   }
   .wb-main {
     padding: 15px 14px 18px;

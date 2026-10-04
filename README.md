@@ -114,26 +114,51 @@ npm install     # jsdom only, for the headless checks
 npm test
 ```
 
-Three suites, 132 assertions, all exiting non-zero on failure so they can gate a
+Three suites, 142 assertions, all exiting non-zero on failure so they can gate a
 deploy.
 
-- **`tests/check.js` — render and claims (96).** Loads `index.html` and
+- **`tests/check.js` - render and claims (101).** Loads `index.html` and
   `app.js` in jsdom against the real data file and asserts that every panel
   renders real content, that filtering and field→evidence inspection work, that
   the graph draws the expected counts, that accessibility basics hold, that
   future capabilities stay labelled as research, and that **no forbidden claim**
   (customers, funding, partnerships, accuracy percentages, industrial
   validation, …) appears anywhere unless it sits inside an explicit disclaimer.
-- **`tests/responsive.js` — layout and touch (23).** Catches fixed widths that
+- **`tests/responsive.js` - layout and touch (28).** Catches fixed widths that
   would force horizontal page scroll, a workbench that fails to collapse, a
   graph that escapes its scroll container, missing phone/tablet breakpoints,
-  `prefers-reduced-motion` being ignored, and hard-coded counts in prose.
+  `prefers-reduced-motion` being ignored, hard-coded counts in prose, and an
+  anchor offset applied twice.
 - **`tests/safety.js` — injection (13).** Poisons every excerpt, label and value
   with `<img src=x onerror=…>` and a `</pre><script>` break-out, then asserts
   nothing executes and the payload stays literal text.
 
 jsdom does not perform layout, so none of these substitute for opening the page
 in a real browser on a real phone.
+
+## Design system
+
+Three things are worth knowing before editing the stylesheet:
+
+- **One type ramp.** Every text rule resolves to a `--fs-*` token in `:root`
+  (`--fs-micro` machine labels, `--fs-cap` captions, `--fs-sm` card body,
+  `--fs-base` body, `--fs-lg` readouts, `--fs-h1`…`--fs-h4` headings). The only
+  deliberate exceptions are `.nav-links a`, whose 0.79rem is the size that fits
+  all nine items in the bar without scrolling, and the SVG-internal graph label
+  sizes, which belong to the diagram rather than the page. Adding a raw
+  `font-size` outside a token is what produced the 37-size pile-up this replaced.
+- **One font family.** `--sans` prefers Inter and otherwise uses the platform UI
+  font. There is no webfont request, so the page renders identically offline and
+  over `file://`.
+- **One anchor offset.** `--anchor-offset` is applied as `scroll-padding-top` on
+  the scroll container and is read back by the nav tracker in `app.js`, so the
+  resting position of a clicked heading and the active-section highlight can
+  never disagree. Do **not** also set `scroll-margin-top` on `section`: the two
+  offsets add and every anchor would land at twice the intended clearance.
+
+The active-section indicator reuses the accent treatment already used by the
+stepper tabs and the workbench list: accent-coloured label plus a 2px accent
+rule, drawn with `::after` so it adds no width to the item.
 
 ## Layout
 
