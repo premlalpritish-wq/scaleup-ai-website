@@ -114,19 +114,19 @@ npm install     # jsdom only, for the headless checks
 npm test
 ```
 
-Three suites, 165 assertions, all exiting non-zero on failure so they can gate a
+Three suites, 170 assertions, all exiting non-zero on failure so they can gate a
 deploy.
 
-- **`tests/check.js` - render and claims (107).** Loads `index.html` and
+- **`tests/check.js` - render and claims (115).** Loads `index.html` and
   `app.js` in jsdom against the real data file and asserts that every panel
   renders real content, that filtering and field→evidence inspection work, that
   the graph draws the expected counts, that accessibility basics hold, that
   future capabilities stay labelled as research, and that **no forbidden claim**
   (customers, funding, partnerships, accuracy percentages, industrial
   validation, …) appears anywhere unless it sits inside an explicit disclaimer.
-- **`tests/responsive.js` - layout and touch (45).** Catches fixed widths that
+- **`tests/responsive.js` - layout and touch (42).** Catches fixed widths that
   would force horizontal page scroll, a workbench that fails to collapse or
-  whose record row collapses or starves its field-name column, an evidence line that cannot wrap a long token, a graph that escapes its scroll
+  whose record row grows a second column, starves its field-name column, an evidence line that cannot wrap a long token, a graph that escapes its scroll
   container, missing phone/tablet breakpoints, `prefers-reduced-motion` being
   ignored, hard-coded counts in prose, and an anchor offset applied twice.
 - **`tests/safety.js` — injection (13).** Poisons every excerpt, label and value
@@ -162,29 +162,34 @@ rule, drawn with `::after` so it adds no width to the item.
 
 ### Workbench record rows
 
-A record row is a field name and a value. Above 560px they sit side by side,
-which is the intended dense-list presentation. **At 560px and below they stack**,
-field name over value.
+A record row shows the **parameter name only**. The value is not in the row at
+any viewport: it is not rendered at all, rather than hidden with CSS, so it
+cannot reserve a column, a track or a width cap that nothing occupies.
 
-The value track is `fit-content(46%)`, not `auto`, and that distinction is the
-whole fix. An `auto` track sizes to the value's full intrinsic width; the value
-is `nowrap`, so its intrinsic width is the entire string. Values in the reference
-paper run to several hundred characters (the longest is 309), so `auto` squeezed
-the `minmax(0, 1fr)` field-name track to `0px` and roughly a fifth of the field
-names rendered *invisible* — not ellipsised, simply not drawn. `fit-content()`
-keeps an ordinary short value snug to its own width, which is what preserves the
-existing dense-list look, and clamps a long one to the same 46% the item already
-capped itself at. `.vl` also carries `min-width: 0`, because `nowrap` otherwise
-floors the item at its min-content width and the collapse returns.
+The value lives in the detail panel on the right, which is where it has room.
+This is not a styling preference. Values in the reference paper run to several
+hundred characters (the longest is 309, a full sentence describing the process),
+so a value in the row could only ever be truncated, and whatever room it was
+given was room taken from the name. Two earlier arrangements failed in opposite
+directions: an `auto` track sized to the value's whole intrinsic width and
+squeezed the name track to `0px`, hiding roughly a fifth of the field names at
+desktop widths, while a flat bounded track gave every row — short values
+included — 46% of the width and changed the dense-list look. Removing the column
+settles both.
 
-Note that a flat `minmax(0, 1fr) minmax(0, 46%)` does **not** work: it gives
-every row, short values included, a 46%-wide track and changes the appearance of
-the ordinary case. The test suite asserts the track is bounded and shrinkable
-rather than pinning one particular spelling.
+Consequences worth knowing:
 
-Truncation is kept where it is genuinely needed: the value still ellipsises on
-one line, because wrapping a full sentence from the paper would make a single row
-dozens of lines tall. The full value is always available by opening the record.
+- The row is a plain block, not a grid. Do not reintroduce a second column
+  without re-measuring the name track against a 309-character value.
+- The name still ellipsises on one line above 560px, where the column is wide
+  enough for every name in this export. **At 560px and below it wraps** instead,
+  because a 320px column is not; only the longest names take a second line.
+- Rows are a uniform 34px on desktop and tablet.
+
+`tests/responsive.js` asserts that no `.vl` rule survives in the stylesheet, that
+the renderer emits no `.vl` element, and that the row carries no
+`grid-template-columns` — so the column cannot quietly come back as markup, as
+CSS, or as reserved space.
 
 ### Evidence source lines
 

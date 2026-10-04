@@ -133,33 +133,38 @@ setTimeout(() => {
   ok("workbench: grouped", n("#wb-list .wb-group") === 2);
   ok("workbench: count label", txt("#wb-count").startsWith(String(totalRows)), txt("#wb-count"));
 
-  /* Record-row shape, asserted against the full unfiltered list. A row is a
-     field name and a value; on a phone the two stack, so the DOM order has to
-     stay field-then-value — that is both the reading order and what the stacked
-     layout renders. Checked here, before the filter test narrows the list. */
+  /* Record-row shape, asserted against the full unfiltered list. A row shows the
+     parameter name and nothing else: the value lives in the detail panel, where
+     it has room for a sentence. Checked here, before the filter test narrows the
+     list. */
   const allRows = [...d.querySelectorAll("#wb-list .wb-item")];
-  ok("workbench: every row has one field name and one value",
+  ok("workbench: every row displays its parameter name",
      allRows.length === totalRows && allRows.every((r) =>
        r.querySelectorAll(":scope > .nm").length === 1 &&
-       r.querySelectorAll(":scope > .vl").length === 1),
+       r.querySelector(".nm").textContent.trim().length > 0),
      `${allRows.length} rows`);
-  ok("workbench: field name precedes value in the DOM",
-     allRows.every((r) => {
-       const kids = [...r.children];
-       return kids.length === 2 &&
-         kids[0].classList.contains("nm") &&
-         kids[1].classList.contains("vl");
-     }));
-  ok("workbench: field names are never empty",
-     allRows.every((r) => r.querySelector(".nm").textContent.trim().length > 0));
-  /* The phone stack exists because values are long. If a future export only
-     produced short values the stacking would stop being load-bearing; this keeps
-     the reason visible and would fail loudly if the data ever got re-exported
-     without long values, at which point the layout could be revisited. */
+  ok("workbench: no value column is rendered in a row",
+     allRows.every((r) => r.querySelectorAll(".vl").length === 0),
+     `${allRows.reduce((a, r) => a + r.querySelectorAll(".vl").length, 0)} found`);
+  ok("workbench: the name is the row's only child, so nothing reserves width",
+     allRows.every((r) => r.children.length === 1 && r.children[0].classList.contains("nm")),
+     `max children ${Math.max(...allRows.map((r) => r.children.length))}`);
+  ok("workbench: no value text leaks into the list",
+     allRows.every((r) => !r.textContent.includes("\u2014") || r.querySelector(".nm").textContent.includes("\u2014")),
+     "no em-dash placeholder rows");
+  /* Every record must still be reachable: the list is the only index of the
+     payload, so losing a row would silently drop a parameter. */
+  ok("workbench: all records remain available",
+     allRows.length === totalRows && totalRows === C.parameters + C.experiments,
+     `${allRows.length} of ${totalRows}`);
+  /* Values are long in this paper, which is why they cannot live in the row.
+     If a future export produced only short values the detail panel would still
+     be the right home for them, so this guards the reasoning rather than the
+     layout. */
   const longestValue = Math.max(
     ...data.process_state.parameters.map((p) => String(p.value ?? "").length)
   );
-  ok("workbench: long values exist, so the phone row must stack",
+  ok("workbench: values are long, so they belong in the detail panel",
      longestValue > 120, `longest value ${longestValue} chars`);
 
   /* ------------------------------------------------- evidence source lines */
@@ -181,14 +186,45 @@ setTimeout(() => {
   search.dispatchEvent(new window.Event("input", { bubbles: true }));
   const filtered = n("#wb-list .wb-item");
   ok("workbench: filter narrows", filtered > 0 && filtered < totalRows, `${filtered} rows`);
+  ok("workbench: filtered rows still show their parameter name",
+     [...d.querySelectorAll("#wb-list .wb-item")].every((r) =>
+       r.children.length === 1 && r.querySelector(".nm").textContent.trim().length > 0),
+     `${filtered} rows`);
+
+  /* Clearing the filter must bring every record back: with the value column
+     removed, the name is the only thing identifying a row, so a row lost to
+     filtering is a parameter the page can no longer be searched for. */
+  search.value = "";
+  search.dispatchEvent(new window.Event("input", { bubbles: true }));
+  ok("workbench: clearing the filter restores every record",
+     n("#wb-list .wb-item") === totalRows,
+     `${n("#wb-list .wb-item")} of ${totalRows}`);
+  ok("workbench: restored rows are still name-only",
+     [...d.querySelectorAll("#wb-list .wb-item")].every((r) => r.children.length === 1));
+
+  /* Re-apply the filter so the selection assertions below stay deterministic. */
+  search.value = "renaturation";
+  search.dispatchEvent(new window.Event("input", { bubbles: true }));
 
   d.querySelector("#wb-list .wb-item").dispatchEvent(new window.Event("click", { bubbles: true }));
-  ok("workbench: detail shows field", txt("#wb-main .d-name").length > 0, txt("#wb-main .d-name"));
-  ok("workbench: detail shows value", txt("#wb-main .d-val").length > 0);
+  ok("workbench: selecting a parameter populates the detail panel",
+     txt("#wb-main .d-name").length > 0, txt("#wb-main .d-name"));
+  ok("workbench: the selected name matches the row clicked",
+     txt("#wb-main .d-name") === txt("#wb-list .wb-item .nm"),
+     `${txt("#wb-main .d-name")} vs ${txt("#wb-list .wb-item .nm")}`);
+  /* The value moved out of the row, so the detail panel is now the only place it
+     appears. This is the assertion that would break if the row kept swallowing
+     the value or the detail panel stopped rendering it. */
+  ok("workbench: the full value is still shown in the detail panel",
+     txt("#wb-main .d-val").length > 0, txt("#wb-main .d-val"));
   ok("workbench: provenance badge", /provenance: literature/.test(txt("#wb-main")));
   ok("workbench: evidence block", n("#wb-main .ev") > 0);
   ok("workbench: evidence cites a page", /PDF page/.test(txt("#wb-main .ev-src")));
   ok("workbench: selection marked", d.querySelector("#wb-list .wb-item").getAttribute("aria-current") === "true");
+  ok("workbench: exactly one row is marked selected",
+     n('#wb-list .wb-item[aria-current="true"]') === 1);
+  ok("workbench: the selected row still shows only its name",
+     d.querySelector('#wb-list .wb-item[aria-current="true"]').children.length === 1);
 
   /* ---------------------------------------------------------------- graph */
   ok("graph: node count", n("#graph-svg .gnode") === G.nodes, String(n("#graph-svg .gnode")));

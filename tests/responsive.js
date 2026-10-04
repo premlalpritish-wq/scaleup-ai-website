@@ -15,6 +15,7 @@ const { JSDOM, VirtualConsole } = require("jsdom");
 const SITE = path.resolve(__dirname, "..");
 const html = fs.readFileSync(path.join(SITE, "index.html"), "utf8");
 const css = fs.readFileSync(path.join(SITE, "assets", "styles.css"), "utf8");
+const appjs = fs.readFileSync(path.join(SITE, "assets", "app.js"), "utf8");
 const data = JSON.parse(fs.readFileSync(path.join(SITE, "data", "scaleup_data.json"), "utf8"));
 
 const checks = [];
@@ -145,16 +146,11 @@ const secRule = css.match(/^section\s*\{[^}]*\}/m);
 ok("anchor offset is not applied twice", !secRule || !/scroll-margin-top/.test(secRule[0]),
    secRule ? secRule[0].slice(0, 60) : "no section rule");
 
-/* --- 13. the workbench record row must be readable on a phone ---
-   A record row is a field name and a value. Laid out side by side, the value
-   track is `auto` and holds non-wrapping text, so a long value sizes to its own
-   content width and squeezes the `minmax(0, 1fr)` field-name track down to zero.
-   Values in the reference paper run to several hundred characters, so at phone
-   widths the field name was not merely ellipsised but rendered 0px wide.
-
-   Phones therefore get one column with the name wrapping. Desktop and tablet
-   keep the two-column row, which this suite also asserts so the phone fix cannot
-   silently become the desktop layout. */
+/* --- 13. the workbench record row shows the parameter name only ---
+   The value was a second column in the row. It has been removed from the row
+   entirely — not hidden — so no track, gap or width cap is left behind to
+   reserve space for it, at any viewport. These assertions fail if the value
+   column is reintroduced either as markup or as leftover CSS. */
 
 /* Extract a media block by brace matching: a regex cannot safely span the nested
    braces of a whole @media rule. */
@@ -171,75 +167,48 @@ const mediaBlock = (bp) => {
 };
 const phone = mediaBlock(560);
 
-const phoneItem = phone.match(/\.wb-item\s*\{[^}]*\}/);
-const phoneName = phone.match(/\.wb-item \.nm\s*\{[^}]*\}/);
-const phoneVal = phone.match(/\.wb-item \.vl\s*\{[^}]*\}/);
+/* Comment-stripped copies, so explanatory prose in a rule cannot satisfy or
+   break a pattern that is about declarations. */
+const bare = css.replace(/\/\*[\s\S]*?\*\//g, "");
+const phoneBare = phone.replace(/\/\*[\s\S]*?\*\//g, "");
 
-ok("phones: workbench row has a phone rule", !!phoneItem && !!phoneName && !!phoneVal,
-   [phoneItem, phoneName, phoneVal].map((m) => (m ? "ok" : "MISSING")).join(","));
-ok("phones: workbench row stacks to one column",
-   !!phoneItem && /grid-template-columns:\s*minmax\(0,\s*1fr\)\s*;/.test(phoneItem[0]),
-   phoneItem ? phoneItem[0].replace(/\s+/g, " ").slice(0, 60) : "no rule");
-ok("phones: field name is no longer truncated",
-   !!phoneName && /white-space:\s*normal/.test(phoneName[0]) && /text-overflow:\s*clip/.test(phoneName[0]),
-   phoneName ? phoneName[0].replace(/\s+/g, " ").slice(0, 60) : "no rule");
-ok("phones: value width cap removed",
-   !!phoneVal && /max-width:\s*none/.test(phoneVal[0]),
-   phoneVal ? phoneVal[0].replace(/\s+/g, " ").slice(0, 60) : "no rule");
+const phoneName = phoneBare.match(/\.wb-item \.nm\s*\{[^}]*\}/);
+const baseItem = bare.match(/^\.wb-item\s*\{[^}]*\}/m);
+const baseName = bare.match(/^\.wb-item \.nm\s*\{[^}]*\}/m);
+
+ok("workbench: no value-column rule survives anywhere in the stylesheet",
+   !/\.wb-item\s+\.vl\s*[,{]/.test(bare) && !/\.vl\b/.test(bare),
+   /\.vl[^;{]*/.exec(bare)?.[0]?.slice(0, 40) || "none");
+ok("workbench: no value element is emitted by the renderer",
+   !/["']vl["']/.test(appjs), /el\([^)]*["']vl["']/.exec(appjs)?.[0] || "none");
+ok("workbench: the row has no leftover column template",
+   !!baseItem && !/grid-template-columns/.test(baseItem[0]),
+   baseItem ? "no grid-template-columns" : "no rule");
+ok("workbench: the row is not a multi-track grid",
+   !!baseItem && !/display:\s*grid/.test(baseItem[0]) && !/display:\s*flex/.test(baseItem[0]),
+   baseItem ? (baseItem[0].match(/display:[^;]*/) || [""])[0] : "no rule");
+ok("workbench: the name still spans the row",
+   !!baseName && /display:\s*block/.test(baseName[0]),
+   baseName ? (baseName[0].match(/display:[^;]*/) || [""])[0] : "no rule");
+ok("workbench: the name is still ellipsised on wide screens",
+   !!baseName && /white-space:\s*nowrap/.test(baseName[0]) &&
+   /text-overflow:\s*ellipsis/.test(baseName[0]) && /overflow:\s*hidden/.test(baseName[0]));
 
 /* --- 14. no horizontal overflow out of the record row ---
-   The field name is allowed to wrap and must break a long unbroken token rather
-   than push the row wider than its container, which would scroll the page. */
+   The name wraps on a phone and must break a long unbroken token rather than
+   push the row wider than its container, which would scroll the page. */
+ok("phones: field name wraps rather than truncating",
+   !!phoneName && /white-space:\s*normal/.test(phoneName[0]) && /text-overflow:\s*clip/.test(phoneName[0]),
+   phoneName ? phoneName[0].replace(/\s+/g, " ").slice(0, 60) : "no rule");
 ok("phones: long field names wrap instead of overflowing",
    !!phoneName && /overflow-wrap:\s*(anywhere|break-word)/.test(phoneName[0]));
 ok("phones: record row introduces no fixed width",
-   ![phoneItem, phoneName, phoneVal].some((m) => m && /(?<![-\w])width:\s*\d+px/.test(m[0])));
+   ![baseItem, baseName, phoneName].some((m) => m && /(?<![-\w])width:\s*\d+px/.test(m[0])));
 ok("phones: record row introduces no pixel width cap",
-   ![phoneItem, phoneName, phoneVal].some((m) => m && /max-width:\s*\d+px/.test(m[0])));
-
-/* Desktop and tablet must be untouched by the phone fix: still two columns, and
-   still the flexible field-name track rather than the phone's single column.
-   The value track is bounded (see §15); that bound is not what this asserts. */
-const baseItem = css.match(/^\.wb-item\s*\{[^}]*\}/m);
-ok("desktop: workbench row keeps its two columns",
-   !!baseItem && /grid-template-columns:\s*minmax\(0,\s*1fr\)\s+\S/.test(baseItem[0]) &&
-   !/grid-template-columns:\s*minmax\(0,\s*1fr\)\s*;/.test(baseItem[0]),
-   baseItem ? (baseItem[0].match(/grid-template-columns:[^;]*/) || [""])[0].replace(/\s+/g, " ").slice(0, 64) : "no rule");
-ok("desktop: the phone stack is not applied above the breakpoint",
-   /@media \(max-width:\s*560px\)[\s\S]*?\.wb-item\s*\{[\s\S]*?grid-template-columns:\s*minmax\(0,\s*1fr\)\s*;/.test(css) &&
-   !/@media \(min-width:\s*561px\)/.test(css),
-   "560px block only");
-
-/* --- 15. the desktop value track must be bounded ---
-   A bare `auto` value track sizes to the value's full intrinsic width. Some
-   values in the reference paper are whole sentences (309 characters), so `auto`
-   collapsed the `minmax(0, 1fr)` field-name track to 0px and the field name
-   rendered invisible at desktop widths. The track must be able to shrink.
-
-   Matched against a comment-stripped copy so the explanatory comments in the
-   rule, which necessarily mention `auto`, cannot satisfy or break a pattern. */
-const bare = css.replace(/\/\*[\s\S]*?\*\//g, "");
-const baseItemBare = bare.match(/^\.wb-item\s*\{[^}]*\}/m);
-const trackDecl = baseItemBare
-  ? (baseItemBare[0].match(/grid-template-columns:[^;]*/) || [""])[0]
-  : "";
-
-ok("desktop: value track is not bare auto", !!trackDecl && !/\bauto\s*$/.test(trackDecl),
-   trackDecl.replace(/\s+/g, " ").slice(0, 64) || "no declaration");
-ok("desktop: value track is bounded and shrinkable",
-   /minmax\(0,\s*1fr\)\s+(fit-content\(\s*\d+(?:\.\d+)?%\s*\)|minmax\(0,\s*\d+(?:\.\d+)?%\s*\))/i.test(trackDecl),
-   trackDecl.replace(/\s+/g, " ").slice(0, 64));
-ok("desktop: field-name track keeps its flexible share",
-   /minmax\(0,\s*1fr\)/.test(trackDecl));
-/* The value is `nowrap`, so its min-content width is the whole string. Without
-   explicit permission to shrink, the bounded track can still be floored by the
-   item's automatic minimum size and the collapse returns. */
-const vlBare = bare.match(/^\.wb-item \.vl\s*\{[^}]*\}/m);
-ok("desktop: value may shrink below its intrinsic width",
-   !!vlBare && /min-width:\s*0/.test(vlBare[0]),
-   vlBare ? "min-width present" : "no rule");
-ok("desktop: value stays single-line and ellipsised",
-   !!vlBare && /white-space:\s*nowrap/.test(vlBare[0]) && /text-overflow:\s*ellipsis/.test(vlBare[0]));
+   ![baseItem, baseName, phoneName].some((m) => m && /max-width:\s*\d+px/.test(m[0])));
+ok("phones: the phone override targets the name, not a column layout",
+   !/\.wb-item\s*\{/.test(phoneBare) || !/grid-template-columns/.test(phoneBare),
+   phoneBare.includes("grid-template-columns") ? "still a column override" : "name-only override");
 
 /* --- 16. long unbroken evidence tokens must be wrappable ---
    Source lines carry DOIs and provenance keys, which are single unbreakable

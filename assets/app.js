@@ -761,10 +761,14 @@
       const b = el("button", "wb-item");
       b.type = "button";
       b.setAttribute("aria-current", String(wb.active === r));
+      /* The row is the field name only. The value used to be rendered here as a
+         second column, but values in this paper run to several hundred
+         characters, so a two-column row either truncated the name away or gave
+         the value more room than a list needs. It is not emitted at all, rather
+         than hidden in CSS, so it cannot reserve width at any viewport. The
+         value is unchanged and still shown in full in the detail panel, which
+         is where it has room. */
       b.appendChild(el("span", "nm", r.name));
-      b.appendChild(
-        el("span", "vl", r.kind === "param" ? r.value ?? "—" : "outputs")
-      );
       b.addEventListener("click", () => {
         wb.active = r;
         paintList();
