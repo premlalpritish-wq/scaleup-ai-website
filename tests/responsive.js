@@ -145,6 +145,115 @@ const secRule = css.match(/^section\s*\{[^}]*\}/m);
 ok("anchor offset is not applied twice", !secRule || !/scroll-margin-top/.test(secRule[0]),
    secRule ? secRule[0].slice(0, 60) : "no section rule");
 
+/* --- 13. the workbench record row must be readable on a phone ---
+   A record row is a field name and a value. Laid out side by side, the value
+   track is `auto` and holds non-wrapping text, so a long value sizes to its own
+   content width and squeezes the `minmax(0, 1fr)` field-name track down to zero.
+   Values in the reference paper run to several hundred characters, so at phone
+   widths the field name was not merely ellipsised but rendered 0px wide.
+
+   Phones therefore get one column with the name wrapping. Desktop and tablet
+   keep the two-column row, which this suite also asserts so the phone fix cannot
+   silently become the desktop layout. */
+
+/* Extract a media block by brace matching: a regex cannot safely span the nested
+   braces of a whole @media rule. */
+const mediaBlock = (bp) => {
+  const at = css.indexOf(`@media (max-width: ${bp}px)`);
+  if (at < 0) return "";
+  const open = css.indexOf("{", at);
+  let depth = 0;
+  for (let i = open; i < css.length; i++) {
+    if (css[i] === "{") depth++;
+    else if (css[i] === "}" && --depth === 0) return css.slice(open + 1, i);
+  }
+  return "";
+};
+const phone = mediaBlock(560);
+
+const phoneItem = phone.match(/\.wb-item\s*\{[^}]*\}/);
+const phoneName = phone.match(/\.wb-item \.nm\s*\{[^}]*\}/);
+const phoneVal = phone.match(/\.wb-item \.vl\s*\{[^}]*\}/);
+
+ok("phones: workbench row has a phone rule", !!phoneItem && !!phoneName && !!phoneVal,
+   [phoneItem, phoneName, phoneVal].map((m) => (m ? "ok" : "MISSING")).join(","));
+ok("phones: workbench row stacks to one column",
+   !!phoneItem && /grid-template-columns:\s*minmax\(0,\s*1fr\)\s*;/.test(phoneItem[0]),
+   phoneItem ? phoneItem[0].replace(/\s+/g, " ").slice(0, 60) : "no rule");
+ok("phones: field name is no longer truncated",
+   !!phoneName && /white-space:\s*normal/.test(phoneName[0]) && /text-overflow:\s*clip/.test(phoneName[0]),
+   phoneName ? phoneName[0].replace(/\s+/g, " ").slice(0, 60) : "no rule");
+ok("phones: value width cap removed",
+   !!phoneVal && /max-width:\s*none/.test(phoneVal[0]),
+   phoneVal ? phoneVal[0].replace(/\s+/g, " ").slice(0, 60) : "no rule");
+
+/* --- 14. no horizontal overflow out of the record row ---
+   The field name is allowed to wrap and must break a long unbroken token rather
+   than push the row wider than its container, which would scroll the page. */
+ok("phones: long field names wrap instead of overflowing",
+   !!phoneName && /overflow-wrap:\s*(anywhere|break-word)/.test(phoneName[0]));
+ok("phones: record row introduces no fixed width",
+   ![phoneItem, phoneName, phoneVal].some((m) => m && /(?<![-\w])width:\s*\d+px/.test(m[0])));
+ok("phones: record row introduces no pixel width cap",
+   ![phoneItem, phoneName, phoneVal].some((m) => m && /max-width:\s*\d+px/.test(m[0])));
+
+/* Desktop and tablet must be untouched by the phone fix: still two columns, and
+   still the flexible field-name track rather than the phone's single column.
+   The value track is bounded (see §15); that bound is not what this asserts. */
+const baseItem = css.match(/^\.wb-item\s*\{[^}]*\}/m);
+ok("desktop: workbench row keeps its two columns",
+   !!baseItem && /grid-template-columns:\s*minmax\(0,\s*1fr\)\s+\S/.test(baseItem[0]) &&
+   !/grid-template-columns:\s*minmax\(0,\s*1fr\)\s*;/.test(baseItem[0]),
+   baseItem ? (baseItem[0].match(/grid-template-columns:[^;]*/) || [""])[0].replace(/\s+/g, " ").slice(0, 64) : "no rule");
+ok("desktop: the phone stack is not applied above the breakpoint",
+   /@media \(max-width:\s*560px\)[\s\S]*?\.wb-item\s*\{[\s\S]*?grid-template-columns:\s*minmax\(0,\s*1fr\)\s*;/.test(css) &&
+   !/@media \(min-width:\s*561px\)/.test(css),
+   "560px block only");
+
+/* --- 15. the desktop value track must be bounded ---
+   A bare `auto` value track sizes to the value's full intrinsic width. Some
+   values in the reference paper are whole sentences (309 characters), so `auto`
+   collapsed the `minmax(0, 1fr)` field-name track to 0px and the field name
+   rendered invisible at desktop widths. The track must be able to shrink.
+
+   Matched against a comment-stripped copy so the explanatory comments in the
+   rule, which necessarily mention `auto`, cannot satisfy or break a pattern. */
+const bare = css.replace(/\/\*[\s\S]*?\*\//g, "");
+const baseItemBare = bare.match(/^\.wb-item\s*\{[^}]*\}/m);
+const trackDecl = baseItemBare
+  ? (baseItemBare[0].match(/grid-template-columns:[^;]*/) || [""])[0]
+  : "";
+
+ok("desktop: value track is not bare auto", !!trackDecl && !/\bauto\s*$/.test(trackDecl),
+   trackDecl.replace(/\s+/g, " ").slice(0, 64) || "no declaration");
+ok("desktop: value track is bounded and shrinkable",
+   /minmax\(0,\s*1fr\)\s+(fit-content\(\s*\d+(?:\.\d+)?%\s*\)|minmax\(0,\s*\d+(?:\.\d+)?%\s*\))/i.test(trackDecl),
+   trackDecl.replace(/\s+/g, " ").slice(0, 64));
+ok("desktop: field-name track keeps its flexible share",
+   /minmax\(0,\s*1fr\)/.test(trackDecl));
+/* The value is `nowrap`, so its min-content width is the whole string. Without
+   explicit permission to shrink, the bounded track can still be floored by the
+   item's automatic minimum size and the collapse returns. */
+const vlBare = bare.match(/^\.wb-item \.vl\s*\{[^}]*\}/m);
+ok("desktop: value may shrink below its intrinsic width",
+   !!vlBare && /min-width:\s*0/.test(vlBare[0]),
+   vlBare ? "min-width present" : "no rule");
+ok("desktop: value stays single-line and ellipsised",
+   !!vlBare && /white-space:\s*nowrap/.test(vlBare[0]) && /text-overflow:\s*ellipsis/.test(vlBare[0]));
+
+/* --- 16. long unbroken evidence tokens must be wrappable ---
+   Source lines carry DOIs and provenance keys, which are single unbreakable
+   tokens; unwrapped they forced the page 25px wider than a 320px viewport. Kept
+   scoped to this component rather than applied globally. */
+const evSrc = bare.match(/^\.ev-src\s*\{[^}]*\}/m);
+ok("evidence: source line can break long tokens",
+   !!evSrc && /overflow-wrap:\s*(anywhere|break-word)/.test(evSrc[0]),
+   evSrc ? (evSrc[0].match(/overflow-wrap:[^;]*/) || ["missing"])[0] : "no rule");
+ok("evidence: source line is not forced to stay on one line",
+   !!evSrc && !/white-space:\s*nowrap/.test(evSrc[0]));
+ok("evidence: word-breaking is not applied globally",
+   !/^(?:html|body|\*)\s*\{[^}]*overflow-wrap:\s*anywhere/m.test(bare));
+
 /* --- report --- */
 const failed = checks.filter((c) => !c.pass);
 checks.forEach((c) => console.log(`${c.pass ? "PASS" : "FAIL"}  ${c.name}${c.detail ? `  [${c.detail}]` : ""}`));

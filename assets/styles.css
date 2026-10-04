@@ -962,7 +962,16 @@ pre.code .b {
   padding: 8px 11px;
   cursor: pointer;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  /* The value track is content-sized but bounded, and the field-name track can
+     never be starved by it. An `auto` value track sizes to the value's full
+     intrinsic width, and some values in the reference paper are whole sentences
+     (the longest is 309 characters), so `auto` collapsed the `minmax(0, 1fr)`
+     name track to 0px and the field name rendered invisible. `fit-content()`
+     keeps an ordinary short value snug to its own width — the existing
+     appearance — while clamping a long one to the same 46% the item already
+     capped itself at. A flat `minmax(0, 46%)` would instead give every row,
+     short values included, a 46%-wide track and change the dense-list look. */
+  grid-template-columns: minmax(0, 1fr) fit-content(46%);
   gap: 10px;
   align-items: baseline;
   transition: background 0.12s;
@@ -986,6 +995,11 @@ pre.code .b {
   font-size: var(--fs-micro);
   color: var(--text-xlo);
   max-width: 46%;
+  /* Explicit permission to shrink below the value's intrinsic width. The value
+     is `nowrap`, so its min-content width is the entire string; without this the
+     bounded track above could still be floored by the item's automatic minimum
+     size and reintroduce the collapse it exists to prevent. */
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1129,6 +1143,13 @@ pre.code .b {
   font-size: var(--fs-micro);
   color: var(--text-lo);
   margin-bottom: 10px;
+  /* Source lines carry DOIs and long provenance keys, which are single
+     unbreakable tokens. Left at `normal` they could not wrap and pushed the
+     page 25px wide at a 320px viewport. Scoped here rather than globally:
+     only this component holds these tokens, and `anywhere` (not `break-word`)
+     is what also lowers the min-content contribution, so the flex item can
+     shrink instead of forcing the page wider. */
+  overflow-wrap: anywhere;
 }
 .ev-src .pg {
   color: var(--evidence);
@@ -1785,6 +1806,36 @@ footer {
   }
   .wb-main {
     padding: 15px 14px 18px;
+  }
+  /* Workbench record row → stacked field over value.
+     Side by side, the two spans competed for one line: the value track is
+     `auto` and holds non-wrapping text, so a long value sizes to its full
+     content width and squeezes the `minmax(0, 1fr)` field-name track down to
+     zero. Values in the reference paper run to several hundred characters, so
+     at phone widths the field name was not merely truncated but rendered at
+     0px — invisible. Stacked, each gets the full width and neither can starve
+     the other. */
+  .wb-item {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: 3px;
+    padding: 9px 11px;
+  }
+  /* The field name now owns its own line, so it wraps instead of truncating.
+     `anywhere` guards the no-overflow guarantee for a long unbroken token. */
+  .wb-item .nm {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    overflow-wrap: anywhere;
+    line-height: 1.4;
+  }
+  /* The value keeps its ellipsis: it can be a full sentence from the paper, and
+     wrapping it would make single rows dozens of lines tall. On its own line it
+     has the full width, so the 46% cap is dropped as a competing constraint. */
+  .wb-item .vl {
+    max-width: none;
+    text-align: left;
   }
   .notice {
     flex-direction: column;

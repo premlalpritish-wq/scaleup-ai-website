@@ -133,6 +133,49 @@ setTimeout(() => {
   ok("workbench: grouped", n("#wb-list .wb-group") === 2);
   ok("workbench: count label", txt("#wb-count").startsWith(String(totalRows)), txt("#wb-count"));
 
+  /* Record-row shape, asserted against the full unfiltered list. A row is a
+     field name and a value; on a phone the two stack, so the DOM order has to
+     stay field-then-value — that is both the reading order and what the stacked
+     layout renders. Checked here, before the filter test narrows the list. */
+  const allRows = [...d.querySelectorAll("#wb-list .wb-item")];
+  ok("workbench: every row has one field name and one value",
+     allRows.length === totalRows && allRows.every((r) =>
+       r.querySelectorAll(":scope > .nm").length === 1 &&
+       r.querySelectorAll(":scope > .vl").length === 1),
+     `${allRows.length} rows`);
+  ok("workbench: field name precedes value in the DOM",
+     allRows.every((r) => {
+       const kids = [...r.children];
+       return kids.length === 2 &&
+         kids[0].classList.contains("nm") &&
+         kids[1].classList.contains("vl");
+     }));
+  ok("workbench: field names are never empty",
+     allRows.every((r) => r.querySelector(".nm").textContent.trim().length > 0));
+  /* The phone stack exists because values are long. If a future export only
+     produced short values the stacking would stop being load-bearing; this keeps
+     the reason visible and would fail loudly if the data ever got re-exported
+     without long values, at which point the layout could be revisited. */
+  const longestValue = Math.max(
+    ...data.process_state.parameters.map((p) => String(p.value ?? "").length)
+  );
+  ok("workbench: long values exist, so the phone row must stack",
+     longestValue > 120, `longest value ${longestValue} chars`);
+
+  /* ------------------------------------------------- evidence source lines */
+  /* Source lines carry DOIs and provenance keys: single unbreakable tokens that
+     forced the page wider than a 320px viewport before the component was made
+     wrappable. Assert such a token really is present inside `.ev-src`, so the
+     wrapping rule stays load-bearing and the regression cannot come back
+     unnoticed via a data change. */
+  const evSrcs = [...d.querySelectorAll(".ev-src")];
+  const longestToken = Math.max(
+    ...evSrcs.flatMap((e) => e.textContent.split(/\s+/).map((t) => t.length))
+  );
+  ok("evidence: source lines exist", evSrcs.length > 0, `${evSrcs.length} found`);
+  ok("evidence: source lines carry an unbreakable token that must wrap",
+     longestToken > 18, `longest token ${longestToken} chars`);
+
   const search = d.querySelector("#wb-search");
   search.value = "renaturation";
   search.dispatchEvent(new window.Event("input", { bubbles: true }));

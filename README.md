@@ -114,21 +114,21 @@ npm install     # jsdom only, for the headless checks
 npm test
 ```
 
-Three suites, 142 assertions, all exiting non-zero on failure so they can gate a
+Three suites, 165 assertions, all exiting non-zero on failure so they can gate a
 deploy.
 
-- **`tests/check.js` - render and claims (101).** Loads `index.html` and
+- **`tests/check.js` - render and claims (107).** Loads `index.html` and
   `app.js` in jsdom against the real data file and asserts that every panel
   renders real content, that filtering and field→evidence inspection work, that
   the graph draws the expected counts, that accessibility basics hold, that
   future capabilities stay labelled as research, and that **no forbidden claim**
   (customers, funding, partnerships, accuracy percentages, industrial
   validation, …) appears anywhere unless it sits inside an explicit disclaimer.
-- **`tests/responsive.js` - layout and touch (28).** Catches fixed widths that
-  would force horizontal page scroll, a workbench that fails to collapse, a
-  graph that escapes its scroll container, missing phone/tablet breakpoints,
-  `prefers-reduced-motion` being ignored, hard-coded counts in prose, and an
-  anchor offset applied twice.
+- **`tests/responsive.js` - layout and touch (45).** Catches fixed widths that
+  would force horizontal page scroll, a workbench that fails to collapse or
+  whose record row collapses or starves its field-name column, an evidence line that cannot wrap a long token, a graph that escapes its scroll
+  container, missing phone/tablet breakpoints, `prefers-reduced-motion` being
+  ignored, hard-coded counts in prose, and an anchor offset applied twice.
 - **`tests/safety.js` — injection (13).** Poisons every excerpt, label and value
   with `<img src=x onerror=…>` and a `</pre><script>` break-out, then asserts
   nothing executes and the payload stays literal text.
@@ -159,6 +159,42 @@ Three things are worth knowing before editing the stylesheet:
 The active-section indicator reuses the accent treatment already used by the
 stepper tabs and the workbench list: accent-coloured label plus a 2px accent
 rule, drawn with `::after` so it adds no width to the item.
+
+### Workbench record rows
+
+A record row is a field name and a value. Above 560px they sit side by side,
+which is the intended dense-list presentation. **At 560px and below they stack**,
+field name over value.
+
+The value track is `fit-content(46%)`, not `auto`, and that distinction is the
+whole fix. An `auto` track sizes to the value's full intrinsic width; the value
+is `nowrap`, so its intrinsic width is the entire string. Values in the reference
+paper run to several hundred characters (the longest is 309), so `auto` squeezed
+the `minmax(0, 1fr)` field-name track to `0px` and roughly a fifth of the field
+names rendered *invisible* — not ellipsised, simply not drawn. `fit-content()`
+keeps an ordinary short value snug to its own width, which is what preserves the
+existing dense-list look, and clamps a long one to the same 46% the item already
+capped itself at. `.vl` also carries `min-width: 0`, because `nowrap` otherwise
+floors the item at its min-content width and the collapse returns.
+
+Note that a flat `minmax(0, 1fr) minmax(0, 46%)` does **not** work: it gives
+every row, short values included, a 46%-wide track and changes the appearance of
+the ordinary case. The test suite asserts the track is bounded and shrinkable
+rather than pinning one particular spelling.
+
+Truncation is kept where it is genuinely needed: the value still ellipsises on
+one line, because wrapping a full sentence from the paper would make a single row
+dozens of lines tall. The full value is always available by opening the record.
+
+### Evidence source lines
+
+`.ev-src` carries DOIs and provenance keys — single unbreakable tokens — so it
+sets `overflow-wrap: anywhere`. Unwrapped they forced the page about 25px wider
+than a 320px viewport. The declaration is scoped to this component rather than
+applied to `body`, because only this component holds such tokens and a global
+`overflow-wrap: anywhere` would break unrelated prose mid-word. `anywhere` rather
+than `break-word` is deliberate: only `anywhere` also lowers the min-content
+contribution, so the flex item can shrink instead of forcing the page wider.
 
 ## Layout
 
