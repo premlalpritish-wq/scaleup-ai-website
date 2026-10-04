@@ -1019,6 +1019,11 @@
         "gunres"
       );
       gEl.dataset.node = u.source_id || "";
+      /* Both endpoints, so the interaction layer can derive an unresolved
+         relation's neighbourhood the same way it derives a resolved one. The
+         existing selection code reads only `data-node` and is unaffected. */
+      gEl.dataset.source = u.source_id || "";
+      gEl.dataset.target = u.target_id || "";
       const x = s.x + 4;
       const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
       const bow = 26;
@@ -1143,6 +1148,360 @@
 
     const first = (D.process_graph.nodes || [])[0];
     if (first) selectGraphNode(first.id, false);
+
+    wireGraphInteraction();
+  }
+
+  /* ========================================================= graph interaction
+   *
+   * A hover/focus layer over the rendered graph. Nothing in this block refers
+   * to a node id, a label, a count or a topology: every fact shown, and every
+   * node or relation emphasised, is derived from D.process_graph. Replacing the
+   * exported graph changes what the layer says and which nodes light up without
+   * touching a line here.
+   *
+   * Four separated concerns:
+   *   1. graph data            D.process_graph, read-only
+   *   2. derived state         GIDX, built once per render by buildGraphIndex
+   *   3. rendering             the SVG, which already exists
+   *   4. card presentation     renderNodeCard / positionNodeCard
+   */
+
+  let GIDX = null;
+
+  /* Builds the adjacency once. O(nodes + relations), not per mouse move. */
+  function buildGraphIndex(graph) {
+    const nodes = graph.nodes || [];
+    const relations = graph.relations || [];
+    const unresolved = graph.unresolved_relations || [];
+
+    /* Keys are derived from each relation's own endpoints, so the index never
+       depends on array position or on how many elements the renderer happened
+       to emit. Two relations sharing endpoints share a key and are stored
+       together. */
+    const relKey = (r) => `${r.source_id}->${r.target_id}`;
+    const unresKey = (u) => `${u.source_id}~${u.target_id}`;
+
+    const nodeById = new Map(nodes.map((n) => [n.id, n]));
+    /* id -> { neighbours:Set, relations:Set, unresolved:Set, kinds:Map } */
+    const adjacency = new Map(nodes.map((n) => [n.id, {
+      neighbours: new Set(),
+      relations: new Set(),
+      unresolved: new Set(),
+      kinds: new Map(),
+    }]));
+
+    const touch = (a, b, kind, key, bucket) => {
+      [a, b].forEach((id) => {
+        if (!id || !adjacency.has(id)) return;
+        const e = adjacency.get(id);
+        e.neighbours.add(id === a ? b : a);
+        e[bucket].add(key);
+        if (kind) e.kinds.set(kind, (e.kinds.get(kind) || 0) + 1);
+      });
+    };
+
+    relations.forEach((r) => touch(r.source_id, r.target_id, r.kind, relKey(r), "relations"));
+    unresolved.forEach((u) => touch(u.source_id, u.target_id, null, unresKey(u), "unresolved"));
+
+    /* Rendered elements, indexed by the same endpoint keys, so emphasis is a
+       class toggle rather than a DOM query per pointer move. */
+    const bucketOf = (map, key, el) => {
+      if (!map.has(key)) map.set(key, []);
+      map.get(key).push(el);
+    };
+    const nodeEls = new Map();
+    $$("#graph .gnode").forEach((g) => nodeEls.set(g.dataset.node, g));
+    const edgeEls = new Map();
+    $$("#graph .gedge").forEach((p) => bucketOf(edgeEls, `${p.dataset.source}->${p.dataset.target}`, p));
+    const unresEls = new Map();
+    $$("#graph .gunres").forEach((g) => bucketOf(unresEls, `${g.dataset.source}~${g.dataset.target}`, g));
+
+    return { graph, nodeById, adjacency, nodeEls, edgeEls, unresEls };
+  }
+
+  /* Derived facts about one node, used by both emphasis and the card. */
+  function getNodeContext(id) {
+    if (!GIDX || !GIDX.nodeById.has(id)) return null;
+    const node = GIDX.nodeById.get(id);
+    const adj = GIDX.adjacency.get(id);
+    const g = GIDX.graph;
+    const relations = (g.relations || []).filter(
+      (r) => r.source_id === id || r.target_id === id
+    );
+    const unresolved = (g.unresolved_relations || []).filter(
+      (u) => u.source_id === id || u.target_id === id
+    );
+    return {
+      node,
+      id,
+      kind: node.kind,
+      label: node.label,
+      /* derived, never declared: what this node participates in */
+      precedes: relations.filter((r) => r.kind === "precedes"),
+      outgoing: relations.filter((r) => r.source_id === id),
+      incoming: relations.filter((r) => r.target_id === id),
+      byKind: [...adj.kinds.entries()].map(([k, n]) => ({ kind: k, count: n })),
+      unresolved,
+      degree: adj.neighbours.size,
+      neighbours: [...adj.neighbours],
+      relKeys: adj.relations,
+      unresKeys: adj.unresolved,
+      evidence: node.evidence || [],
+      parameterRefs: node.parameter_refs || [],
+    };
+  }
+
+  const getConnectedNodeIds = (id) =>
+    (GIDX && GIDX.adjacency.get(id) ? [...GIDX.adjacency.get(id).neighbours] : []);
+
+  const getConnectedRelations = (id) =>
+    (GIDX && GIDX.adjacency.get(id) ? [...GIDX.adjacency.get(id).relations] : []);
+
+  /* ------------------------------------------------------------ emphasis */
+
+  let hoveredId = null;
+
+  function setGraphHoverState(id) {
+    if (!GIDX) return;
+    if (hoveredId === id) return;
+    hoveredId = id;
+
+    /* Clear first, so a partial state can never survive a change of anchor. */
+    GIDX.nodeEls.forEach((g) => g.classList.remove("is-hover", "is-near", "is-far"));
+    GIDX.edgeEls.forEach((list) =>
+      list.forEach((p) => p.classList.remove("hot", "dim")));
+    GIDX.unresEls.forEach((list) =>
+      list.forEach((g) => g.classList.remove("hot", "dim")));
+
+    if (!id) return;
+    const adj = GIDX.adjacency.get(id);
+    if (!adj) return;
+
+    GIDX.nodeEls.forEach((g, nodeId) => {
+      if (nodeId === id) g.classList.add("is-hover");
+      else if (adj.neighbours.has(nodeId)) g.classList.add("is-near");
+      else g.classList.add("is-far");
+    });
+    adj.relations.forEach((key) => {
+      (GIDX.edgeEls.get(key) || []).forEach((p) => {
+        p.classList.add("hot");
+        p.classList.remove("dim");
+      });
+    });
+    adj.unresolved.forEach((key) => {
+      (GIDX.unresEls.get(key) || []).forEach((g) => {
+        g.classList.add("hot");
+        g.classList.remove("dim");
+      });
+    });
+  }
+
+  const clearGraphHoverState = () => setGraphHoverState(null);
+
+  /* ---------------------------------------------------------------- card */
+
+  /* Presentation only. Every line is emitted from whatever the node happens to
+     carry: a node with no evidence produces no evidence line rather than an
+     empty one, and nothing is formatted from a hard-coded field list. */
+  const CARD_MAX = 62;
+
+  const row = (label, value) => {
+    if (value === null || value === undefined || value === "") return null;
+    const r = el("div", "gcard-row");
+    r.appendChild(el("span", "gcard-k", label));
+    r.appendChild(el("span", "gcard-v", value));
+    return r;
+  };
+
+  /* Compact, not the evidence record: locations are short and are the useful
+     part, while excerpts and full citations are left to the detail panel. */
+  const clip = (s, n = CARD_MAX) => {
+    const t = String(s == null ? "" : s).replace(/\s+/g, " ").trim();
+    return t.length > n ? `${t.slice(0, n - 1)}…` : t;
+  };
+
+  const humanKind = (k) => String(k || "").replace(/_/g, " ");
+
+  function renderNodeCard(ctx, anchorEl) {
+    const card = el("div", "gcard");
+    card.setAttribute("aria-hidden", "true");
+
+    const head = el("div", "gcard-hd");
+    head.appendChild(el("span", "gcard-title", clip(ctx.label, 46)));
+    if (ctx.kind) {
+      const k = el("span", "gcard-kind", humanKind(ctx.kind));
+      head.appendChild(k);
+    }
+    card.appendChild(head);
+
+    const body = el("div", "gcard-bd");
+
+    /* Relation facts, counted from the relations that mention this node. */
+    const rels = [];
+    ctx.byKind.forEach(({ kind, count }) =>
+      rels.push(`${count} ${humanKind(kind)}`)
+    );
+    rels.push(`${ctx.degree} connected`);
+    body.appendChild(row("relations", rels.join(" · ")));
+
+    if (ctx.evidence.length) {
+      const ev = ctx.evidence[0];
+      body.appendChild(row("located", clip(ev.location, 46)));
+      body.appendChild(row("source", clip(ev.source, 46)));
+      if (ctx.evidence.length > 1) {
+        body.appendChild(row("also", `${ctx.evidence.length - 1} more evidence item${ctx.evidence.length > 2 ? "s" : ""}`));
+      }
+    }
+
+    if (ctx.parameterRefs.length) {
+      body.appendChild(row("parameters", clip(ctx.parameterRefs.join(", "), 46)));
+    }
+
+    if (ctx.unresolved.length) {
+      const u = ctx.unresolved[0];
+      body.appendChild(row("unresolved", clip(u.description || u.status, 58)));
+    }
+
+    card.appendChild(body);
+
+    /* The hint is emitted only because the node really is activatable. */
+    if (anchorEl) {
+      const foot = el("div", "gcard-ft", "Click for full details →");
+      card.appendChild(foot);
+    }
+    return card;
+  }
+
+  /* Anchor-relative, edge-aware placement. Coordinates come from the node's own
+     rendered box minus the frame's box, so it follows the diagram when the
+     graph is scrolled, and it is clamped inside the frame so it can neither be
+     clipped nor widen the page. */
+  function positionNodeCard(card, anchorEl) {
+    const frame = $(".graph-wrap");
+    const scroller = $("#graph-scroll");
+    if (!frame || !anchorEl || !card) return;
+
+    const fb = frame.getBoundingClientRect();
+    const ab = anchorEl.getBoundingClientRect();
+    const sb = scroller ? scroller.getBoundingClientRect() : fb;
+
+    /* offsetWidth is already capped by the card's own max-width against the
+       frame, so it can never be wider than the frame. */
+    const cw = card.offsetWidth;
+    const ch = card.offsetHeight;
+    const gap = 14;
+    const pad = 6;
+
+    const right = ab.right - fb.left + gap;
+    const left = ab.left - fb.left - cw - gap;
+    const beside = right + cw <= fb.width - pad || left >= pad;
+
+    /* Beside the node when there is room, otherwise below it and spanning the
+       frame, so a narrow viewport never has the card cover its own anchor. */
+    let x = beside
+      ? (right + cw <= fb.width - pad ? right : left)
+      : pad;
+    if (x < pad) x = pad;
+    if (x + cw > fb.width - pad) x = Math.max(pad, fb.width - cw - pad);
+
+    let y = ab.top - fb.top;
+    if (!beside || y + ch > sb.bottom - fb.top - pad) {
+      y = ab.bottom - fb.top + gap;
+    }
+    if (y < pad) y = pad;
+    const maxY = Math.max(pad, sb.bottom - fb.top - ch - pad);
+    if (y > maxY) y = maxY;
+
+    card.style.left = `${Math.round(x)}px`;
+    card.style.top = `${Math.round(y)}px`;
+  }
+
+  /* ------------------------------------------------------------- wiring */
+
+  function wireGraphInteraction() {
+    GIDX = buildGraphIndex(D.process_graph);
+    const frame = $(".graph-wrap");
+    if (!frame || !GIDX.nodeEls.size) return;
+
+    let card = null;
+
+    const removeCard = () => {
+      if (card && card.parentNode) card.parentNode.removeChild(card);
+      card = null;
+    };
+
+    const show = (id, anchorEl) => {
+      const ctx = getNodeContext(id);
+      if (!ctx) return;
+      setGraphHoverState(id);
+      removeCard();
+      card = renderNodeCard(ctx, anchorEl);
+      frame.appendChild(card);
+      positionNodeCard(card, anchorEl);
+    };
+
+    GIDX.nodeEls.forEach((g, id) => {
+      /* An accessible name derived from the node itself, so it stays correct
+         for any graph: what it is, and how connected it is. */
+      const ctx = getNodeContext(id);
+      if (ctx) {
+        const parts = [humanKind(ctx.kind), ctx.label, `${ctx.degree} connected`];
+        if (ctx.byKind.length) {
+          parts.push(ctx.byKind.map((b) => b.kind).join(", "));
+        }
+        g.setAttribute("aria-label", parts.filter(Boolean).join(": "));
+      }
+
+      g.addEventListener("mouseenter", () => show(id, g));
+      g.addEventListener("mouseleave", () => {
+        clearGraphHoverState();
+        removeCard();
+      });
+      /* Focus covers keyboard and touch, so the card is never hover-only. */
+      g.addEventListener("focus", () => show(id, g));
+      g.addEventListener("blur", () => {
+        clearGraphHoverState();
+        removeCard();
+      });
+    });
+
+    /* Reposition on scroll so the card tracks its node inside the scrollable
+       frame, and clear it when the frame scrolls out from under the pointer. */
+    const scroller = $("#graph-scroll");
+    if (scroller) {
+      let queued = false;
+      scroller.addEventListener(
+        "scroll",
+        () => {
+          if (queued) return;
+          queued = true;
+          requestAnimationFrame(() => {
+            queued = false;
+            if (!hoveredId) return;
+            const anchor = GIDX.nodeEls.get(hoveredId);
+            if (!anchor) return;
+            const ab = anchor.getBoundingClientRect();
+            const sb = scroller.getBoundingClientRect();
+            const outside =
+              ab.bottom < sb.top || ab.top > sb.bottom ||
+              ab.right < sb.left || ab.left > sb.right;
+            if (outside) {
+              clearGraphHoverState();
+              removeCard();
+            } else if (card) {
+              positionNodeCard(card, anchor);
+            }
+          });
+        },
+        { passive: true }
+      );
+    }
+    /* Pointer leaving the frame entirely must not strand the card. */
+    frame.addEventListener("mouseleave", () => {
+      clearGraphHoverState();
+      removeCard();
+    });
   }
 
   function selectGraphNode(id, dimOthers = true) {

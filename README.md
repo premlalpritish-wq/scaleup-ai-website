@@ -114,7 +114,7 @@ npm install     # jsdom only, for the headless checks
 npm test
 ```
 
-Three suites, 170 assertions, all exiting non-zero on failure so they can gate a
+Four suites, 246 assertions, all exiting non-zero on failure so they can gate a
 deploy.
 
 - **`tests/check.js` - render and claims (115).** Loads `index.html` and
@@ -129,7 +129,17 @@ deploy.
   whose record row grows a second column, starves its field-name column, an evidence line that cannot wrap a long token, a graph that escapes its scroll
   container, missing phone/tablet breakpoints, `prefers-reduced-motion` being
   ignored, hard-coded counts in prose, and an anchor offset applied twice.
-- **`tests/safety.js` — injection (13).** Poisons every excerpt, label and value
+- **`tests/graph.js` - graph interaction (76).** Renders the page from a
+  *synthetic* ProcessGraph with different node ids, labels, node count and
+  topology, then asserts the hover layer derives the right neighbourhood and
+  card content with no code change: that hovering a node in an `A → B → C` chain
+  derives `A, B, C`, that a two-hop node is not pulled in, that an unconnected
+  node still works, that empty metadata produces no row, that evidence excerpts
+  are never dumped, that clicking still fills the detail panel, that the hover
+  lifecycle clears, and that focus and keyboard activation reach the same
+  information. Then repeats the neighbourhood derivation against the real fixture
+  and checks it agrees with the relations for every node.
+- **`tests/safety.js` - injection (13).** Poisons every excerpt, label and value
   with `<img src=x onerror=…>` and a `</pre><script>` break-out, then asserts
   nothing executes and the payload stays literal text.
 
@@ -190,6 +200,39 @@ Consequences worth knowing:
 the renderer emits no `.vl` element, and that the row carries no
 `grid-template-columns` — so the column cannot quietly come back as markup, as
 CSS, or as reserved space.
+
+### Graph interaction
+
+The process graph is a hover/focus layer over the existing render. Pointing at
+a node derives its immediate neighbourhood from the relations that mention it and
+emphasises that node, its predecessors and successors, and their relations, while
+everything unrelated recedes. A compact card gives the quick answer; clicking
+still opens the existing detail panel for the full record.
+
+The layer holds no graph data of its own. It reads `D.process_graph` — the same
+object the renderer draws from — and builds an adjacency index once per render
+(`buildGraphIndex`), keyed by each relation's own endpoints rather than by array
+position. `getNodeContext` derives everything the card shows. Swapping the
+exported graph changes which nodes light up and what the card says with no edit
+to the interaction code; `tests/graph.js` renders a synthetic graph with different
+ids, labels, node count and topology to prove it.
+
+Two things to know before editing it:
+
+- Hover emphasis must outrank the selection's dimming. A node that is not the
+  selected one carries `.dim` at low opacity; without `.gnode.dim.is-hover` and
+  `.gnode.dim.is-near` resetting it, the node you are pointing at renders
+  fainter than the neighbours you are comparing it to.
+- The card is positioned from the node's own rendered box against the frame's,
+  so it follows the diagram when the graph scrolls and clamps inside the frame.
+  When the frame is too narrow for the card to sit beside a node it stacks below
+  it rather than covering its own anchor.
+
+Card content is a summary. Evidence excerpts and full citations stay in the
+detail panel, and a field the node does not carry produces no row rather than an
+empty one. Hover and keyboard focus both reveal it, so it is never hover-only,
+and it is `aria-hidden` because everything on it is already in the node's
+accessible name and in the detail panel.
 
 ### Evidence source lines
 

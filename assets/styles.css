@@ -1158,6 +1158,9 @@ pre.code .b {
 /* ---------------------------------------------------------------- graph */
 
 .graph-wrap {
+  /* Contains the absolutely-positioned hover card, so it is clipped by the
+     frame instead of widening the page. */
+  position: relative;
   border: 1px solid var(--line);
   border-radius: var(--r);
   background: var(--ink-900);
@@ -1312,6 +1315,160 @@ pre.code .b {
 }
 .gunres.dim {
   opacity: 0.2;
+}
+
+/* ------------------------------------------------- graph interaction states
+   Hover/focus emphasis. These sit alongside the selection classes (.sel/.dim)
+   rather than replacing them: the selection is what the reader chose, the
+   emphasis is what they are pointing at right now, and both can be true.
+   Hierarchy on hover is three-tier: the node itself, its derived neighbours,
+   and everything else pushed back. */
+.gnode {
+  transition: opacity 0.16s var(--ease);
+}
+.gnode.is-far {
+  opacity: 0.16;
+}
+/* Hover emphasis outranks the selection's dimming. A node that is not the
+   selection carries .dim at 0.24 opacity, which would otherwise cancel the
+   hover treatment and make the node you are pointing at look fainter than the
+   neighbours you are comparing it to. `dim` keeps its meaning as the selection
+   marker; only the visual precedence changes. */
+.gnode.dim.is-near,
+.gnode.dim.is-hover {
+  opacity: 1;
+}
+.gnode.is-near rect.op {
+  fill: var(--ink-800);
+  stroke: var(--known-dim);
+}
+.gnode.is-near polygon.mat {
+  fill: rgba(224, 177, 85, 0.13);
+  stroke: var(--evidence-dim);
+}
+.gnode.is-near text {
+  fill: var(--text-hi);
+}
+.gnode.is-hover rect.op {
+  fill: #1a2530;
+  stroke: var(--known);
+  stroke-width: 2;
+  filter: brightness(1.25);
+}
+.gnode.is-hover polygon.mat {
+  fill: rgba(224, 177, 85, 0.24);
+  stroke: var(--evidence);
+  stroke-width: 2;
+}
+.gnode.is-hover text {
+  fill: #fff;
+}
+.gnode:focus-visible {
+  outline: 2px solid var(--known);
+  outline-offset: 3px;
+}
+.gnode:focus {
+  outline: none;
+}
+.gnode:focus-visible rect.op,
+.gnode:focus-visible polygon.mat {
+  stroke: var(--known);
+  stroke-width: 2;
+}
+
+/* Unresolved relations read as absent edges, so emphasising one should make it
+   more present, not less: opacity is raised on hover. */
+.gunres {
+  transition: opacity 0.16s var(--ease), stroke-width 0.16s var(--ease);
+}
+.gunres.hot {
+  opacity: 1;
+}
+
+/* The hover card. Deliberately not the native title attribute: it is styled,
+   positioned against the node, and carries derived counts. aria-hidden because
+   everything on it is already in the node's aria-label and in the detail
+   panel, so a screen reader must not read it twice. */
+.gcard {
+  position: absolute;
+  z-index: 8;
+  /* rem, not px: a fixed pixel width would ignore the reader's font-size
+     preference. Still bounded by the frame so it can never widen the page. */
+  width: 17rem;
+  max-width: calc(100% - 12px);
+  pointer-events: none;
+  background: var(--ink-800);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r);
+  box-shadow: 0 14px 34px -14px rgba(0, 0, 0, 0.85);
+  padding: 11px 13px 10px;
+  animation: gcard-in 0.14s var(--ease);
+}
+@keyframes gcard-in {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.gcard-hd {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.gcard-title {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--text-hi);
+  line-height: 1.3;
+}
+.gcard-kind {
+  font-family: var(--mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--known);
+  border: 1px solid var(--known-dim);
+  border-radius: 2px;
+  padding: 1px 5px;
+  white-space: nowrap;
+}
+.gcard-bd {
+  display: grid;
+  gap: 4px;
+}
+.gcard-row {
+  display: grid;
+  grid-template-columns: 62px minmax(0, 1fr);
+  gap: 8px;
+  align-items: baseline;
+}
+.gcard-k {
+  font-family: var(--mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-xlo);
+}
+.gcard-v {
+  font-size: var(--fs-micro);
+  color: var(--text);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+.gcard-ft {
+  margin-top: 9px;
+  padding-top: 7px;
+  border-top: 1px solid var(--line-soft);
+  font-family: var(--mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.04em;
+  color: var(--text-xlo);
 }
 
 .rel-table {
