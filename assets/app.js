@@ -365,7 +365,6 @@
     renderEvidenceSection();
     renderValidation();
     renderUncertainty();
-    renderFooter();
     wireTabs();
     wireSectionTracking();
   }
@@ -2027,22 +2026,20 @@
     }
   }
 
-  /* =================================================================== footer */
-
-  function renderFooter() {
-    const c = counts();
-    const g = graphCounts();
-    /* Product output only. D.tests is deliberately not surfaced here: it is the
-       upstream pipeline's pytest count, not this site's suite, so quoting it in
-       the user-facing footer is engineering self-reference rather than evidence
-       about what the pipeline produced. The data stays in the payload. */
-    const parts = [
-      `${num(c.parameters)} parameters`,
-      `${num(g.nodes)} graph nodes`,
-      `${num(D.paper.page_count)}-page reference artifact`,
-    ];
-    $("#f-stats").textContent = parts.join(" · ");
-  }
+  /* =================================================================== footer
+   *
+   * There is deliberately no footer status strip. A line reading "56 parameters
+   * · 16 graph nodes · 7-page reference artifact" repeated counts the reader
+   * can already see in the pipeline section and the graph above, and "reference
+   * artifact" is this project's internal term for its bundled paper, not
+   * something a reader needs at the end of the page. The page ends on the
+   * product itself.
+   *
+   * Every figure it quoted is still real and still used where it belongs:
+   * counts() and graphCounts() drive the hero summary, the section headings and
+   * the graph stats line, and D.paper.page_count describes the payload. Only
+   * the duplicate presentation layer is gone.
+   */
 
   /* ====================================================================== tabs */
 

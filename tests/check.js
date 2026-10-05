@@ -312,8 +312,24 @@ setTimeout(() => {
        hits.length ? `UNNEGATED …${hits[0].slice(100, 190)}…` : "");
   });
 
-  /* ------------------------------------------------------------------ footer */
-  ok("footer: real counts", /tests passing|reference artifact/.test(txt("#f-stats")), txt("#f-stats"));
+  /* ------------------------------------------------------------------ footer
+   * The footer used to carry a status strip reading "56 parameters · 16 graph
+   * nodes · 7-page reference artifact". It repeated counts already on screen and
+   * ended the page on internal terminology, so it was removed rather than
+   * reworded. These checks hold the removal in place and, just as importantly,
+   * prove the figures it quoted are still rendered from the same data where they
+   * belong. */
+  ok("footer: the status strip is gone", n("#f-stats") === 0, `${n("#f-stats")} matching element(s)`);
+  ok("footer: no orphaned status container is left behind", n(".foot-links") === 0, `${n(".foot-links")} matching element(s)`);
+  ok("footer: the footer itself is intact",
+     n("footer") === 1 && /ScaleUp AI/.test(txt("footer")) && /Pre-release/.test(txt("footer")),
+     txt("footer"));
+  ok("footer: no metric or count is left in the footer", !/\d/.test(txt("footer")), txt("footer"));
+  ok("footer: the counts it quoted still render in the hero and graph",
+     txt("#st-3n").startsWith(String(C.parameters)) &&
+     new RegExp(`${G.nodes} nodes`).test(txt("#graph-stats")) &&
+     txt("#st-1n").startsWith(String(data.paper.page_count)),
+     `${txt("#st-1n")} / ${txt("#st-3n")} / ${txt("#graph-stats")}`);
 
   /* ------------------------------------------------------------------ team */
   ok("team: three named people", n(".person") === 3, String(n(".person")));

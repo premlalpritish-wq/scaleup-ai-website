@@ -1875,11 +1875,6 @@ footer {
   align-items: center;
   justify-content: space-between;
 }
-.foot-links {
-  display: flex;
-  gap: 18px;
-  flex-wrap: wrap;
-}
 
 /* ---------------------------------------------------------------- responsive */
 
