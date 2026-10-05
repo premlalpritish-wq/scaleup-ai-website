@@ -273,6 +273,49 @@ setTimeout(() => {
   ok("validation: run count is data-driven", /^\d+(–\d+)?$/.test(txt("#val-runs")), txt("#val-runs"));
   ok("validation: negative results framed", /NEGATIVE/.test(txt("#val-grid")));
 
+  /* ------------------------------------------------ corpus evaluation block
+   * A second, broader record inside the validation section: the nine-paper
+   * evaluation milestone. It is static copy on purpose, because it is not part of
+   * the bundled single-paper artifact, so these checks exist to stop any of its
+   * figures or its stated limits being quietly edited away. */
+  const corpus = d.querySelector("#validation");
+  const corpusRows = [...corpus.querySelectorAll(".rows > div")]
+    .map((r) => `${r.querySelector(".k")?.textContent.trim()} ${r.querySelector(".v")?.textContent.trim()}`);
+  const corpusText = corpus.textContent.replace(/\s+/g, " ");
+  const corpusGrid = [...corpus.querySelectorAll(".val-grid")].find(
+    (g) => g.id !== "val-grid" && g.querySelector(".rows")
+  );
+  ok("corpus: the evaluation block is present", !!corpusGrid);
+  ok("corpus: it does not disturb the single-paper grid",
+     !!corpusGrid && n("#val-grid .val") === diagCount, String(n("#val-grid .val")));
+  ok("corpus: eleven figures across two tables",
+     corpusGrid && corpusGrid.querySelectorAll(".rows > div").length === 11,
+     String(corpusGrid && corpusGrid.querySelectorAll(".rows > div").length));
+  ["Primary research papers 9", "Structured experiments promoted 76",
+   "Experiment leaves audited 527", "Promoted leaves page-grounded every leaf",
+   "Unsupported scalars in the audited set 0", "Page-scoped evidence leaks 0",
+   "Experiments extracted 13 → 76", "Papers yielding zero experiments 4/9 → 0/9",
+   "Experiment evidence items 14 → 93", "Truncations 5 → 0",
+   "Papers with a materialised ProcessGraph 0/9"].forEach((row) => {
+    ok(`corpus: reports "${row}"`, corpusRows.includes(row), row);
+  });
+  ok("corpus: states the proof chain",
+     /Real papers → structured extraction → evidence validation → forensic evaluation → measurable improvement/.test(corpusText));
+  ok("corpus: scopes itself to one capability",
+     /one capability/.test(corpusText) && /not a measurement of the system as a whole/.test(corpusText));
+  /* The milestone is only credible if its limits are published with it. */
+  ok("corpus: ProcessGraph is still reported as 0/9",
+     /ProcessGraph materialisation remains 0 of 9 papers/.test(corpusText));
+  ok("corpus: A1 under-citation is reported unresolved",
+     /A1 under-citation is unresolved and is being measured separately/.test(corpusText));
+  ok("corpus: the other open items are reported",
+     /Predicted-versus-measured provenance/.test(corpusText) &&
+     /multi-span or table representation are unresolved/.test(corpusText));
+  ok("corpus: explicitly claims no solution to extraction, the graph or autonomy",
+     /claims that literature extraction is solved/.test(corpusText) &&
+     /that ProcessGraph works across the corpus/.test(corpusText) &&
+     /support autonomous\s+scientific decisions/.test(corpusText));
+
   /* ------------------------------------------- future capability is labelled */
   const body = d.body.textContent.replace(/\s+/g, " ");
   ok("future: steps marked research", /Research direction/.test(body));

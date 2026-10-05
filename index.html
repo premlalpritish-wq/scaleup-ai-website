@@ -535,6 +535,93 @@
             lengths and digests were.
           </span>
         </div>
+
+        <!-- ================================================= CORPUS EVAL -->
+        <!-- A separate, broader record. Kept inside this section rather than
+             given a nav entry of its own: it is the same claim, measured over a
+             corpus, and the section already exists to hold what the pipeline
+             refuses and what it still gets wrong. Static markup, no payload
+             field, because this evaluation is not part of the bundled
+             single-paper artifact. -->
+        <h3 style="margin-top: 34px">Evaluated across nine primary papers</h3>
+        <p class="lead muted" style="margin-top: 10px; max-width: 74ch">
+          Real papers → structured extraction → evidence validation → forensic
+          evaluation → measurable improvement. The figures below come from
+          running the pipeline over a nine-paper primary-research corpus and
+          auditing the promoted experiment set leaf by leaf. They describe one
+          capability — experiment extraction and the evidence attached to it —
+          and are not a measurement of the system as a whole.
+        </p>
+
+        <div class="val-grid" style="margin-top: 20px">
+          <div>
+            <div class="val-sub">Audited corpus</div>
+            <div class="rows">
+              <div>
+                <span class="k">Primary research papers</span>
+                <span class="v">9</span>
+              </div>
+              <div>
+                <span class="k">Structured experiments promoted</span>
+                <span class="v">76</span>
+              </div>
+              <div>
+                <span class="k">Experiment leaves audited</span>
+                <span class="v">527</span>
+              </div>
+              <div>
+                <span class="k">Promoted leaves page-grounded</span>
+                <span class="v">every leaf</span>
+              </div>
+              <div>
+                <span class="k">Unsupported scalars in the audited set</span>
+                <span class="v">0</span>
+              </div>
+              <div>
+                <span class="k">Page-scoped evidence leaks</span>
+                <span class="v">0</span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="val-sub">Measured change</div>
+            <div class="rows">
+              <div>
+                <span class="k">Experiments extracted</span>
+                <span class="v">13 → 76</span>
+              </div>
+              <div>
+                <span class="k">Papers yielding zero experiments</span>
+                <span class="v">4/9 → 0/9</span>
+              </div>
+              <div>
+                <span class="k">Experiment evidence items</span>
+                <span class="v">14 → 93</span>
+              </div>
+              <div>
+                <span class="k">Truncations</span>
+                <span class="v">5 → 0</span>
+              </div>
+              <div>
+                <span class="k">Papers with a materialised ProcessGraph</span>
+                <span class="v">0/9</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="notice" style="margin-top: 22px">
+          <span class="ico">OPEN</span>
+          <span>
+            <b>Still open after this milestone.</b> ProcessGraph materialisation
+            remains 0 of 9 papers. A1 under-citation is unresolved and is being
+            measured separately. Predicted-versus-measured provenance and
+            multi-span or table representation are unresolved. Nothing here
+            claims that literature extraction is solved, that ProcessGraph works
+            across the corpus, or that the system can support autonomous
+            scientific decisions.
+          </span>
+        </div>
       </div>
     </section>
 
