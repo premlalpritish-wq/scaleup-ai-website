@@ -1504,6 +1504,31 @@
     });
   }
 
+  /* Bring a node inside the graph's own scroll viewport without moving the page.
+     Selection alone is not enough: the graph scrolls internally, so a node in the
+     lower half stays off-screen even though it is selected. */
+  function revealGraphNode(nodeEl) {
+    const sc = $("#graph-scroll");
+    if (!sc || !nodeEl) return;
+    const sb = sc.getBoundingClientRect();
+    const nb = nodeEl.getBoundingClientRect();
+    const dy = nb.top + nb.height / 2 - (sb.top + sb.height / 2);
+    const dx = nb.left + nb.width / 2 - (sb.left + sb.width / 2);
+    if (Math.abs(dy) > 1) sc.scrollTop += dy;
+    if (Math.abs(dx) > 1) sc.scrollLeft += dx;
+  }
+
+  /* One path for "jump to this node": select it, reveal it, then hand it keyboard
+     focus. Everything after this is the existing graph interaction taking over. */
+  function gotoGraphNode(id) {
+    const nodeEl = GIDX && GIDX.nodeEls.get(id);
+    if (!nodeEl) return false;
+    selectGraphNode(id);
+    revealGraphNode(nodeEl);
+    nodeEl.focus();
+    return true;
+  }
+
   function selectGraphNode(id, dimOthers = true) {
     selectedNode = id;
     $$("#graph .gnode").forEach((g) => {
@@ -1561,12 +1586,23 @@
     const shortId = (x) => (x || "").split(":").pop();
     inc.forEach((r) => {
       const other = r.source_id === id ? r.target_id : r.source_id;
-      const line = el("div", "ev-foot");
+      /* The counterpart of a resolved relation is always a rendered node, so the
+         line is a control rather than text: activating it selects, reveals and
+         focuses that node. A native button gives keyboard activation for free,
+         so this is not a mouse-only affordance. */
+      const line = el("button", "ev-foot rel-jump");
+      line.type = "button";
       line.style.borderTop = "0";
       line.style.paddingTop = "3px";
       line.textContent = `${r.source_id === id ? "→" : "←"} ${r.kind} ${
         shortId(other)
       }`;
+      const otherNode = GIDX && GIDX.nodeById.get(other);
+      line.setAttribute(
+        "aria-label",
+        otherNode ? `${r.kind}: ${otherNode.label}` : line.textContent
+      );
+      line.addEventListener("click", () => gotoGraphNode(other));
       box.appendChild(line);
     });
     unres.forEach((u) => {
@@ -1973,14 +2009,15 @@
   function renderFooter() {
     const c = counts();
     const g = graphCounts();
+    /* Product output only. D.tests is deliberately not surfaced here: it is the
+       upstream pipeline's pytest count, not this site's suite, so quoting it in
+       the user-facing footer is engineering self-reference rather than evidence
+       about what the pipeline produced. The data stays in the payload. */
     const parts = [
       `${num(c.parameters)} parameters`,
       `${num(g.nodes)} graph nodes`,
       `${num(D.paper.page_count)}-page reference artifact`,
     ];
-    if (D.tests && D.tests.passed) {
-      parts.push(`${num(D.tests.passed)} tests passing`);
-    }
     $("#f-stats").textContent = parts.join(" · ");
   }
 

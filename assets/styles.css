@@ -496,6 +496,12 @@ p {
   color: var(--known);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
+  /* Each row is its own grid, so the value track is auto-sized to that row's
+     content and the tracks differ in width. Without this the digits sit at the
+     left of those differing boxes and the right edge is ragged, while the unit
+     beneath stays flush right. Right-aligning here lines the digits up with each
+     other and with their units. */
+  text-align: right;
 }
 .stage-num small {
   color: var(--text-xlo);
@@ -1149,6 +1155,22 @@ pre.code .b {
   color: var(--text-xlo);
   font-family: var(--mono);
   line-height: 1.5;
+}
+/* A resolved-relation line is a jump control, not text. It inherits .ev-foot's
+   typography and resting colour and only adds the control affordance; the
+   global :focus-visible rule supplies the keyboard focus ring. */
+.rel-jump {
+  display: block;
+  width: 100%;
+  background: none;
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+}
+.rel-jump:hover {
+  color: var(--text-hi);
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 .d-sec {
