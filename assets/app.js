@@ -1147,7 +1147,9 @@
     renderRelationTable();
 
     const first = (D.process_graph.nodes || [])[0];
-    if (first) selectGraphNode(first.id, false);
+    /* Pre-selects the first node so the panel is never empty, without moving the
+       page: on load the output is already on screen and jumping to it is noise. */
+    if (first) selectGraphNode(first.id, false, false);
 
     wireGraphInteraction();
   }
@@ -1518,18 +1520,36 @@
     if (Math.abs(dx) > 1) sc.scrollLeft += dx;
   }
 
+  /* The page's other scroll context. Selecting a graph item updates #graph-detail
+     below the graph, so the user would otherwise have to hunt for what changed.
+     A bare scrollIntoView is enough: html already carries scroll-padding-top
+     (--anchor-offset) for the sticky header and scroll-behavior: smooth, so this
+     inherits both rather than inventing an offset. Do not add scroll-margin-top
+     here — the two offsets add and would land the panel twice as far down. */
+  function revealGraphOutput() {
+    const out = $("#graph-detail");
+    if (out) out.scrollIntoView({ block: "start" });
+  }
+
   /* One path for "jump to this node": select it, reveal it, then hand it keyboard
-     focus. Everything after this is the existing graph interaction taking over. */
+     focus. Everything after this is the existing graph interaction taking over.
+     focus() is told not to scroll, because the browser's own scroll-into-view
+     would race the graph reveal and the page scroll to the output; both of those
+     have already placed the element deliberately. */
   function gotoGraphNode(id) {
     const nodeEl = GIDX && GIDX.nodeEls.get(id);
     if (!nodeEl) return false;
     selectGraphNode(id);
     revealGraphNode(nodeEl);
-    nodeEl.focus();
+    nodeEl.focus({ preventScroll: true });
     return true;
   }
 
-  function selectGraphNode(id, dimOthers = true) {
+  /* `reveal` is the single switch for output navigation. Every activation path
+     (click, Enter, Space, relation counterpart, relation-table row) comes
+     through here, so one flag covers them all. The initial render passes false:
+     jumping the page on load would be a jump the user never asked for. */
+  function selectGraphNode(id, dimOthers = true, reveal = true) {
     selectedNode = id;
     $$("#graph .gnode").forEach((g) => {
       g.classList.toggle("sel", g.dataset.node === id);
@@ -1550,6 +1570,9 @@
     $$("#rel-table tbody tr").forEach((tr) => {
       tr.style.background = tr.dataset.node === id ? "var(--ink-780)" : "";
     });
+
+    /* Last, so the panel is fully built and measured before it is scrolled to. */
+    if (reveal) revealGraphOutput();
   }
 
   function renderGraphDetail(id) {

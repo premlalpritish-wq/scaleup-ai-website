@@ -62,6 +62,10 @@ const dom = new JSDOM(html, {
   virtualConsole: vc,
 });
 const { window } = dom;
+/* jsdom implements no scrolling; the app calls scrollIntoView when a graph
+ * selection reveals its output panel. A no-op stub keeps this suite about
+ * injection safety rather than about layout. */
+window.Element.prototype.scrollIntoView = function () {};
 window.fetch = () => Promise.resolve({ ok: true, json: () => Promise.resolve(base) });
 
 const traced = appjs.replace(

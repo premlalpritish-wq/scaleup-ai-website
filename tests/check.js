@@ -42,6 +42,13 @@ const dom = new JSDOM(html, {
 });
 const { window } = dom;
 
+/* jsdom implements no scrolling, so Element.scrollIntoView does not exist. The
+ * app scrolls a node into the graph's own scroller and calls scrollIntoView on
+ * the graph output panel when a selection is made. Stubbed to a no-op: where a
+ * real browser lands is a layout question, verified in the browser suite, and
+ * this file is about what the app renders and looks up. */
+window.Element.prototype.scrollIntoView = function () {};
+
 window.fetch = () =>
   Promise.resolve({ ok: true, json: () => Promise.resolve(data) });
 

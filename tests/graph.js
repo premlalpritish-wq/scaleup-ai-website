@@ -122,6 +122,20 @@ async function boot(data) {
     return { x: 100, y: 100, left: 100, top: 100, right: 200, bottom: 140,
              width: 100, height: 40, toJSON() { return this; } };
   };
+  /* jsdom implements no scrolling at all, so scrollIntoView does not exist.
+     It is stubbed to record what asked to be revealed rather than to move
+     anything: where a real browser lands the panel, and whether it clears the
+     sticky header, is a layout question answered in the browser, not here. What
+     this file can decide is which interactions ask for the output at all. */
+  window.__reveals = [];
+  window.Element.prototype.scrollIntoView = function (opts) {
+    window.__reveals.push({
+      id: this.id || null,
+      cls: this.className && this.className.baseVal !== undefined
+        ? this.className.baseVal : this.className || null,
+      block: opts && opts.block !== undefined ? opts.block : null,
+    });
+  };
   window.fetch = () => Promise.resolve({ ok: true, json: () => Promise.resolve(data) });
   window.eval(traced);
   await sleep(700);
@@ -161,6 +175,7 @@ const same = (a, b) => set(a).join("|") === set(b).join("|");
 async function main() {
 const S = await boot(syntheticData(SYNTHETIC_GRAPH));
 const sd = S.d;
+const sBootReveals = S.window.__reveals.length;
 
 /* --- the graph really is the synthetic one, proving the run is not the fixture */
 const nodeIds = [...sd.querySelectorAll(".gnode")].map((g) => g.dataset.node);
@@ -459,9 +474,45 @@ ok("source: no hardcoded node count in the interaction block",
 ok("synthetic: no runtime errors with the synthetic graph", S.errors.length === 0, S.errors.join(" | "));
 ok("synthetic: no missing selectors", !(S.window.__NULLS || []).length, (S.window.__NULLS || []).join(","));
 
+/* The same reveal contract, against a graph with nothing in common with the
+   shipped fixture, so it cannot be satisfied by anything fixture-specific. */
+ok("synthetic: the initial render does not move the page to the output",
+   sBootReveals === 0, `${sBootReveals} reveal(s) during boot`);
+ok("synthetic: selecting a node reveals the output panel",
+   (() => {
+     S.window.__reveals.length = 0;
+     const g = sd.querySelector(".gnode");
+     g.dispatchEvent(new S.window.MouseEvent("click", { bubbles: true }));
+     const r = S.window.__reveals.filter((x) => x.id === "graph-detail");
+     return r.length === 1 && r[0].block === "start";
+   })(), "block:start on #graph-detail");
+ok("synthetic: hovering does not move the page to the output",
+   (() => {
+     S.window.__reveals.length = 0;
+     const g = sd.querySelector(".gnode");
+     g.dispatchEvent(new S.window.MouseEvent("mouseenter", { bubbles: false }));
+     g.dispatchEvent(new S.window.MouseEvent("mouseleave", { bubbles: false }));
+     return S.window.__reveals.length === 0;
+   })());
+ok("synthetic: a relation counterpart reveals the output for the target",
+   (() => {
+     S.window.__reveals.length = 0;
+     /* select a node that has an outgoing relation, then use its jump control */
+     const withRel = sd.querySelector(".gnode");
+     withRel.dispatchEvent(new S.window.MouseEvent("click", { bubbles: true }));
+     const jump = sd.querySelector("#graph-detail .rel-jump");
+     if (!jump) return false;
+     S.window.__reveals.length = 0;
+     jump.dispatchEvent(new S.window.MouseEvent("click", { bubbles: true }));
+     return S.window.__reveals.filter((x) => x.id === "graph-detail").length === 1;
+   })());
+
 /* ================================================ 2. shipped-fixture run */
 
 const F = await boot(realData);
+/* Captured before anything is clicked, because later checks in this file select
+   nodes and those selections legitimately reveal the output. */
+const bootReveals = F.window.__reveals.length;
 const fd = F.d;
 const G = realData.process_graph;
 const nodeCount = G.nodes.length;
@@ -522,6 +573,112 @@ ok("fixture: clicking a node still populates the detail panel with its label",
    })());
 ok("fixture: evidence still reaches the detail panel",
    fd.querySelectorAll("#graph-detail .ev").length > 0);
+
+/* ============================================ 3. selection reveals the output
+ *
+ * Selecting a graph item updates #graph-detail below the graph. The contract is
+ * that an activation takes the user to the result of that activation, so the
+ * page is scrolled to the output container, and only on activation: hovering or
+ * focusing a node shows a transient card and must leave the page where it is.
+ *
+ * jsdom cannot scroll, so what is asserted here is which interactions ask for
+ * the reveal and against which element. That the panel actually lands clear of
+ * the sticky header is verified in a real browser.
+ */
+
+const revealsOn = (win) => win.__reveals;
+const outputReveals = (win) => revealsOn(win).filter((r) => r.id === "graph-detail");
+
+ok("fixture: the initial render does not move the page to the output",
+   bootReveals === 0, `${bootReveals} reveal(s) during boot`);
+
+ok("fixture: clicking a node reveals the output panel",
+   (() => {
+     revealsOn(F.window).length = 0;
+     const n = G.nodes.find((x) => G.relations.some(
+       (r) => r.source_id === x.id || r.target_id === x.id));
+     fd.querySelector(`.gnode[data-node="${n.id}"]`)
+       .dispatchEvent(new F.window.MouseEvent("click", { bubbles: true }));
+     const r = outputReveals(F.window);
+     return r.length === 1 && r[0].block === "start";
+   })(), "one reveal, block:start, on #graph-detail");
+
+ok("fixture: Enter on a node reveals the output panel",
+   (() => {
+     revealsOn(F.window).length = 0;
+     const n = G.nodes[2];
+     fd.querySelector(`.gnode[data-node="${n.id}"]`)
+       .dispatchEvent(new F.window.KeyboardEvent("keydown", { key: "Enter", bubbles: true }));
+     return outputReveals(F.window).length === 1;
+   })());
+ok("fixture: Space on a node reveals the output panel",
+   (() => {
+     revealsOn(F.window).length = 0;
+     const n = G.nodes[1];
+     fd.querySelector(`.gnode[data-node="${n.id}"]`)
+       .dispatchEvent(new F.window.KeyboardEvent("keydown", { key: " ", bubbles: true }));
+     return outputReveals(F.window).length === 1;
+   })());
+
+ok("fixture: hovering a node does not move the page to the output",
+   (() => {
+     revealsOn(F.window).length = 0;
+     const n = G.nodes[4];
+     hover(fd, n.id);
+     const during = outputReveals(F.window).length;
+     unhover(fd, n.id);
+     return during === 0 && revealsOn(F.window).length === 0;
+   })(), "hover only shows the card");
+ok("fixture: focusing a node does not move the page to the output",
+   (() => {
+     revealsOn(F.window).length = 0;
+     const n = G.nodes[4];
+     const g = fd.querySelector(`.gnode[data-node="${n.id}"]`);
+     g.dispatchEvent(new F.window.FocusEvent("focus"));
+     const during = outputReveals(F.window).length;
+     g.dispatchEvent(new F.window.FocusEvent("blur"));
+     return during === 0 && revealsOn(F.window).length === 0;
+   })(), "focus only shows the card");
+
+ok("fixture: a relation counterpart reveals the output for the target",
+   (() => {
+     revealsOn(F.window).length = 0;
+     const n = G.nodes.find((x) => G.relations.some((r) => r.source_id === x.id));
+     fd.querySelector(`.gnode[data-node="${n.id}"]`)
+       .dispatchEvent(new F.window.MouseEvent("click", { bubbles: true }));
+     const first = fd.querySelector("#graph-detail .rel-jump");
+     if (!first) return false;
+     revealsOn(F.window).length = 0;
+     first.dispatchEvent(new F.window.MouseEvent("click", { bubbles: true }));
+     /* the click both selects the counterpart and reveals its output */
+     return outputReveals(F.window).length === 1 &&
+            fd.querySelectorAll(".gnode.sel").length === 1;
+   })());
+
+ok("fixture: a relations-table row reveals the output for the node it selects",
+   (() => {
+     revealsOn(F.window).length = 0;
+     const tr = fd.querySelectorAll("#rel-table tbody tr")[0];
+     tr.dispatchEvent(new F.window.MouseEvent("click", { bubbles: true }));
+     return outputReveals(F.window).length === 1 &&
+            fd.querySelector(".gnode.sel").dataset.node === tr.dataset.node;
+   })());
+
+ok("fixture: every node reveals the output when clicked, not just a hardcoded one",
+   (() => {
+     revealsOn(F.window).length = 0;
+     G.nodes.forEach((n) => {
+       fd.querySelector(`.gnode[data-node="${n.id}"]`)
+         .dispatchEvent(new F.window.MouseEvent("click", { bubbles: true }));
+     });
+     return outputReveals(F.window).length === G.nodes.length;
+   })(), `${outputReveals(F.window).length} of ${G.nodes.length} nodes`);
+
+ok("fixture: the reveal always targets the one output container",
+   (() => {
+     const others = revealsOn(F.window).filter((r) => r.id !== "graph-detail");
+     return others.length === 0;
+   })(), "only #graph-detail is revealed");
 
 /* ---------------------------------------------------------------- report */
 const failed = checks.filter((c) => !c.pass);
