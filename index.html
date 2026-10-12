@@ -3,16 +3,16 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>ScaleUp AI — turn scientific literature into structured process knowledge</title>
+    <title>ScaleUp AI — a scientific simulation engine built from research literature</title>
     <meta
       name="description"
-      content="ScaleUp AI turns a scientific paper into a structured, machine-readable process representation with page-located evidence, process topology, and preserved uncertainty."
+      content="ScaleUp AI is building an AI-powered scientific simulation engine that turns scientific literature into executable, evidence-grounded models, evaluates them against experimental observations, and works towards composing them to simulate chemical and biological processes."
     />
     <meta name="color-scheme" content="dark" />
-    <meta property="og:title" content="ScaleUp AI — scientific process intelligence" />
+    <meta property="og:title" content="ScaleUp AI — a scientific simulation engine built from research literature" />
     <meta
       property="og:description"
-      content="Turn scientific literature into structured, machine-readable process knowledge."
+      content="An AI-powered scientific simulation engine: executable, evidence-grounded models built from published research, evaluated against experiments, and composed to simulate chemical and biological processes."
     />
     <link rel="stylesheet" href="assets/styles.css" />
     <link
@@ -37,13 +37,15 @@
         </a>
         <div class="nav-links" aria-label="Sections">
           <a href="#problem">Problem</a>
-          <a href="#demo">See it work</a>
-          <a href="#output">Output</a>
+          <a href="#engine">Engine</a>
+          <a href="#architecture">Architecture</a>
+          <a href="#demo">Demo</a>
+          <a href="#mvp">Next MVP</a>
           <a href="#graph">Graph</a>
           <a href="#evidence">Evidence</a>
           <a href="#uncertainty">Uncertainty</a>
           <a href="#validation">Validation</a>
-          <a href="#vision">Vision</a>
+          <a href="#vision">Roadmap</a>
           <a href="#team">Team</a>
         </div>
       </div>
@@ -52,32 +54,643 @@
     <!-- ============================================================ HERO -->
     <header class="hero" id="top">
       <div class="wrap hero-grid">
-        <div>
-          <p class="eyebrow"><b>Scientific process intelligence</b></p>
+        <div class="hero-copy">
+          <p class="eyebrow"><b>Scientific simulation engine</b></p>
           <h1>
-            Turn scientific literature into
-            <span class="accent">structured, machine-readable</span> process
-            knowledge.
+            Build scientific models from the
+            <span class="accent">world's research</span>.
           </h1>
           <p class="lead hero-sub">
-            ScaleUp AI reads a process paper and returns a
-            <span class="mono" style="color: var(--known)">ProcessState</span>:
-            typed fields, a process graph, and a page-located evidence record for
-            every claim — including what the paper did <em>not</em> report.
+            ScaleUp AI is building an engine that turns scientific literature
+            and experimental findings into
+            <span class="mono" style="color: var(--known)">executable, evidence-grounded models</span>
+            — models that can be evaluated against experimental observations
+            and, further along, composed to simulate chemical and biological
+            processes.
           </p>
           <div class="hero-cta">
-            <a class="btn btn-primary" href="#demo">
-              See how it works
+            <a class="btn btn-primary" href="#engine">
+              See the engine
               <svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true">
                 <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </a>
-            <a class="btn btn-ghost" href="#validation">Explore the research</a>
+            <a class="btn btn-ghost" href="#demo">See what works today</a>
           </div>
           <p class="hero-note" id="hero-note">
-            Below: a real <span id="hero-pages">—</span>-page paper from this
-            repository, processed by the real pipeline. Every number on this page
-            is read from that run.
+            An early-stage research prototype. The structured-knowledge layer is
+            built and demonstrable; executable model generation, evaluation,
+            composition and simulation are the work ahead, not working features.
+          </p>
+        </div>
+
+        <!--
+          Where the project actually stands. Kept beside the headline so the
+          long-term thesis and the present state are read together and cannot be
+          mistaken for each other.
+        -->
+        <div class="hero-status">
+          <div class="hstat now">
+            <span class="hstat-tag">Current foundation</span>
+            <p>
+              Structured, page-located extraction of process parameters,
+              experiments, relationships, evidence and uncertainty from a
+              scientific paper. Inspectable on this page.
+            </p>
+          </div>
+          <div class="hstat mvp">
+            <span class="hstat-tag">Next MVP</span>
+            <p>
+              One reproducible run: paper → structured evidence → executable
+              model → comparison against reported observations → documented
+              evaluation.
+            </p>
+          </div>
+          <div class="hstat future">
+            <span class="hstat-tag">Future capability</span>
+            <p>
+              Systematic model improvement, composition of compatible models,
+              and broader process simulation supporting scale-up reasoning.
+            </p>
+          </div>
+        </div>
+
+        <!--
+          Conceptual diagram of the intended engine. Spans both hero columns so
+          the six stages have room to be read. Labelled conceptual in its own
+          caption: it is not a picture of running software.
+        -->
+        <div class="hero-pipe">
+          <div class="pipe-track">
+            <div class="pipe-node now">
+              <span class="pipe-idx">01</span>
+              <span class="pipe-label">Scientific literature</span>
+              <span class="pipe-cap">Current foundation</span>
+            </div>
+            <div class="pipe-arrow" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                <path d="M5 12h14M13 6l6 6-6 6"/>
+              </svg>
+            </div>
+            <div class="pipe-node now">
+              <span class="pipe-idx">02</span>
+              <span class="pipe-label">Structured scientific knowledge</span>
+              <span class="pipe-cap">Current foundation</span>
+            </div>
+            <div class="pipe-arrow" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                <path d="M5 12h14M13 6l6 6-6 6"/>
+              </svg>
+            </div>
+            <div class="pipe-node mvp">
+              <span class="pipe-idx">03</span>
+              <span class="pipe-label">Executable model</span>
+              <span class="pipe-cap">Next MVP</span>
+            </div>
+            <div class="pipe-arrow" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                <path d="M5 12h14M13 6l6 6-6 6"/>
+              </svg>
+            </div>
+            <div class="pipe-node mvp">
+              <span class="pipe-idx">04</span>
+              <span class="pipe-label">Scientific evaluation</span>
+              <span class="pipe-cap">Next MVP</span>
+            </div>
+            <div class="pipe-arrow" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                <path d="M5 12h14M13 6l6 6-6 6"/>
+              </svg>
+            </div>
+            <div class="pipe-node future">
+              <span class="pipe-idx">05</span>
+              <span class="pipe-label">Model composition</span>
+              <span class="pipe-cap">Future capability</span>
+            </div>
+            <div class="pipe-arrow" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                <path d="M5 12h14M13 6l6 6-6 6"/>
+              </svg>
+            </div>
+            <div class="pipe-node future">
+              <span class="pipe-idx">06</span>
+              <span class="pipe-label">Process simulation</span>
+              <span class="pipe-cap">Future capability</span>
+            </div>
+          </div>
+          <p class="pipe-note">
+            Conceptual diagram of the intended engine. Stages beyond structured
+            knowledge are goals, not working features — the live demonstration
+            on this page is the first stage only.
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <!-- ============================================================ PROBLEM -->
+    <section id="problem">
+      <div class="wrap">
+        <p class="eyebrow"><b>01</b> The problem</p>
+        <div class="sec-head">
+          <h2>
+            Published science is not executable. Turning it into a model is
+            still a manual engineering task.
+          </h2>
+          <p class="lead muted">
+            Process simulators can represent reaction kinetics, thermodynamics,
+            mass and energy balances and transport when the right models and
+            inputs are supplied. The hard part is supplying them: the knowledge
+            that determines which model applies, with which parameters, over
+            which domain — and whether the answer holds.
+          </p>
+        </div>
+
+        <div class="prob-grid">
+          <div class="prob">
+            <h4><i>01</i>Fragmented knowledge</h4>
+            <p>
+              The relevant science is scattered across research papers,
+              equations, experimental results and models that already exist.
+              No single place holds the equations, the conditions, the measured
+              values and the assumptions together.
+            </p>
+          </div>
+          <div class="prob">
+            <h4><i>02</i>Manual model construction</h4>
+            <p>
+              Turning that knowledge into a working computational model means
+              choosing a formulation, parameterising it, implementing it and
+              checking it. Each step is expert work, done again per process.
+            </p>
+          </div>
+          <div class="prob">
+            <h4><i>03</i>Domain of applicability</h4>
+            <p>
+              A model is only meaningful inside a domain of applicability. Its
+              assumptions, fitted parameters and known limitations decide where
+              it may be trusted and where it may not.
+            </p>
+          </div>
+          <div class="prob">
+            <h4><i>04</i>Composition is not automatic</h4>
+            <p>
+              Individual models do not add up to a valid larger simulation.
+              Interfaces, units, assumptions and interactions between coupled
+              components have to be evaluated before they can be connected.
+            </p>
+          </div>
+          <div class="prob">
+            <h4><i>05</i>Scale needs more than numbers</h4>
+            <p>
+              Moving a laboratory process towards larger scale needs more than
+              extracted values. Conditions that hold in a small vessel may not
+              hold in a large one, and the governing constraints change.
+            </p>
+          </div>
+        </div>
+
+        <div class="require">
+          <h4>What ScaleUp AI is working towards</h4>
+          <p>
+            Making that path more systematic and computationally accessible:
+            reading scientific knowledge into structured form, turning it into
+            executable models, checking those models against experimental
+            observation, and eventually connecting compatible ones. The first
+            stage — structured, evidence-grounded extraction — is built and
+            demonstrable on this page. The rest is the research programme, not
+            a description of current software.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ ENGINE -->
+    <section id="engine">
+      <div class="wrap">
+        <p class="eyebrow"><b>02</b> The proposed engine</p>
+        <div class="sec-head">
+          <h2>From a paper to an evaluated, composable model</h2>
+          <p class="lead muted">
+            The engine is a sequence, not a single capability. Each stage has a
+            defined input, a defined output and a defined check. The status on
+            each card states what exists today and what is still to be built —
+            only the first two stages are working software.
+          </p>
+        </div>
+
+        <div class="approach-track">
+          <div class="astep foundation">
+            <div class="an">1</div>
+            <h4>Ingest scientific knowledge</h4>
+            <p>
+              Read research papers and relevant experimental findings, keeping
+              the page structure intact so every later statement can point back
+              to where it came from.
+            </p>
+            <div class="astat">Current foundation</div>
+          </div>
+          <div class="astep foundation">
+            <div class="an">2</div>
+            <h4>Construct structured knowledge</h4>
+            <p>
+              Extract process parameters, conditions, experimental
+              observations, evidence and the relationships between them into a
+              typed, deliberately partial record.
+            </p>
+            <div class="astat">Current foundation</div>
+          </div>
+          <div class="astep mvp">
+            <div class="an">3</div>
+            <h4>Generate an executable model</h4>
+            <p>
+              Translate a sufficiently specified scientific representation into
+              runnable computational code or a model that can actually be
+              evaluated.
+            </p>
+            <div class="astat">Next MVP</div>
+          </div>
+          <div class="astep mvp">
+            <div class="an">4</div>
+            <h4>Evaluate scientific behaviour</h4>
+            <p>
+              Compare predictions against experimental observations and check
+              the applicable physical or mathematical constraints.
+            </p>
+            <div class="astat">Next MVP</div>
+          </div>
+          <div class="astep future">
+            <div class="an">5</div>
+            <h4>Improve the model</h4>
+            <p>
+              Investigate discrepancies, assumptions, parameter uncertainty and
+              the boundaries of validity the model actually has.
+            </p>
+            <div class="astat">Future capability</div>
+          </div>
+          <div class="astep future">
+            <div class="an">6</div>
+            <h4>Compose compatible models</h4>
+            <p>
+              Connect models whose interfaces, units, assumptions and domains
+              are compatible, and evaluate whether the combination is valid.
+            </p>
+            <div class="astat">Future capability</div>
+          </div>
+          <div class="astep future">
+            <div class="an">7</div>
+            <h4>Simulate process behaviour</h4>
+            <p>
+              Work towards predicting process behaviour across conditions, to
+              inform the reasoning that scale-up decisions depend on.
+            </p>
+            <div class="astat">Future capability</div>
+          </div>
+        </div>
+
+        <div class="notice plain" style="margin-top: 22px">
+          <span class="ico">TECHNICAL LOGIC</span>
+          <span>
+            <b>Why the structured layer comes first.</b> A model can only be
+            generated from knowledge that is specific enough to implement. That
+            means parameters with units and conditions, relationships between
+            process stages, and a recorded source for each value — which is what
+            the extraction stage produces. Extracting a process
+            <em>description</em> is not the same as executing a process
+            <em>model</em>: the first is a record, the second is code that runs
+            and can disagree with reality. Only the record exists here today.
+          </span>
+        </div>
+
+        <!-- ============================================ DIAGRAM A -->
+        <p class="eyebrow" style="margin: 40px 0 12px"><b>Proposed workflow</b></p>
+        <h3 class="sub-h">How one paper becomes an evaluated model</h3>
+        <p class="step-note" style="margin-bottom: 20px; max-width: 72ch">
+          Scientific modelling is iterative, not a one-pass extraction. A
+          candidate model is executed, compared against the experimental
+          observations the paper reports, and either recorded or revised. A
+          revision is a change to an assumption, a parameter, an equation or a
+          piece of missing information that is traceable to evidence — not an
+          arbitrary edit made to reach an answer already decided.
+        </p>
+
+        <div
+          class="flow"
+          role="group"
+          aria-label="Proposed model-building workflow: research paper, structured scientific representation, candidate executable model, shared scientific simulation engine, comparison against experimental observations, with two outcomes and a return path"
+        >
+          <div class="flow-steps">
+            <div class="flow-step">
+              <span class="fs-idx">01</span>
+              <h4>Research paper</h4>
+              <ul class="flow-items">
+                <li>Experimental observations</li>
+                <li>Equations and mechanisms</li>
+                <li>Process parameters</li>
+                <li>Reported operating conditions</li>
+              </ul>
+            </div>
+            <div class="flow-step">
+              <span class="fs-idx">02</span>
+              <h4>Structured scientific representation</h4>
+              <ul class="flow-items">
+                <li>Extracted parameters</li>
+                <li>Experimental records</li>
+                <li>Evidence and provenance</li>
+                <li>Assumptions and missing information</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="flow-loop">
+            <span class="flow-loop-tag">Evaluation loop</span>
+            <div class="flow-steps">
+              <div class="flow-step loop-step">
+                <span class="fs-idx">03</span>
+                <h4>Candidate executable model</h4>
+                <ul class="flow-items">
+                  <li>Mathematical or mechanistic relationships</li>
+                  <li>Defined inputs and outputs</li>
+                  <li>Model parameters</li>
+                  <li>Explicit assumptions</li>
+                </ul>
+              </div>
+              <div class="flow-step loop-step">
+                <span class="fs-idx">04</span>
+                <h4>Shared scientific simulation engine</h4>
+                <ul class="flow-items">
+                  <li>Execute the model under supported conditions</li>
+                  <li>Generate predicted outputs</li>
+                  <li>Check applicable physical and mathematical constraints</li>
+                </ul>
+              </div>
+              <div class="flow-step loop-step">
+                <span class="fs-idx">05</span>
+                <h4>Compare against experimental observations</h4>
+                <ul class="flow-items">
+                  <li>Predicted outputs against reported values</li>
+                  <li>Within the paper's reported conditions</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="flow-outcomes">
+              <div class="fout ok">
+                <span class="fout-tag">Evaluation is satisfactory</span>
+                <ul class="flow-items">
+                  <li>Record the model, evidence and parameter values</li>
+                  <li>Record the evaluation result</li>
+                  <li>Record the limits of applicability</li>
+                  <li>Consider it as a candidate for a larger composed
+                    simulation</li>
+                </ul>
+              </div>
+              <div class="fout retry">
+                <span class="fout-tag">Evaluation reveals discrepancies</span>
+                <ul class="flow-items">
+                  <li>Investigate the cause</li>
+                  <li>Revisit assumptions, parameters, equations or missing
+                    information</li>
+                  <li>Generate or modify a candidate model</li>
+                  <li>Evaluate it again</li>
+                </ul>
+              </div>
+            </div>
+
+            <p class="flow-return">
+              <span class="fr-arrow" aria-hidden="true">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5"/>
+                </svg>
+              </span>
+              <span>
+                <b>Return to model development.</b> The revision goes back
+                through candidate model, execution and comparison. Nothing about
+                the loop assumes it converges in a given number of passes, and
+                an unsatisfactory result is a finding to report rather than a
+                problem to iterate away.
+              </span>
+            </p>
+          </div>
+        </div>
+
+        <div class="notice plain" style="margin-top: 20px">
+          <span class="ico">CONCEPTUAL</span>
+          <span>
+            Conceptual architecture — the complete model-generation,
+            evaluation, and composition workflow has not yet been implemented end
+            to end. Of the sequence above, only the structured representation is
+            working software today.
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ ARCHITECTURE -->
+    <section id="architecture">
+      <div class="wrap">
+        <p class="eyebrow"><b>03</b> Proposed architecture</p>
+        <div class="sec-head">
+          <h2>Many sources, many models, one shared engine</h2>
+          <p class="lead muted">
+            A single paper is not enough to simulate a complex chemical or
+            biological process. Different sources describe different phenomena,
+            mechanisms and operating conditions. The engine's long-term purpose
+            is to build each model separately, test it against its own evidence,
+            and then connect the ones that are genuinely compatible inside one
+            shared simulation.
+          </p>
+        </div>
+
+        <!-- ============================================ DIAGRAM B -->
+        <div
+          class="arch"
+          role="group"
+          aria-label="Proposed architecture: four research sources each feeding an individual candidate model, the models connected through a shared scientific simulation engine, producing a composed process simulation"
+        >
+          <div class="arch-col arch-sources">
+            <span class="arch-col-tag">Research sources</span>
+            <div class="acard paper">
+              <span class="acard-name">Paper A</span>
+              <span class="acard-sub">Reaction kinetics</span>
+            </div>
+            <div class="acard paper">
+              <span class="acard-name">Paper B</span>
+              <span class="acard-sub">Mass transfer</span>
+            </div>
+            <div class="acard paper">
+              <span class="acard-name">Paper C</span>
+              <span class="acard-sub">Heat transfer</span>
+            </div>
+            <div class="acard paper">
+              <span class="acard-name">Paper D</span>
+              <span class="acard-sub">Biological growth</span>
+            </div>
+            <p class="arch-note">
+              Illustrative categories for independent sources. A source may be
+              incomplete, contradictory or insufficiently specified, and may
+              produce no candidate model at all.
+            </p>
+          </div>
+
+          <div class="arch-links" aria-hidden="true">
+            <span class="alink"></span>
+            <span class="alink"></span>
+            <span class="alink"></span>
+            <span class="alink"></span>
+          </div>
+
+          <div class="arch-col arch-models">
+            <span class="arch-col-tag">Individual candidate models</span>
+            <div class="acard model">
+              <span class="acard-name">Reaction model</span>
+              <span class="acard-sub evidence">Evidence: Paper A</span>
+            </div>
+            <div class="acard model">
+              <span class="acard-name">Mass-transfer model</span>
+              <span class="acard-sub evidence">Evidence: Paper B</span>
+            </div>
+            <div class="acard model">
+              <span class="acard-name">Heat-transfer model</span>
+              <span class="acard-sub evidence">Evidence: Paper C</span>
+            </div>
+            <div class="acard model">
+              <span class="acard-name">Growth model</span>
+              <span class="acard-sub evidence">Evidence: Paper D</span>
+            </div>
+            <p class="arch-note loop-note">
+              Each model is executed and compared with its own experimental
+              observations before it is considered for composition. A model that
+              does not survive its own evaluation does not enter the engine.
+            </p>
+          </div>
+
+          <div class="arch-links" aria-hidden="true">
+            <span class="alink wide"></span>
+          </div>
+
+          <div class="engine">
+            <span class="engine-hd">Scientific Simulation Engine</span>
+            <div class="engine-slots">
+              <span class="engine-slot">Reaction</span>
+              <span class="engine-slot">Mass transfer</span>
+              <span class="engine-slot">Heat transfer</span>
+              <span class="engine-slot">Growth</span>
+              <span class="engine-wire" aria-hidden="true"></span>
+            </div>
+            <div class="engine-bus">
+              <span class="engine-bus-line">Shared interfaces · consistent units · coupling · numerical execution</span>
+            </div>
+            <span class="arch-col-tag">Composition requires</span>
+            <ul class="engine-reqs">
+              <li>Compatible inputs and outputs</li>
+              <li>Consistent units and variables</li>
+              <li>Compatible assumptions and operating domains</li>
+              <li>Interactions between phenomena</li>
+              <li>Appropriate coupling and numerical execution</li>
+              <li>Validation of the resulting combined behaviour</li>
+            </ul>
+          </div>
+
+          <div class="arch-links" aria-hidden="true">
+            <span class="alink wide"></span>
+          </div>
+
+          <div class="arch-col arch-result">
+            <span class="arch-col-tag">Future capability</span>
+            <div class="acard result">
+              <span class="acard-name">Composed process simulation</span>
+              <span class="acard-sub">
+                Combine compatible, evidence-grounded models to simulate
+                interacting process phenomena and evaluate predicted process
+                behaviour.
+              </span>
+            </div>
+            <p class="arch-note loop-note">
+              Composed simulation → compare with experimental or reference
+              observations → diagnose discrepancies → refine models or coupling →
+              evaluate again.
+            </p>
+          </div>
+        </div>
+
+        <div class="notice plain" style="margin-top: 20px">
+          <span class="ico">CONCEPTUAL</span>
+          <span>
+            Conceptual architecture — the complete model-generation,
+            evaluation, and composition workflow has not yet been implemented end
+            to end. No models are currently composed or executed together, and
+            no convergence of the evaluation loop has been demonstrated.
+          </span>
+        </div>
+
+        <!-- ============================================ DIAGRAM C -->
+        <p class="eyebrow" style="margin: 40px 0 12px"><b>Coverage</b></p>
+        <h3 class="sub-h">From individual models to system coverage</h3>
+        <p class="step-note" style="margin-bottom: 20px; max-width: 72ch">
+          Coverage grows as compatible models are added, but coverage and
+          accuracy are different things. A wider system describes more of the
+          process; whether it predicts better depends on the quality of each
+          model, their compatibility, the data behind them, the assumptions they
+          carry, and how the coupled result is validated.
+        </p>
+
+        <div
+          class="cov"
+          role="group"
+          aria-label="Three conceptual stages: individual models, coupled models, integrated process simulation"
+        >
+          <div class="cov-stage">
+            <span class="cs-idx">01</span>
+            <h4>Individual models</h4>
+            <p>
+              Separate models each describe one specific phenomenon, built and
+              evaluated against their own evidence.
+            </p>
+          </div>
+          <div class="cov-stage">
+            <span class="cs-idx">02</span>
+            <h4>Coupled models</h4>
+            <p>
+              Compatible models exchange the quantities they share and represent
+              phenomena that interact rather than in isolation.
+            </p>
+          </div>
+          <div class="cov-stage">
+            <span class="cs-idx">03</span>
+            <h4>Integrated process simulation</h4>
+            <p>
+              The composed system represents a larger portion of the process,
+              subject to validation of the combined behaviour.
+            </p>
+          </div>
+        </div>
+
+        <div class="notice plain" style="margin-top: 20px">
+          <span class="ico">BOUND</span>
+          <span>
+            <b>Adding more models does not automatically make predictions more
+            accurate.</b> A wider composed system can be worse than a narrower
+            one if a component is poorly specified, incompatible with the
+            others, or wrong in a way the others inherit. These stages describe
+            intended system coverage, not a benchmark, and not a claim that
+            accuracy increases with each step.
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ DEMO -->
+    <section id="demo">
+      <div class="wrap">
+        <p class="eyebrow"><b>04</b> Current technical demonstration</p>
+        <div class="sec-head">
+          <h2>The foundation stage, working and inspectable</h2>
+          <p class="lead muted">
+            This is <span class="mono" id="dm-source">—</span>, the paper
+            bundled with the repository. Step through what the pipeline does to
+            it. This is stage one of the engine: structured, evidence-grounded
+            scientific knowledge. It is not an executable model, and nothing on
+            this page runs a simulation.
           </p>
         </div>
 
@@ -144,81 +757,11 @@
             </li>
           </ol>
         </div>
-      </div>
-    </header>
-
-    <!-- ============================================================ PROBLEM -->
-    <section id="problem">
-      <div class="wrap">
-        <p class="eyebrow"><b>01</b> The problem</p>
-        <div class="sec-head">
-          <h2>The process is in the paper. The process is not in the data.</h2>
-          <p class="lead muted">
-            A published bioprocess is split across methods, tables, figures and
-            supplementary text. Reading one parameter out of it is easy. Getting
-            a faithful, machine-readable picture of the
-            <em>whole</em> process is not.
-          </p>
-        </div>
-
-        <div class="prob-grid">
-          <div class="prob">
-            <h4><i>01</i>Scattered</h4>
-            <p>
-              Operating conditions live in methods prose, mass balances in
-              tables, and the sequence of operations in a figure. No single
-              field holds the process.
-            </p>
-          </div>
-          <div class="prob">
-            <h4><i>02</i>Interdependent</h4>
-            <p>
-              A parameter is only meaningful with its unit, its stage, and the
-              operation it belongs to. A bare number loses all three.
-            </p>
-          </div>
-          <div class="prob">
-            <h4><i>03</i>Incompletely reported</h4>
-            <p>
-              Papers omit setpoints, inducer identity, agitation and aeration.
-              The gaps are real, and a value-filled schema would hide them.
-            </p>
-          </div>
-          <div class="prob">
-            <h4><i>04</i>Internally inconsistent</h4>
-            <p>
-              The same quantity can be stated one way in Methods and another in
-              Results. Flattening that to a single value destroys the conflict.
-            </p>
-          </div>
-        </div>
-
-        <div class="require">
-          <h4>Useful process knowledge has to carry five things at once</h4>
-          <div class="chips">
-            <span class="chip">parameters</span>
-            <span class="chip">relationships</span>
-            <span class="chip">evidence</span>
-            <span class="chip">provenance</span>
-            <span class="chip">uncertainty</span>
-            <span class="chip">missing information</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============================================================ DEMO -->
-    <section id="demo">
-      <div class="wrap">
-        <p class="eyebrow"><b>02</b> See it work</p>
-        <div class="sec-head">
-          <h2>One real paper, six steps</h2>
-          <p class="lead muted">
-            This is <span class="mono" id="dm-source">—</span>, the paper
-            bundled with the repository. Step through what the pipeline does to
-            it.
-          </p>
-        </div>
+        <p class="hero-note" style="margin-top: 14px">
+          Below: a real <span id="hero-pages">—</span>-page paper from this
+          repository, processed by the real pipeline. Every number on this page
+          is read from that run.
+        </p>
 
         <div class="stepper">
           <div class="step-nav" role="tablist" aria-label="Pipeline stages">
@@ -356,13 +899,27 @@
     <!-- ============================================================ OUTPUT / WORKBENCH -->
     <section id="output">
       <div class="wrap">
-        <p class="eyebrow"><b>03</b> The actual output</p>
+        <p class="eyebrow"><b>05</b> The actual output</p>
         <div class="sec-head">
           <h2>Not a summary. A structured record you can interrogate.</h2>
           <p class="lead muted">
             Select any field to see its value, its provenance, and the exact
             excerpt on the page it came from.
           </p>
+        </div>
+
+        <div class="notice plain" style="margin-top: 18px">
+          <span class="ico">MISSION</span>
+          <span>
+            <b>How this connects.</b> This workbench exposes the first stage of
+            the simulation engine: turning published process information into a
+            structured representation that can be inspected and traced to its
+            source. The current demonstration uses a deterministic reference
+            fixture. It is not an executable model, not a live extraction, not a
+            predictive digital twin, and not a scale-up tool. Model generation,
+            evaluation against observations, and composition would each need to
+            be developed and validated separately.
+          </span>
         </div>
 
         <div class="wb">
@@ -396,10 +953,88 @@
       </div>
     </section>
 
+    <!-- ============================================================ NEXT MVP -->
+    <section id="mvp">
+      <div class="wrap">
+        <p class="eyebrow"><b>06</b> The next MVP</p>
+        <div class="sec-head">
+          <h2>Building and evaluating the first executable scientific model</h2>
+          <p class="lead muted">
+            One paper. One model. One documented comparison against the
+            experiments that paper reports. This is the next milestone, not a
+            capability that works today — nothing on this page has executed a
+            model yet.
+          </p>
+        </div>
+
+        <div class="mvp-track">
+          <div class="mstep">
+            <div class="mn">01</div>
+            <p>
+              Select a research paper containing a process specified in enough
+              detail to implement, together with the experimental observations
+              reported against it.
+            </p>
+          </div>
+          <div class="mstep">
+            <div class="mn">02</div>
+            <p>
+              Extract its scientific information and evidence into the same
+              structured representation demonstrated above, with provenance for
+              every value.
+            </p>
+          </div>
+          <div class="mstep">
+            <div class="mn">03</div>
+            <p>
+              Create one executable model from that representation — code that
+              runs, taking the extracted parameters as inputs.
+            </p>
+          </div>
+          <div class="mstep">
+            <div class="mn">04</div>
+            <p>
+              Run the model under the conditions the paper actually reports,
+              staying inside its domain of applicability.
+            </p>
+          </div>
+          <div class="mstep">
+            <div class="mn">05</div>
+            <p>
+              Compare the model predictions against the reported experimental
+              observations, and record the disagreement rather than the
+              agreement.
+            </p>
+          </div>
+          <div class="mstep">
+            <div class="mn">06</div>
+            <p>
+              Document the model assumptions, inputs, outputs, discrepancies,
+              limitations and evaluation results as a reviewable record.
+            </p>
+          </div>
+        </div>
+
+        <div class="notice plain" style="margin-top: 22px">
+          <span class="ico">SCOPE</span>
+          <span>
+            <b>Description is not execution.</b> The distinction that matters
+            most here: extracting a process description produces a record of
+            what a paper says, while executing a scientific model produces a
+            number that can be wrong in a way the record was not. The
+            demonstration above produces the former. The workflow above is the
+            plan for the latter, and it has not been run end to end — no
+            end-to-end path from paper to executable model to evaluated
+            prediction is demonstrated anywhere on this site.
+          </span>
+        </div>
+      </div>
+    </section>
+
     <!-- ============================================================ GRAPH -->
     <section id="graph">
       <div class="wrap">
-        <p class="eyebrow"><b>04</b> Process topology</p>
+        <p class="eyebrow"><b>07</b> Process topology</p>
         <div class="sec-head">
           <h2>The process as a typed graph</h2>
           <p class="lead muted">
@@ -457,7 +1092,7 @@
     <!-- ============================================================ EVIDENCE -->
     <section id="evidence">
       <div class="wrap">
-        <p class="eyebrow"><b>05</b> Evidence &amp; trust</p>
+        <p class="eyebrow"><b>08</b> Evidence &amp; trust</p>
         <div class="sec-head">
           <h2>You can inspect why the system believes something.</h2>
           <p class="lead muted">
@@ -485,7 +1120,7 @@
     <!-- ============================================================ UNCERTAINTY -->
     <section id="uncertainty">
       <div class="wrap">
-        <p class="eyebrow"><b>06</b> Uncertainty &amp; missing information</p>
+        <p class="eyebrow"><b>09</b> Uncertainty &amp; missing information</p>
         <div class="sec-head">
           <h2>The system does not fill in what the paper left out.</h2>
           <p class="lead muted">
@@ -511,7 +1146,7 @@
     <!-- ============================================================ VALIDATION -->
     <section id="validation">
       <div class="wrap">
-        <p class="eyebrow"><b>07</b> Validation record</p>
+        <p class="eyebrow"><b>10</b> Validation record</p>
         <div class="sec-head">
           <h2>Where the system rejects the model</h2>
           <p class="lead muted">
@@ -533,6 +1168,18 @@
             recall or hallucination rate is claimed or implied. Raw provider
             output was not retained in these artifacts; only counts, locations,
             lengths and digests were.
+          </span>
+        </div>
+
+        <div class="notice plain" style="margin-top: 18px">
+          <span class="ico">WHY</span>
+          <span>
+            <b>Why we publish limitations.</b> We publish the validation
+            results, including failures and unresolved limitations, so progress
+            can be assessed against observable evidence. This establishes a
+            baseline for the extraction stage only. It says nothing about model
+            generation, execution or predictive accuracy, none of which have
+            been demonstrated here.
           </span>
         </div>
 
@@ -628,53 +1275,68 @@
     <!-- ============================================================ VISION -->
     <section id="vision">
       <div class="wrap">
-        <p class="eyebrow"><b>08</b> Direction</p>
+        <p class="eyebrow"><b>11</b> Vision and roadmap</p>
         <div class="sec-head">
-          <h2>From literature to computable process</h2>
+          <h2>From a knowledge layer to a simulation engine</h2>
           <p class="lead muted">
-            The current artifact is a knowledge layer. Where it is meant to lead
-            is stated separately, and only one step of it exists today.
+            The current artifact is a structured knowledge layer. Where it is
+            meant to lead is stated separately below, and only the first stage
+            exists today.
           </p>
         </div>
 
         <div class="vision-track">
           <div class="vstep now">
             <div class="vn">01</div>
-            <h4>Understand</h4>
+            <h4>Foundation</h4>
             <p>
-              Literature becomes a structured process representation with
-              evidence and preserved gaps. Implemented.
+              Structured, evidence-grounded representation of scientific process
+              information, with parameters, experiments, relationships,
+              provenance and uncertainty. Built and demonstrable.
             </p>
           </div>
-          <div class="vstep next">
+          <div class="vstep partial">
             <div class="vn">02</div>
-            <h4>Model</h4>
+            <h4>Next milestone</h4>
             <p>
-              Representations that carry units, ranges and stage membership
-              become usable as model inputs. Research direction.
+              One executable scientific model, generated from an extracted paper
+              and evaluated against the experimental observations it reports.
+              Not yet built.
             </p>
           </div>
           <div class="vstep next">
             <div class="vn">03</div>
-            <h4>Simulate</h4>
+            <h4>Systematic evaluation</h4>
             <p>
-              Predict process behaviour against a mechanistic or data-driven
-              model. Research direction.
+              Evaluation as a repeatable step: run a model across conditions,
+              compare against evidence, and record where it fails. Research
+              direction.
             </p>
           </div>
           <div class="vstep next">
             <div class="vn">04</div>
-            <h4>Optimize</h4>
+            <h4>Model improvement</h4>
             <p>
-              Search operating space against real constraints and objectives.
-              Research direction.
+              Investigate discrepancies, assumptions and parameter uncertainty
+              as inputs to revision rather than as silent failures. Research
+              direction.
             </p>
           </div>
           <div class="vstep next">
             <div class="vn">05</div>
-            <h4>Scale</h4>
+            <h4>Model composition</h4>
             <p>
-              Transfer knowledge from bench to production. Research direction.
+              Connecting models whose interfaces, units, assumptions and domains
+              are compatible, and establishing that the combination is valid.
+              Research direction.
+            </p>
+          </div>
+          <div class="vstep next">
+            <div class="vn">06</div>
+            <h4>Long-term vision</h4>
+            <p>
+              Composition of compatible models into broader process simulations
+              that can inform scale-up reasoning. Research direction.
             </p>
           </div>
         </div>
@@ -683,12 +1345,14 @@
           <span class="ico">BOUND</span>
           <span>
             <b>Not built.</b> No process simulation, autonomous optimisation,
-            industrial scale-up, experimental planning, closed-loop operation or
-            process-development automation exists in the codebase today.
+            model composition, industrial scale-up, experimental planning,
+            closed-loop operation or process-development automation exists in
+            the codebase today.
             <span class="mono">ModelResult</span> and
             <span class="mono">Recommendation</span> are reserved fields on the
-            schema and are empty in every run shown here. Treat steps 02–05 as
-            intent, not capability.
+            schema and are empty in every run shown here. Treat stages 02–06 as
+            intent, not capability, and read the validation record for what the
+            extraction stage actually achieves.
           </span>
         </div>
       </div>
@@ -697,9 +1361,9 @@
     <!-- ============================================================ TEAM -->
     <section id="team">
       <div class="wrap">
-        <p class="eyebrow"><b>09</b> Team</p>
+        <p class="eyebrow"><b>12</b> Team</p>
         <div class="sec-head">
-          <h2>Three people building the interpretation layer</h2>
+          <h2>A small team building a computational engine</h2>
         </div>
         <div class="team">
           <div class="person">
@@ -723,23 +1387,48 @@
           contributions, so no prior employers, degrees, awards, publications or
           institutional affiliations are claimed here.
         </p>
+        <div class="notice plain" style="margin-top: 18px">
+          <span class="ico">CREDIBILITY</span>
+          <span>
+            <b>Why we are pursuing this.</b> Our credibility rests on the
+            working artifact you can inspect on this page — a pipeline that
+            extracts structured, evidence-grounded scientific knowledge from
+            published research, with failures reported openly. The ambition is
+            the underlying computational engine itself: turning that knowledge
+            into executable models that can be checked against experiment.
+            Building it is a modelling, numerical and software-engineering
+            problem, and we are candid about the parts that remain to be built.
+          </span>
+        </div>
       </div>
     </section>
 
     <!-- ============================================================ CTA -->
     <div class="cta" id="contact">
       <div class="wrap">
-        <p class="eyebrow" style="justify-content: center"><b>10</b> Next</p>
-        <h2>Look at the artifact, not the pitch.</h2>
+        <p class="eyebrow" style="justify-content: center"><b>13</b> Get in touch</p>
+        <h2>Help us build the engine.</h2>
         <p class="lead muted">
-          This is a working prototype with a reference artifact and a published
-          validation record. If you work on biological or chemical process
-          development, the fastest way to evaluate it is to point it at a paper
-          you already know well.
+          We are building a scientific simulation engine from published research,
+          and the parts that are hardest are the parts we do not know yet. If you
+          work on scientific computing, chemical or bioprocess engineering,
+          mechanistic modelling, or the evaluation of models against
+          experimental data, we want to hear where this approach is wrong.
         </p>
         <div class="cta-btns">
           <a class="btn btn-primary" href="#demo">Explore the prototype</a>
           <a class="btn btn-ghost" href="#validation">See the validation record</a>
+        </div>
+        <div class="notice plain" style="margin-top: 22px; max-width: 660px; margin-left: auto; margin-right: auto; text-align: left;">
+          <span class="ico">CONTACT</span>
+          <span>
+            <b>Technical conversations.</b> We are building the transition from
+            structured scientific knowledge to executable, evaluated, composable
+            models. Researchers and engineers working on that transition — model
+            generation from literature, domain-of-applicability handling,
+            numerical validation against experiments, and model composition — are
+            the people we most want to hear from.
+          </span>
         </div>
         <div class="notice">
           <span class="ico">MATURITY</span>
@@ -757,8 +1446,8 @@
     <footer>
       <div class="wrap foot-in">
         <div>
-          <strong style="color: var(--text-hi)">ScaleUp AI</strong> — scientific
-          process intelligence. Pre-release.
+          <strong style="color: var(--text-hi)">ScaleUp AI</strong> — a scientific
+          simulation engine built from research literature. Pre-release.
         </div>
       </div>
     </footer>

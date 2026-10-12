@@ -417,6 +417,141 @@ p {
   max-width: 66ch;
 }
 
+/* Hero: where the project stands.
+
+   Three status panels sit beside the headline rather than below it, so the
+   long-term thesis and the present state are read in the same glance and
+   cannot be mistaken for one another. Each panel is keyed to one of the three
+   capability states used throughout the page, and the same three words label
+   the hero pipeline, the engine cards and the roadmap. */
+.hero-status {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.hstat {
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r);
+  background: var(--ink-850);
+  padding: 14px 16px 15px;
+}
+.hstat-tag {
+  display: block;
+  font-family: var(--mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  margin-bottom: 7px;
+  color: var(--text-xlo);
+}
+.hstat p {
+  margin: 0;
+  font-size: var(--fs-cap);
+  line-height: 1.6;
+  color: var(--text-lo);
+}
+.hstat.now {
+  border-color: var(--known-dim);
+}
+.hstat.now .hstat-tag {
+  color: var(--known);
+}
+.hstat.mvp {
+  border-color: var(--line-strong);
+}
+.hstat.mvp .hstat-tag {
+  color: var(--evidence);
+}
+.hstat.future {
+  border-style: dashed;
+}
+.hstat.future .hstat-tag {
+  color: var(--text-xlo);
+}
+
+/* Hero pipeline: the six-stage progression, spanning both hero columns.
+
+   It is a conceptual diagram of the intended engine, not a picture of running
+   software — the caption says so in as many words. The three capability states
+   are encoded as node variants so the boundary between what exists and what
+   does not is visible in the shape of the diagram, not only in its legend. */
+.hero-pipe {
+  grid-column: 1 / -1;
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  background: var(--ink-850);
+  padding: 24px 22px 18px;
+}
+.pipe-track {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+}
+.pipe-node {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 12px 10px 13px;
+  border: 1px solid var(--line-soft);
+  border-radius: 3px;
+  background: var(--ink-800);
+}
+.pipe-idx {
+  font-family: var(--mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.1em;
+  color: var(--text-xlo);
+}
+.pipe-label {
+  font-size: var(--fs-cap);
+  line-height: 1.45;
+  color: var(--text-hi);
+  font-weight: 600;
+}
+.pipe-cap {
+  font-family: var(--mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.05em;
+  color: var(--text-xlo);
+}
+.pipe-node.now {
+  border-color: var(--known-dim);
+  background: rgba(78, 205, 196, 0.05);
+}
+.pipe-node.now .pipe-label,
+.pipe-node.now .pipe-cap {
+  color: var(--known);
+}
+.pipe-node.mvp {
+  border-color: var(--line-strong);
+  border-style: dashed;
+}
+.pipe-node.mvp .pipe-cap {
+  color: var(--evidence);
+}
+.pipe-node.future {
+  border-style: dashed;
+}
+.pipe-node.future .pipe-label {
+  color: var(--text-lo);
+}
+.pipe-arrow {
+  flex: none;
+  align-self: center;
+  color: var(--line-strong);
+  padding: 0 2px;
+}
+.pipe-note {
+  margin: 16px 0 0;
+  font-family: var(--mono);
+  font-size: var(--fs-micro);
+  line-height: 1.6;
+  color: var(--text-xlo);
+  letter-spacing: 0.03em;
+}
+
 /* Live pipeline strip */
 .pipeline {
   border: 1px solid var(--line);
@@ -1714,6 +1849,551 @@ pre.code .b {
   margin: 0;
 }
 
+/* ---------------------------------------------------------------- approach */
+
+/* The seven stages do not divide evenly into any column count, so the trailing
+   space is deliberately left empty. The track's background matches the card
+   background and each card carries its own hairline border rather than relying
+   on a 1px gap showing a lighter backdrop through: otherwise the unused slot
+   renders as a filled cell and reads as a rendering fault. Seven stages that
+   do not exist yet should not be padded out to look balanced. */
+.approach-track {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1px;
+  background: var(--ink-850);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r);
+  overflow: hidden;
+}
+.astep {
+  background: var(--ink-850);
+  box-shadow: 0 0 0 1px var(--line-soft);
+  padding: 20px 17px;
+  display: flex;
+  flex-direction: column;
+}
+.astep .an {
+  font-family: var(--mono);
+  font-size: var(--fs-micro);
+  color: var(--text-xlo);
+  letter-spacing: 0.1em;
+  margin-bottom: 10px;
+}
+.astep h4 {
+  margin-bottom: 7px;
+  font-size: var(--fs-h4);
+  color: var(--text-hi);
+}
+.astep p {
+  margin: 0 0 12px;
+  font-size: var(--fs-cap);
+  color: var(--text-lo);
+  line-height: 1.6;
+  flex: 1;
+}
+.astat {
+  font-family: var(--mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.04em;
+  padding: 3px 8px;
+  border-radius: 2px;
+  border: 1px solid var(--line-strong);
+  color: var(--text-lo);
+  align-self: flex-start;
+}
+.astep.foundation {
+  background: rgba(78, 205, 196, 0.04);
+  box-shadow: 0 0 0 1px var(--known-dim);
+}
+.astep.foundation h4 {
+  color: var(--known);
+}
+.astep.foundation .astat {
+  color: var(--known);
+  border-color: var(--known-dim);
+  background: rgba(78, 205, 196, 0.07);
+}
+.astep.mvp {
+  box-shadow: 0 0 0 1px var(--line-soft);
+}
+.astep.mvp .astat {
+  color: var(--evidence);
+  border-color: var(--line-strong);
+  border-style: dashed;
+}
+.astep.future {
+  box-shadow: 0 0 0 1px var(--line-soft);
+}
+.astep.future h4 {
+  color: var(--text-lo);
+}
+.astep.future .astat {
+  color: var(--text-xlo);
+  border-color: var(--line-strong);
+  border-style: dashed;
+}
+
+/* ------------------------------------------------------------ diagrams A-C
+
+   Three conceptual diagrams. They share the page's own vocabulary — the
+   --known accent for what is built, --evidence for the next milestone, and
+   dashed borders for future capability — so a reader who has learned the
+   hero's three status panels can read a dashed node anywhere on the page
+   without a legend.
+
+   Everything is HTML and CSS rather than an exported image: the labels stay
+   selectable, translatable and reflowable, and nothing here needs a build
+   step or a new dependency. */
+
+.sub-h {
+  font-size: var(--fs-h3);
+  color: var(--text-hi);
+  margin-bottom: 12px;
+}
+
+/* --- Diagram A: the model-building loop
+
+   The linear part is a CSS grid whose ::after chevron is the connector, so the
+   flow reflows to a single column without the arrows detaching from their
+   nodes. The iterative part is inset in a bordered rail with its own tag,
+   because "these three steps repeat" is the single most important thing the
+   diagram has to say, and a flat stack of five boxes would not say it. */
+
+.flow {
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  background: var(--ink-850);
+  padding: 22px 20px 20px;
+}
+.flow-steps {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 34px;
+}
+.flow-step {
+  position: relative;
+  border: 1px solid var(--line-soft);
+  border-radius: 3px;
+  background: var(--ink-850);
+  padding: 15px 16px 16px;
+}
+/* Connector: a chevron in the column gap, pointing right. */
+.flow-step:not(:nth-child(2n))::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -27px;
+  width: 20px;
+  height: 20px;
+  margin-top: -10px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b7a8c' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E");
+}
+.flow-steps > .flow-step:last-child::after {
+  display: none;
+}
+.flow-loop {
+  position: relative;
+  margin-top: 20px;
+  padding: 20px 18px 18px;
+  border: 1px dashed var(--evidence);
+  border-radius: 3px;
+  background: rgba(224, 177, 85, 0.03);
+}
+.flow-loop-tag {
+  position: absolute;
+  top: -9px;
+  left: 16px;
+  padding: 1px 8px;
+  background: var(--ink-900);
+  border: 1px solid var(--evidence);
+  border-radius: 2px;
+  font-family: var(--mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--evidence);
+}
+.flow-loop .flow-steps {
+  margin-top: 6px;
+}
+/* The evaluation rail holds three steps. A two-column grid leaves the third
+   step beside empty space, and the "Evaluation loop" border then reads as an
+   empty panel rather than a cycle. Three across keeps the loop a rectangle
+   with one populated row, so the return path below it has something to
+   return to. */
+.flow-loop .flow-steps {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.flow-step.loop-step {
+  background: var(--ink-850);
+}
+.fs-idx {
+  display: block;
+  font-family: var(--mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.1em;
+  color: var(--text-xlo);
+  margin-bottom: 8px;
+}
+.flow-step h4 {
+  margin-bottom: 8px;
+  font-size: var(--fs-h4);
+  color: var(--text-hi);
+  line-height: 1.4;
+}
+.flow-items {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.flow-items li {
+  position: relative;
+  padding-left: 13px;
+  margin-bottom: 5px;
+  font-size: var(--fs-cap);
+  line-height: 1.55;
+  color: var(--text-lo);
+}
+.flow-items li:last-child {
+  margin-bottom: 0;
+}
+.flow-items li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 5px;
+  height: 1px;
+  background: var(--line-strong);
+}
+.flow-outcomes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 16px;
+}
+.fout {
+  border: 1px solid var(--line-soft);
+  border-radius: 3px;
+  background: var(--ink-850);
+  padding: 15px 16px 16px;
+}
+.fout-tag {
+  display: block;
+  font-family: var(--mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.fout.ok .fout-tag {
+  color: var(--known);
+}
+.fout.ok {
+  border-color: var(--known-dim);
+}
+.fout.retry .fout-tag {
+  color: var(--evidence);
+}
+.fout.retry {
+  border-color: var(--evidence);
+  border-style: dashed;
+}
+.flow-return {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin: 16px 0 0;
+  padding: 13px 15px;
+  border: 1px dashed var(--evidence);
+  border-radius: 3px;
+  background: var(--ink-850);
+  font-size: var(--fs-cap);
+  line-height: 1.6;
+  color: var(--text-lo);
+}
+.flow-return b {
+  color: var(--evidence);
+}
+.fr-arrow {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--evidence);
+  border-radius: 50%;
+  color: var(--evidence);
+}
+
+/* --- Diagram B: many sources, many models, one engine
+
+   A five-column grid: sources, connectors, models, engine, result. The
+   connector columns are real elements rather than drawn lines so the
+   relationship between a source and the model built from it survives
+   reflow — at narrow widths the columns stack and the connectors turn
+   downward, keeping each arrow attached to the row it belongs to. */
+
+.arch {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 30px minmax(0, 1.05fr) 34px minmax(0, 1.25fr) 34px minmax(0, 1fr);
+  gap: 0 10px;
+  align-items: start;
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  background: var(--ink-850);
+  padding: 22px 20px 20px;
+}
+.arch-col,
+.engine {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  min-width: 0;
+}
+.arch-col-tag {
+  font-family: var(--mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--text-xlo);
+}
+.acard {
+  border: 1px solid var(--line-soft);
+  border-radius: 3px;
+  background: var(--ink-800);
+  padding: 11px 13px 12px;
+}
+.acard-name {
+  display: block;
+  font-size: var(--fs-cap);
+  font-weight: 600;
+  color: var(--text-hi);
+  line-height: 1.4;
+}
+.acard-sub {
+  display: block;
+  margin-top: 4px;
+  font-size: var(--fs-micro);
+  line-height: 1.55;
+  color: var(--text-lo);
+}
+.acard.paper .acard-name {
+  color: var(--known);
+}
+.acard.paper {
+  border-color: var(--known-dim);
+}
+.acard.model .acard-sub.evidence {
+  color: var(--text-xlo);
+  letter-spacing: 0.03em;
+}
+.acard.model {
+  border-style: dashed;
+}
+.acard.result {
+  border-color: var(--evidence);
+  border-style: dashed;
+  background: rgba(224, 177, 85, 0.04);
+}
+.acard.result .acard-name {
+  color: var(--evidence);
+}
+.arch-note {
+  margin: 4px 0 0;
+  font-size: var(--fs-micro);
+  line-height: 1.6;
+  color: var(--text-xlo);
+}
+.arch-note.loop-note {
+  padding: 10px 12px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 3px;
+  color: var(--text-lo);
+}
+/* Source-to-model connectors. One per source, drawn in the gutter so the
+   pairing stays readable without a line that would have to be redrawn at
+   every breakpoint. */
+.arch-links {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 9px;
+  padding: 22px 0 0;
+}
+.alink {
+  flex: 1;
+  min-height: 26px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 22px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b7a8c' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E");
+}
+.alink.wide {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234ecdc4' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E");
+}
+.engine {
+  border: 1px solid var(--known-dim);
+  border-radius: 3px;
+  background: rgba(78, 205, 196, 0.05);
+  padding: 15px 16px 16px;
+  gap: 10px;
+}
+.engine-hd {
+  font-family: var(--mono);
+  font-size: var(--fs-cap);
+  letter-spacing: 0.05em;
+  color: var(--known);
+}
+/* The four models are shown seated on a shared bus rather than floating in the
+   box: the composition is what connects them, not the container. The bus is
+   drawn as an actual rail — a vertical drop from the slot grid into a
+   horizontal line — because "these four models meet at one interface" is the
+   claim the diagram exists to make, and a stack of unrelated cards in a box
+   would not make it. */
+.engine-slots {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  padding-bottom: 10px;
+}
+.engine-wire {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 1px;
+  height: 10px;
+  background: var(--known-dim);
+}
+.engine-slot {
+  font-family: var(--mono);
+  font-size: var(--fs-micro);
+  color: var(--text-lo);
+  padding: 5px 8px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 2px;
+  text-align: center;
+}
+.engine-bus {
+  position: relative;
+  padding: 9px 10px 10px;
+  border-top: 1px solid var(--known-dim);
+  border-bottom: 1px solid var(--known-dim);
+  text-align: center;
+}
+.engine-bus-line {
+  font-family: var(--mono);
+  font-size: var(--fs-micro);
+  line-height: 1.5;
+  color: var(--known);
+}
+.engine-reqs {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.engine-reqs li {
+  position: relative;
+  padding-left: 13px;
+  margin-bottom: 4px;
+  font-size: var(--fs-micro);
+  line-height: 1.55;
+  color: var(--text-lo);
+}
+.engine-reqs li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.6em;
+  width: 5px;
+  height: 1px;
+  background: var(--known-dim);
+}
+
+/* --- Diagram C: coverage progression */
+
+.cov {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.cov-stage {
+  position: relative;
+  border: 1px solid var(--line-soft);
+  border-radius: 3px;
+  background: var(--ink-850);
+  padding: 16px 17px 17px;
+}
+/* Arrow between coverage stages, drawn in the gap. */
+.cov-stage:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -18px;
+  width: 18px;
+  height: 18px;
+  margin-top: -9px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b7a8c' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E");
+}
+.cov-stage:last-child {
+  border-color: var(--evidence);
+  border-style: dashed;
+}
+.cs-idx {
+  display: block;
+  font-family: var(--mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.1em;
+  color: var(--text-xlo);
+  margin-bottom: 8px;
+}
+.cov-stage h4 {
+  margin-bottom: 7px;
+  font-size: var(--fs-h4);
+  color: var(--text-hi);
+}
+.cov-stage p {
+  margin: 0;
+  font-size: var(--fs-cap);
+  line-height: 1.6;
+  color: var(--text-lo);
+}
+
+/* -------------------------------------------------------- next MVP steps */
+
+.mvp-track {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(178px, 1fr));
+  gap: 1px;
+  background: var(--line-soft);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r);
+  overflow: hidden;
+}
+.mstep {
+  background: var(--ink-850);
+  padding: 20px 17px;
+}
+.mstep .mn {
+  font-family: var(--mono);
+  font-size: var(--fs-micro);
+  color: var(--evidence);
+  letter-spacing: 0.1em;
+  margin-bottom: 10px;
+}
+.mstep p {
+  margin: 0;
+  font-size: var(--fs-cap);
+  color: var(--text-lo);
+  line-height: 1.6;
+}
+
 /* ---------------------------------------------------------------- vision */
 
 .vision-track {
@@ -1784,8 +2464,30 @@ pre.code .b {
   border-radius: 2px;
   padding: 1px 5px;
 }
-
-/* ---------------------------------------------------------------- team */
+/* The roadmap's second stage is the next milestone, not research and not
+   shipped. It needs its own badge, because "RESEARCH" on the stage we have
+   named as the immediate next milestone would misdescribe it, and "SHIPPED"
+   would be false. */
+.vstep.partial::after {
+  content: "NEXT MILESTONE";
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  font-family: var(--mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.09em;
+  color: var(--evidence);
+  border: 1px solid var(--line-strong);
+  border-style: dashed;
+  border-radius: 2px;
+  padding: 1px 5px;
+}
+.vstep.partial {
+  background: rgba(224, 177, 85, 0.04);
+}
+.vstep.partial h4 {
+  color: var(--evidence);
+}
 
 .team {
   display: grid;
@@ -1924,14 +2626,109 @@ footer {
   .hero-grid {
     gap: 32px;
   }
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  /* Diagram A: the two-column step grid collapses to one, and the chevron
+     between steps has to turn to point downward and move out of the row
+     gutter, or it would sit beside the node instead of between the nodes. */
+  .flow-steps,
+  .flow-outcomes {
+    grid-template-columns: 1fr;
+  }
+  .flow-step:not(:nth-child(2n))::after {
+    right: auto;
+    top: auto;
+    bottom: -22px;
+    left: 50%;
+    margin: 0 0 0 -10px;
+    transform: rotate(90deg);
+  }
+  .flow-steps > .flow-step:last-child::after {
+    display: block;
+  }
+  .flow-loop .flow-steps > .flow-step:nth-child(2)::after {
+    display: none;
+  }
+  .flow-loop .flow-steps {
+    grid-template-columns: 1fr;
+  }
+
+  /* Diagram B: the five-column architecture cannot hold its shape on a phone,
+     so it becomes a vertical sequence — sources, then each model, then the
+     engine, then the composed simulation — and every connector rotates to
+     point downward so the reading order stays unambiguous. */
+  .arch {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+    padding: 18px 16px 16px;
+  }
+  .arch-links {
+    flex-direction: row;
+    justify-content: center;
+    padding: 0;
+    gap: 0;
+  }
+  .alink {
+    flex: none;
+    min-height: 24px;
+    height: 24px;
+    transform: rotate(90deg);
+  }
+  .alink.wide {
+    transform: rotate(90deg);
+  }
+  .engine-slots {
+    grid-template-columns: 1fr;
+  }
+
+  /* Diagram C: the arrow between coverage stages moves below each card. */
+  .cov {
+    grid-template-columns: 1fr;
+    gap: 26px;
+  }
+  .cov-stage:not(:last-child)::after {
+    top: auto;
+    right: auto;
+    bottom: -22px;
+    left: 50%;
+    margin: 0 0 0 -9px;
+    transform: rotate(90deg);
+  }
+
   .kv {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .unc-grid,
   .prob-grid,
   .val-grid,
-  .vision-track {
+  .vision-track,
+  .approach-track,
+  .mvp-track {
     grid-template-columns: 1fr;
+  }
+
+  /* The hero pipeline is a six-across row, and each node is floored by its own
+     longest word rather than by its content width, so on a phone the row cannot
+     compress below its min-content and would push the whole page wider than the
+     viewport. Stack it instead: the progression still reads top to bottom, and
+     the arrows turn to point the same way. */
+  .hero-pipe {
+    padding: 20px 16px 16px;
+  }
+  .pipe-track {
+    flex-direction: column;
+  }
+  .pipe-node {
+    flex: none;
+  }
+  .pipe-arrow {
+    align-self: flex-start;
+    margin-left: 16px;
+    padding: 4px 0;
+    transform: rotate(90deg);
   }
   .bar-row {
     grid-template-columns: 58px minmax(0, 1fr) 54px;
