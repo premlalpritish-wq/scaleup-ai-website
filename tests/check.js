@@ -83,6 +83,26 @@ setTimeout(() => {
   const C = data.process_state.counts;
   const G = data.process_graph.counts;
 
+  /* ---------------------------------------------------- hero narrative */
+  ok("hero: new headline present", /AI that figures out how to make anything/i.test(txt("header.hero") || txt("#top")),
+     txt("h1"));
+  ok("hero: supporting copy present", /Describe what you want to build/i.test(txt(".hero-sub")), txt(".hero-sub").slice(0, 60));
+  ok("hero: primary CTA present", !![...d.querySelectorAll(".hero-cta .btn")].find((b) => /Explore the prototype/i.test(b.textContent)),
+     [...d.querySelectorAll(".hero-cta .btn")].map((b) => b.textContent.trim()).join(", "));
+  ok("hero: secondary CTA present", !![...d.querySelectorAll(".hero-cta .btn")].find((b) => /How it works/i.test(b.textContent)),
+     [...d.querySelectorAll(".hero-cta .btn")].map((b) => b.textContent.trim()).join(", "));
+  const primaryCta = [...d.querySelectorAll(".hero-cta .btn")].find((b) => /Explore the prototype/i.test(b.textContent));
+  ok("hero: primary CTA reaches the prototype", !!primaryCta && d.getElementById((primaryCta.getAttribute("href") || "").slice(1)) !== null,
+     primaryCta ? primaryCta.getAttribute("href") : "missing");
+  const secondaryCta = [...d.querySelectorAll(".hero-cta .btn")].find((b) => /How it works/i.test(b.textContent));
+  ok("hero: secondary CTA reaches technical explanation", !!secondaryCta && d.getElementById((secondaryCta.getAttribute("href") || "").slice(1)) !== null,
+     secondaryCta ? secondaryCta.getAttribute("href") : "missing");
+  ok("narrative: workflow section present", !!d.getElementById("workflow"));
+  ok("narrative: system-understanding section present", !!d.getElementById("system"));
+  ok("narrative: example section present", !!d.getElementById("example"));
+  ok("narrative: insulin example mentions dissolved oxygen", /dissolved.oxygen|dissolved oxygen/i.test(txt("#example")), txt("#example").slice(0, 120));
+  ok("narrative: insulin example mentions strain transferability", /strain/i.test(txt("#example")) && /compatibil|transfer/i.test(txt("#example")), txt("#example").slice(0, 120));
+
   /* ---------------------------------------------------- hero pipeline strip */
   ok("hero: pages", txt("#st-1n").startsWith(String(data.paper.page_count)), txt("#st-1n"));
   ok("hero: chunks", txt("#st-2n").startsWith(String(data.paper.chunking.chunk_count)), txt("#st-2n"));

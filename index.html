@@ -3,16 +3,16 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>ScaleUp AI — a scientific simulation engine built from research literature</title>
+    <title>ScaleUp AI — AI that figures out how to make anything</title>
     <meta
       name="description"
-      content="ScaleUp AI is building an AI-powered scientific simulation engine that turns scientific literature into executable, evidence-grounded models, evaluates them against experimental observations, and works towards composing them to simulate chemical and biological processes."
+      content="ScaleUp AI is building an AI-powered workshop that figures out how to make things, using everything humanity has already learned. Describe what you want to build; ScaleUp AI connects scientific and engineering knowledge to help construct executable models, explore how things work, and investigate what remains unknown."
     />
     <meta name="color-scheme" content="dark" />
-    <meta property="og:title" content="ScaleUp AI — a scientific simulation engine built from research literature" />
+    <meta property="og:title" content="ScaleUp AI — AI that figures out how to make anything" />
     <meta
       property="og:description"
-      content="An AI-powered scientific simulation engine: executable, evidence-grounded models built from published research, evaluated against experiments, and composed to simulate chemical and biological processes."
+      content="An AI-powered workshop that figures out how to make anything: describe what you want to build, and ScaleUp AI connects scientific and engineering knowledge to help construct executable models, explore how things work, and investigate what remains unknown."
     />
     <link rel="stylesheet" href="assets/styles.css" />
     <link
@@ -36,16 +36,16 @@
           <small>v0.1</small>
         </a>
         <div class="nav-links" aria-label="Sections">
-          <a href="#problem">Problem</a>
-          <a href="#engine">Engine</a>
-          <a href="#architecture">Architecture</a>
-          <a href="#demo">Demo</a>
-          <a href="#mvp">Next MVP</a>
+          <a href="#workflow">Workflow</a>
+          <a href="#prototype">Prototype</a>
+          <a href="#workbench">Workbench</a>
+          <a href="#how-it-works">How it works</a>
+          <a href="#example">Example</a>
           <a href="#graph">Graph</a>
           <a href="#evidence">Evidence</a>
           <a href="#uncertainty">Uncertainty</a>
           <a href="#validation">Validation</a>
-          <a href="#vision">Roadmap</a>
+          <a href="#roadmap">Roadmap</a>
           <a href="#team">Team</a>
         </div>
       </div>
@@ -55,27 +55,24 @@
     <header class="hero" id="top">
       <div class="wrap hero-grid">
         <div class="hero-copy">
-          <p class="eyebrow"><b>Scientific simulation engine</b></p>
+          <p class="eyebrow"><b>ScaleUp AI</b></p>
           <h1>
-            Build scientific models from the
-            <span class="accent">world's research</span>.
+            AI that figures out how to
+            <span class="accent">make anything</span>.
           </h1>
           <p class="lead hero-sub">
-            ScaleUp AI is building an engine that turns scientific literature
-            and experimental findings into
-            <span class="mono" style="color: var(--known)">executable, evidence-grounded models</span>
-            — models that can be evaluated against experimental observations
-            and, further along, composed to simulate chemical and biological
-            processes.
+            Describe what you want to build. ScaleUp AI connects scientific and
+            engineering knowledge to help construct executable models, explore
+            how things work, and investigate what remains unknown.
           </p>
           <div class="hero-cta">
-            <a class="btn btn-primary" href="#engine">
-              See the engine
+            <a class="btn btn-primary" href="#demo">
+              Explore the prototype
               <svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true">
                 <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </a>
-            <a class="btn btn-ghost" href="#demo">See what works today</a>
+            <a class="btn btn-ghost" href="#engine">How it works</a>
           </div>
           <p class="hero-note" id="hero-note">
             An early-stage research prototype. The structured-knowledge layer is
@@ -84,10 +81,65 @@
           </p>
         </div>
 
+        <!-- Conceptual workshop visualisation. Illustrative only: not a screenshot
+             of working software. -->
+        <div class="hero-visual" aria-hidden="true">
+          <div class="hv-frame">
+            <svg class="hv-svg" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Illustrative engineering workshop">
+              <defs>
+                <linearGradient id="hv-bg" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#10151d"/>
+                  <stop offset="100%" stop-color="#070a0e"/>
+                </linearGradient>
+                <radialGradient id="hv-glow" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#4ecdc4" stop-opacity="0.28"/>
+                  <stop offset="100%" stop-color="#4ecdc4" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+              <rect width="420" height="300" fill="url(#hv-bg)"/>
+              <ellipse cx="210" cy="150" rx="150" ry="90" fill="url(#hv-glow)"/>
+              <!-- central system -->
+              <g transform="translate(210,150)">
+                <polygon points="0,-62 72,-31 72,31 0,62 -72,31 -72,-31" fill="none" stroke="#4ecdc4" stroke-width="1.4"/>
+                <polygon points="0,-44 52,-22 52,22 0,44 -52,22 -52,-22" fill="rgba(78,205,196,0.08)" stroke="#1f5f5c" stroke-width="1"/>
+                <circle cx="0" cy="0" r="6" fill="#4ecdc4"/>
+                <circle cx="-30" cy="-10" r="3" fill="#e0b155"/>
+                <circle cx="28" cy="14" r="3" fill="#e0b155"/>
+                <circle cx="6" cy="-34" r="2.5" fill="#6b7a8c"/>
+              </g>
+              <!-- connected variables -->
+              <g font-family="monospace" font-size="9" fill="#7b8a9c">
+                <text x="40" y="52">T = 37 °C</text>
+                <text x="40" y="66">pH = 7.0</text>
+                <text x="300" y="70">μ = 0.42 h⁻¹</text>
+                <text x="300" y="84">DO = ?</text>
+                <text x="52" y="252">kLa = 120 h⁻¹</text>
+                <text x="286" y="252">Yx/s = 0.5 g/g</text>
+              </g>
+              <!-- connection lines -->
+              <g stroke="#2a3543" stroke-width="1" fill="none">
+                <line x1="80" y1="58" x2="160" y2="120"/>
+                <line x1="300" y1="76" x2="260" y2="120"/>
+                <line x1="90" y1="246" x2="160" y2="180"/>
+                <line x1="300" y1="246" x2="260" y2="180"/>
+              </g>
+              <!-- evidence chips -->
+              <g font-family="monospace" font-size="8" fill="#e0b155">
+                <rect x="14" y="268" width="92" height="14" rx="2" fill="rgba(224,177,85,0.08)" stroke="#6d5622"/>
+                <text x="20" y="278">p.4 §2.3 excerpt</text>
+                <rect x="314" y="268" width="92" height="14" rx="2" fill="rgba(224,177,85,0.08)" stroke="#6d5622"/>
+                <text x="320" y="278">p.7 Fig. 1 arrow</text>
+              </g>
+            </svg>
+            <p class="hv-caption">Illustrative. A conceptual view of a system being
+              understood and built — not a screenshot of working software.</p>
+          </div>
+        </div>
+
         <!--
           Where the project actually stands. Kept beside the headline so the
           long-term thesis and the present state are read together and cannot be
-          mistaken for each other.
+          mistaken for one another.
         -->
         <div class="hero-status">
           <div class="hstat now">
@@ -187,6 +239,70 @@
       </div>
     </header>
 
+    <!-- ============================================================ WORKFLOW -->
+    <section id="workflow">
+      <div class="wrap">
+        <p class="eyebrow"><b>A</b> From an idea to something you can explore</p>
+        <div class="sec-head">
+          <h2>From an idea to something you can explore</h2>
+          <p class="lead muted">
+            A person should eventually be able to describe something they want
+            to build and use ScaleUp AI to explore how it could work. The six
+            stages below are a conceptual product workflow. Only the first two
+            are working software today; the rest are the direction, not the
+            current capability.
+          </p>
+        </div>
+        <div class="workflow-grid">
+          <div class="wstage">
+            <span class="widx">01</span>
+            <h4>Describe</h4>
+            <p>Start with something you want to make: an object, a material, a biological system, or a process.</p>
+            <span class="wcap future">Future capability</span>
+          </div>
+          <div class="wstage">
+            <span class="widx">02</span>
+            <h4>Discover</h4>
+            <p>Find relevant scientific and engineering knowledge across papers, equations, and experimental results.</p>
+            <span class="wcap future">Future capability</span>
+          </div>
+          <div class="wstage now">
+            <span class="widx">03</span>
+            <h4>Model</h4>
+            <p>Turn knowledge into structured computational models, with parameters, units, and assumptions recorded.</p>
+            <span class="wcap now">Current foundation</span>
+          </div>
+          <div class="wstage">
+            <span class="widx">04</span>
+            <h4>Connect</h4>
+            <p>Reconcile interfaces, assumptions, units, and compatibility before separate models can be composed.</p>
+            <span class="wcap future">Future capability</span>
+          </div>
+          <div class="wstage">
+            <span class="widx">05</span>
+            <h4>Simulate</h4>
+            <p>Execute compatible models and explore their behaviour under different conditions.</p>
+            <span class="wcap future">Future capability</span>
+          </div>
+          <div class="wstage">
+            <span class="widx">06</span>
+            <h4>Investigate</h4>
+            <p>Examine limitations, alternatives, and unanswered questions rather than accepting a single answer.</p>
+            <span class="wcap now">Current foundation</span>
+          </div>
+        </div>
+        <div class="notice plain" style="margin-top: 22px">
+          <span class="ico">STATUS</span>
+          <span>
+            <b>What exists today.</b> The structured-knowledge layer and the
+            evidence-inspection workbench are built and demonstrable. Executable
+            model generation, evaluation, composition and simulation are the work
+            ahead, not working features.
+          </span>
+        </div>
+      </div>
+    </section>
+
     <!-- ============================================================ PROBLEM -->
     <section id="problem">
       <div class="wrap">
@@ -266,6 +382,7 @@
 
     <!-- ============================================================ ENGINE -->
     <section id="engine">
+      <span id="how-it-works" aria-hidden="true"></span>
       <div class="wrap">
         <p class="eyebrow"><b>02</b> The proposed engine</p>
         <div class="sec-head">
@@ -679,12 +796,65 @@
       </div>
     </section>
 
+    <!-- ============================================================ SYSTEM -->
+    <section id="system">
+      <div class="wrap">
+        <p class="eyebrow"><b>B</b> What the system understands</p>
+        <div class="sec-head">
+          <h2>What the system understands</h2>
+          <p class="lead muted">
+            Scientific knowledge is fragmented across papers, equations,
+            experimental results, and specialist communities. Reusing it
+            computationally requires more than summarising papers: relevant
+            equations, variables, parameters, units, assumptions, evidence, and
+            constraints must be extracted and represented in a structured form.
+          </p>
+        </div>
+        <div class="sys-grid">
+          <div class="sys">
+            <h4>Extract</h4>
+            <p>Equations, variables, parameters, and conditions must be pulled out of prose, tables, and figures — each with its unit and its source.</p>
+          </div>
+          <div class="sys">
+            <h4>Provenance</h4>
+            <p>Reported facts and inferred quantities must stay distinct, so a value can be traced to the page and excerpt it came from.</p>
+          </div>
+          <div class="sys">
+            <h4>Assumptions</h4>
+            <p>Assumptions and uncertainty must be represented explicitly, not smoothed over to make the record look complete.</p>
+          </div>
+          <div class="sys">
+            <h4>Units</h4>
+            <p>Units and model interfaces must be reconciled before separate models can be composed and executed together.</p>
+          </div>
+          <div class="sys">
+            <h4>Applicability</h4>
+            <p>Whether evidence and models apply to the same system must be evaluated — a difference in strain or condition is a compatibility question, not an automatic disqualification.</p>
+          </div>
+          <div class="sys">
+            <h4>Composition</h4>
+            <p>Compatible models must be composed into larger simulations without losing their evidence, assumptions, or limitations.</p>
+          </div>
+        </div>
+        <div class="notice plain" style="margin-top: 22px">
+          <span class="ico">THESIS</span>
+          <span>
+            <b>Scientific knowledge must become computationally reusable without
+            losing its evidence, assumptions, or limitations.</b> That is the
+            central message of ScaleUp AI: structure first, so models can be
+            built, checked, and composed on top of something trustworthy.
+          </span>
+        </div>
+      </div>
+    </section>
+
     <!-- ============================================================ DEMO -->
     <section id="demo">
+      <span id="prototype" aria-hidden="true"></span>
       <div class="wrap">
         <p class="eyebrow"><b>04</b> Current technical demonstration</p>
         <div class="sec-head">
-          <h2>The foundation stage, working and inspectable</h2>
+          <h2>The working prototype</h2>
           <p class="lead muted">
             This is <span class="mono" id="dm-source">—</span>, the paper
             bundled with the repository. Step through what the pipeline does to
@@ -898,10 +1068,11 @@
 
     <!-- ============================================================ OUTPUT / WORKBENCH -->
     <section id="output">
+      <span id="workbench" aria-hidden="true"></span>
       <div class="wrap">
         <p class="eyebrow"><b>05</b> The actual output</p>
         <div class="sec-head">
-          <h2>Not a summary. A structured record you can interrogate.</h2>
+          <h2>The prototype in detail</h2>
           <p class="lead muted">
             Select any field to see its value, its provenance, and the exact
             excerpt on the page it came from.
@@ -1143,6 +1314,58 @@
       </div>
     </section>
 
+    <!-- ============================================================ EXAMPLE -->
+    <section id="example">
+      <div class="wrap">
+        <p class="eyebrow"><b>C</b> A concrete example of scientific reasoning</p>
+        <div class="sec-head">
+          <h2>A concrete example of scientific reasoning</h2>
+          <p class="lead muted">
+            The prototype on this page is built from a real paper about
+            recombinant human insulin production in <span class="mono">E. coli</span>.
+            It exposes missing dissolved-oxygen information, and shows how a
+            potentially relevant finding from a different strain can be inspected
+            without being automatically treated as transferable.
+          </p>
+        </div>
+        <div class="ex-grid">
+          <div class="ex-card">
+            <h4>What the model exposes</h4>
+            <p>
+              The paper reports agitation, aeration, dissolved-oxygen control,
+              pressure, and exact feed profiles only partially — or not at all.
+              The model records these as missing information rather than filling
+              them in, so an engineer can see exactly what is unknown before
+              attempting any prediction.
+            </p>
+          </div>
+          <div class="ex-card">
+            <h4>What a strain difference means</h4>
+            <p>
+              A finding reported for a different <span class="mono">E. coli</span>
+              strain does not by itself prove evidence invalid. It introduces a
+              compatibility question — same organism, different background — that
+              must be evaluated before the evidence is reused.
+            </p>
+          </div>
+          <div class="ex-card">
+            <h4>Why this matters</h4>
+            <p>
+              Preserving evidence and surfacing unresolved questions is the value:
+              the system reports what it does not know, so a human can decide
+              whether a cross-strain result applies, instead of silently
+              adopting it.
+            </p>
+          </div>
+        </div>
+        <p style="margin-top: 18px">
+          <a href="#uncertainty">See all uncertainty findings &rarr;</a>
+          &nbsp;·&nbsp;
+          <a href="#workbench">Inspect the parameters &rarr;</a>
+        </p>
+      </div>
+    </section>
+
     <!-- ============================================================ VALIDATION -->
     <section id="validation">
       <div class="wrap">
@@ -1274,10 +1497,11 @@
 
     <!-- ============================================================ VISION -->
     <section id="vision">
+      <span id="roadmap" aria-hidden="true"></span>
       <div class="wrap">
         <p class="eyebrow"><b>11</b> Vision and roadmap</p>
         <div class="sec-head">
-          <h2>From a knowledge layer to a simulation engine</h2>
+          <h2>Where we are going</h2>
           <p class="lead muted">
             The current artifact is a structured knowledge layer. Where it is
             meant to lead is stated separately below, and only the first stage
@@ -1446,8 +1670,8 @@
     <footer>
       <div class="wrap foot-in">
         <div>
-          <strong style="color: var(--text-hi)">ScaleUp AI</strong> — a scientific
-          simulation engine built from research literature. Pre-release.
+          <strong style="color: var(--text-hi)">ScaleUp AI</strong> — AI that figures
+          out how to make anything. Pre-release.
         </div>
       </div>
     </footer>
