@@ -100,6 +100,9 @@ setTimeout(() => {
   ok("narrative: workflow section present", !!d.getElementById("workflow"));
   ok("narrative: system-understanding section present", !!d.getElementById("system"));
   ok("narrative: example section present", !!d.getElementById("example"));
+  ok("narrative: prototype section present", !!d.getElementById("prototype"));
+  ok("narrative: prototype shows genuine screenshots", d.querySelectorAll("#prototype img").length >= 3, String(d.querySelectorAll("#prototype img").length));
+  ok("narrative: prototype mentions evidence replay", /evidence replay/i.test(txt("#prototype")), txt("#prototype").slice(0, 120));
   ok("narrative: insulin example mentions dissolved oxygen", /dissolved.oxygen|dissolved oxygen/i.test(txt("#example")), txt("#example").slice(0, 120));
   ok("narrative: insulin example mentions strain transferability", /strain/i.test(txt("#example")) && /compatibil|transfer/i.test(txt("#example")), txt("#example").slice(0, 120));
 

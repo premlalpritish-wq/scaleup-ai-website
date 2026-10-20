@@ -86,7 +86,12 @@ setTimeout(() => {
 
   /* --- the payload must not have executed --- */
   ok("no script executed", window.__PWNED === undefined, String(window.__PWNED));
-  ok("no injected <img> anywhere", d.querySelectorAll("img").length === 0, String(d.querySelectorAll("img").length));
+  /* Legitimate product screenshots (from the Godot prototype) are allowed; an
+     injected <img> would carry an onerror handler or a foreign src. */
+  const imgs = [...d.querySelectorAll("img")];
+  ok("no injected <img> anywhere",
+     imgs.every((i) => (i.getAttribute("src") || "").startsWith("assets/images/") && !i.getAttribute("onerror")),
+     String(imgs.length));
   ok("no injected <script> beyond the two real ones", d.querySelectorAll("script").length <= 2,
      String(d.querySelectorAll("script").length));
   ok("no inline event handler attributes",

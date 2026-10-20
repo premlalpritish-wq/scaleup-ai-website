@@ -66,7 +66,7 @@
             how things work, and investigate what remains unknown.
           </p>
           <div class="hero-cta">
-            <a class="btn btn-primary" href="#demo">
+            <a class="btn btn-primary" href="#prototype">
               Explore the prototype
               <svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true">
                 <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
@@ -300,6 +300,80 @@
             ahead, not working features.
           </span>
         </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ PROTOTYPE -->
+    <section id="prototype">
+      <div class="wrap">
+        <p class="eyebrow"><b>P</b> The working prototype</p>
+        <div class="sec-head">
+          <h2>A real, runnable workshop — not a mockup</h2>
+          <p class="lead muted">
+            The demonstration below is captured from the ScaleUp AI Godot
+            prototype: a desktop application that composes scientific process
+            models through typed ports and runs them in dependency order, with a
+            3D evidence replay of the Zieliński et al. (2019) recombinant human
+            insulin process.
+          </p>
+        </div>
+
+        <div class="proto-grid">
+          <figure class="proto-fig">
+            <img src="assets/images/workshop.png" alt="ScaleUp AI graph editor: models listed in a palette, an instance form, and a composition canvas." loading="lazy" />
+            <figcaption>Graph editor — compose models from a registered palette, fill their declared inputs, and run or validate the graph.</figcaption>
+          </figure>
+          <figure class="proto-fig">
+            <img src="assets/images/replay3d.png" alt="3D evidence replay of the Zieliński insulin process: fermentation vessel, growth curve, purification results, and a list of what the model cannot tell us." loading="lazy" />
+            <figcaption>3D evidence replay — the fermentation vessel, published growth and purification data, and an explicit list of what the model cannot tell us.</figcaption>
+          </figure>
+          <figure class="proto-fig">
+            <img src="assets/images/composition.png" alt="Composition view showing models connected through declared ports." loading="lazy" />
+            <figcaption>Composition — models connect through declared ports and run in dependency order; incompatible or refused connections are reported, not hidden.</figcaption>
+          </figure>
+        </div>
+
+        <div class="proto-caps">
+          <div class="proto-cap">
+            <h4>Compose models</h4>
+            <p>Registered models (Zieliński insulin process, Ganjave, Morris material balance) are added from a palette and connected through typed, unit-aware ports. Required inputs have no defaults: a missing value blocks execution.</p>
+          </div>
+          <div class="proto-cap">
+            <h4>Run and validate</h4>
+            <p>A graph can be validated into an execution plan, or executed. Cycles are rejected, and each model runs in its own interpreter subprocess because their packages cannot coexist.</p>
+          </div>
+          <div class="proto-cap">
+            <h4>Replay evidence</h4>
+            <p>The 3D replay restates numbers read from a published paper and the accounting identities it supports. It reports no growth kinetics, no oxygen-transfer data, no AU calibration and no purification model — and declares those absences explicitly.</p>
+          </div>
+          <div class="proto-cap">
+            <h4>Investigate gaps</h4>
+            <p>Under each missing quantity an Investigate button opens a panel: the model and run it was checked against, the gap in the model's own words, candidate findings from the literature with verbatim quoted passages, a dimension-by-dimension condition comparison, a verdict (incompatible / needs checking / compatible but not yet validated), and ten checkable validation criteria.</p>
+          </div>
+          <div class="proto-cap">
+            <h4>Check compatibility</h4>
+            <p>A model registry records every model with a stable id, version, digests, ports and units. A compatibility engine assesses whether two models may be composed, with refused pairs reporting the specific difference and what would resolve it.</p>
+          </div>
+          <div class="proto-cap">
+            <h4>Preserve provenance</h4>
+            <p>Every displayed value carries a plain-language provenance label: stated in the source, read from a published figure, calculated from the available data, or not established by the available evidence.</p>
+          </div>
+        </div>
+
+        <div class="notice plain" style="margin-top: 22px">
+          <span class="ico">STATUS</span>
+          <span>
+            <b>What this is and is not.</b> These screenshots are captured from the
+            running Godot prototype, not a web mockup. The prototype is a desktop
+            application (Godot 4.7); it is not embedded here and there is no web
+            build. The insulin model is an <em>evidence replay</em>, not a
+            predictive simulator — it restates published values and refuses to
+            invent missing ones.
+          </span>
+        </div>
+        <p style="margin-top: 18px">
+          <a href="#demo">See the structured-knowledge foundation &rarr;</a>
+        </p>
       </div>
     </section>
 
@@ -850,11 +924,10 @@
 
     <!-- ============================================================ DEMO -->
     <section id="demo">
-      <span id="prototype" aria-hidden="true"></span>
       <div class="wrap">
-        <p class="eyebrow"><b>04</b> Current technical demonstration</p>
+        <p class="eyebrow"><b>F</b> The structured-knowledge foundation</p>
         <div class="sec-head">
-          <h2>The working prototype</h2>
+          <h2>How the workshop is grounded in evidence</h2>
           <p class="lead muted">
             This is <span class="mono" id="dm-source">—</span>, the paper
             bundled with the repository. Step through what the pipeline does to
