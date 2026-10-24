@@ -3,7 +3,7 @@
   const state = { ready: false, client: null, error: null };
   async function init() {
     try {
-      const { PyodideGanjaveClient } = await import('../pyodide/client.mjs');
+      const { PyodideGanjaveClient } = await import('./pyodide/client.mjs');
       state.client = new PyodideGanjaveClient({
         onStatus: (m) => console.log('[godot-bridge]', m),
         onDiagnostic: (e) => console.log('[godot-bridge-diag]', e),
