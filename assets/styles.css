@@ -3012,3 +3012,60 @@ footer {
   line-height: 1.6;
 }
 .cap ul li { margin-bottom: 6px; }
+
+/* ---------------------------------------------------------------- problem steps */
+.problem-steps {
+  margin: 16px 0 0;
+  padding-left: 22px;
+  color: var(--text-lo);
+  font-size: var(--fs-body);
+  line-height: 1.7;
+}
+.problem-steps li { margin-bottom: 6px; }
+
+/* ---------------------------------------------------------------- validate form */
+.validate-form {
+  display: grid;
+  gap: 14px;
+  max-width: 640px;
+  margin-top: 16px;
+}
+.validate-form label {
+  display: grid;
+  gap: 6px;
+  font-size: var(--fs-sm);
+  color: var(--text-mid);
+}
+.validate-form input,
+.validate-form textarea {
+  background: var(--ink-850);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  color: var(--text-hi);
+  font: inherit;
+  padding: 10px 12px;
+  resize: vertical;
+}
+.validate-form input:focus,
+.validate-form textarea:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.validate-form .checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  grid-template-columns: none;
+}
+.validate-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+.validate-note {
+  font-size: var(--fs-micro);
+  color: var(--text-xlo);
+  margin: 4px 0 0;
+  max-width: 640px;
+}

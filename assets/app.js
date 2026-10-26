@@ -119,3 +119,39 @@
     wireSectionTracking();
   }
 })();
+
+/* ==========================================================================
+   User-validation form: opens a pre-filled GitHub issue. No backend.
+   ========================================================================== */
+(() => {
+  "use strict";
+  function wireValidateForm() {
+    const btn = document.getElementById("validate-submit");
+    const form = document.getElementById("validate-form");
+    if (!btn || !form) return;
+    btn.addEventListener("click", () => {
+      const get = (name) => (form.querySelector('[name="' + name + '"]')?.value || "").trim();
+      const name = get("name");
+      const contact = get("contact");
+      const goal = get("goal");
+      const pain = get("pain");
+      const interest = form.querySelector('[name="interest"]').checked ? "Yes" : "No";
+      const title = "User validation: " + (goal ? goal.slice(0, 60) : "ScaleUp AI interest");
+      const body =
+        "## Name\n" + (name || "(not provided)") + "\n\n" +
+        "## Contact\n" + (contact || "(not provided)") + "\n\n" +
+        "## What they are trying to build\n" + (goal || "(not provided)") + "\n\n" +
+        "## What makes modelling/simulation/experimentation difficult\n" + (pain || "(not provided)") + "\n\n" +
+        "## Interested in testing the prototype or discussing a pilot\n" + interest + "\n";
+      const url =
+        "https://github.com/premlalpritish-wq/scaleup-ai-website/issues/new?title=" +
+        encodeURIComponent(title) + "&body=" + encodeURIComponent(body);
+      window.open(url, "_blank", "noopener");
+    });
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", wireValidateForm);
+  } else {
+    wireValidateForm();
+  }
+})();

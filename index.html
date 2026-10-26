@@ -6,13 +6,13 @@
     <title>ScaleUp AI - Vibecoding for the physical world</title>
     <meta
       name="description"
-      content="ScaleUp AI is building vibecoding for the physical world: describe what you want to make, and AI researches the science, builds computational models, connects them into simulations, and helps you explore how your idea could work. Early prototype: recombinant human insulin production in E. coli."
+      content="ScaleUp AI is building vibecoding for the physical world: describe what you want to make, and AI researches the science, constructs computational models, connects them into simulations, and helps you explore how your idea could work. Early prototype: recombinant human insulin production in E. coli."
     />
     <meta name="color-scheme" content="dark" />
     <meta property="og:title" content="ScaleUp AI - Vibecoding for the physical world" />
     <meta
       property="og:description"
-      content="Describe a physical thing you want to make. ScaleUp AI aims to have AI research the relevant science, construct computational models, connect them into simulations, and help you explore how your idea could work. Early prototype demonstrates the foundations on recombinant human insulin production in E. coli."
+      content="Describe a physical thing you want to make. ScaleUp AI aims to have AI discover relevant science, construct computational models, connect them into simulations, and help you explore how your idea could work. Early prototype demonstrates the foundations on recombinant human insulin production in E. coli."
     />
     <link rel="stylesheet" href="assets/styles.css" />
     <link
@@ -36,11 +36,11 @@
           <small>v0.1</small>
         </a>
         <div class="nav-links" aria-label="Sections">
+          <a href="#problem">Problem</a>
           <a href="#workflow">How it works</a>
-          <a href="#system">Technology</a>
           <a href="#prototype">Prototype</a>
-          <a href="#example">Insulin example</a>
-          <a href="#capability">Capability</a>
+          <a href="#vision">Vision</a>
+          <a href="#validate">Validate</a>
           <a href="#team">Team</a>
           <a href="#contact">Contact</a>
         </div>
@@ -57,9 +57,9 @@
             <span class="accent">physical world</span>.
           </h1>
           <p class="lead hero-sub">
-            Describe what you want to make. ScaleUp AI is building AI that finds
-            the science, constructs computational models, connects them into
-            simulations, and helps you explore how your idea could work.
+            Describe what you want to build. We're developing AI that turns
+            scientific knowledge into executable models you can connect,
+            simulate and inspect.
           </p>
           <div class="hero-cta">
             <a class="btn btn-primary" href="simulator/">
@@ -68,7 +68,7 @@
                 <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </a>
-            <a class="btn btn-ghost" href="#system">How it works</a>
+            <a class="btn btn-ghost" href="#validate">Help shape what we build</a>
           </div>
           <p class="hero-note" id="hero-note">
             An early-stage research prototype. The workshop vision is the
@@ -86,17 +86,48 @@
       </div>
     </header>
 
+    <!-- ============================================================ PROBLEM -->
+    <section id="problem">
+      <div class="wrap">
+        <p class="eyebrow"><b>A</b> The problem</p>
+        <div class="sec-head">
+          <h2>Scientific knowledge is abundant. Turning it into working models is still hard.</h2>
+          <p class="lead muted">
+            This is the founder's firsthand experience, and a hypothesis about a
+            broader engineering problem. It is not a claim that every engineer
+            faces the same workflow.
+          </p>
+        </div>
+        <p class="lead muted" style="max-width: 760px">
+          When we tried to model recombinant human insulin production using
+          E. coli, the work looked like this:
+        </p>
+        <ol class="problem-steps">
+          <li>Finding relevant scientific papers.</li>
+          <li>Extracting experimental conditions, parameters, and equations.</li>
+          <li>Translating scientific information into executable code.</li>
+          <li>Building individual process models.</li>
+          <li>Connecting the models into a simulation.</li>
+        </ol>
+        <p class="lead muted" style="max-width: 760px; margin-top: 16px">
+          The science already existed in the literature. The hard part was turning
+          it into reusable, executable models. ScaleUp AI is building towards a
+          future where that translation is automated.
+        </p>
+      </div>
+    </section>
+
     <!-- ============================================================ WORKFLOW -->
     <section id="workflow">
       <div class="wrap">
-        <p class="eyebrow"><b>A</b> Prompt to simulation</p>
+        <p class="eyebrow"><b>B</b> Prompt to simulation</p>
         <div class="sec-head">
           <h2>From a description to a simulation</h2>
           <p class="lead muted">
             The product vision is a prompt-to-simulation workflow for physical
             systems. The five stages below describe the end-to-end experience
             ScaleUp AI is building. Today only the manual foundations of stages
-            3-6 are demonstrated; the automated path from a natural-language
+            3 to 5 are demonstrated; the automated path from a natural-language
             goal is the long-term objective.
           </p>
         </div>
@@ -136,52 +167,9 @@
           <span class="ico">STATUS</span>
           <span>
             <b>Manual today, automated tomorrow.</b> The current prototype
-            demonstrates a manually assembled version of stages 3-5 on one
+            demonstrates a manually assembled version of stages 3 to 5 on one
             concrete problem. The end-to-end automated path from a
             natural-language goal is being developed.
-          </span>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============================================================ SYSTEM -->
-    <section id="system">
-      <div class="wrap">
-        <p class="eyebrow"><b>B</b> Technical foundations</p>
-        <div class="sec-head">
-          <h2>What makes prompt-to-simulation possible</h2>
-          <p class="lead muted">
-            Five foundations underpin the product. They are the building blocks,
-            not proof that the entire automated workflow is complete.
-          </p>
-        </div>
-        <div class="sys-grid">
-          <div class="sys">
-            <h4>Literature extraction</h4>
-            <p>Turn scientific papers into structured process information: equations, variables, parameters, units, conditions, and sources.</p>
-          </div>
-          <div class="sys">
-            <h4>Evidence and provenance</h4>
-            <p>Distinguish reported facts, calculations, inferences, assumptions, and unknowns, so every value can be traced to its source.</p>
-          </div>
-          <div class="sys">
-            <h4>Executable models</h4>
-            <p>Represent scientific relationships and process behaviour computationally, with units and interfaces declared.</p>
-          </div>
-          <div class="sys">
-            <h4>Model composition</h4>
-            <p>Connect compatible models through declared interfaces, units, and dependencies; refuse incompatible connections and report why.</p>
-          </div>
-          <div class="sys">
-            <h4>Simulation and investigation</h4>
-            <p>Execute models, inspect results, and identify gaps that need further evidence or validation.</p>
-          </div>
-        </div>
-        <div class="notice plain" style="margin-top: 22px">
-          <span class="ico">THESIS</span>
-          <span>
-            <b>Scientific knowledge must become computationally reusable without
-            losing its evidence, assumptions, or limitations.</b>
           </span>
         </div>
       </div>
@@ -190,9 +178,9 @@
     <!-- ============================================================ PROTOTYPE -->
     <section id="prototype">
       <div class="wrap">
-        <p class="eyebrow"><b>C</b> The working prototype</p>
+        <p class="eyebrow"><b>C</b> From scientific literature to executable models</p>
         <div class="sec-head">
-          <h2>A real, runnable workshop - not a mockup</h2>
+          <h2>From scientific literature to executable models</h2>
           <p class="lead muted">
             The demonstration below is captured from the ScaleUp AI Godot
             prototype: a desktop application that composes scientific process
@@ -257,10 +245,53 @@
       </div>
     </section>
 
+    <!-- ============================================================ SYSTEM -->
+    <section id="system">
+      <div class="wrap">
+        <p class="eyebrow"><b>D</b> Technical foundations</p>
+        <div class="sec-head">
+          <h2>What makes prompt-to-simulation possible</h2>
+          <p class="lead muted">
+            Five foundations underpin the product. They are the building blocks,
+            not proof that the entire automated workflow is complete.
+          </p>
+        </div>
+        <div class="sys-grid">
+          <div class="sys">
+            <h4>Literature extraction</h4>
+            <p>Turn scientific papers into structured process information: equations, variables, parameters, units, conditions, and sources.</p>
+          </div>
+          <div class="sys">
+            <h4>Evidence and provenance</h4>
+            <p>Distinguish reported facts, calculations, inferences, assumptions, and unknowns, so every value can be traced to its source.</p>
+          </div>
+          <div class="sys">
+            <h4>Executable models</h4>
+            <p>Represent scientific relationships and process behaviour computationally, with units and interfaces declared.</p>
+          </div>
+          <div class="sys">
+            <h4>Model composition</h4>
+            <p>Connect compatible models through declared interfaces, units, and dependencies; refuse incompatible connections and report why.</p>
+          </div>
+          <div class="sys">
+            <h4>Simulation and investigation</h4>
+            <p>Execute models, inspect results, and identify gaps that need further evidence or validation.</p>
+          </div>
+        </div>
+        <div class="notice plain" style="margin-top: 22px">
+          <span class="ico">THESIS</span>
+          <span>
+            <b>Scientific knowledge must become computationally reusable without
+            losing its evidence, assumptions, or limitations.</b>
+          </span>
+        </div>
+      </div>
+    </section>
+
     <!-- ============================================================ EXAMPLE -->
     <section id="example">
       <div class="wrap">
-        <p class="eyebrow"><b>D</b> A concrete proof of concept</p>
+        <p class="eyebrow"><b>E</b> A concrete proof of concept</p>
         <div class="sec-head">
           <h2>Why start with insulin production</h2>
           <p class="lead muted">
@@ -308,10 +339,67 @@
       </div>
     </section>
 
+    <!-- ============================================================ VISION -->
+    <section id="vision">
+      <div class="wrap">
+        <p class="eyebrow"><b>F</b> Future vision</p>
+        <div class="sec-head">
+          <h2>Build systems, not isolated models</h2>
+          <p class="lead muted">
+            The intended future workflow, from a natural-language goal to a
+            runnable simulation. This is a product vision, not a claim that all
+            six steps are already automated.
+          </p>
+        </div>
+        <div class="workflow-grid">
+          <div class="wstage">
+            <span class="widx">01</span>
+            <h4>Describe</h4>
+            <p>A user describes a physical system they want to build.</p>
+            <span class="wcap future">Future capability</span>
+          </div>
+          <div class="wstage">
+            <span class="widx">02</span>
+            <h4>Search</h4>
+            <p>AI searches for relevant scientific literature and experimental evidence.</p>
+            <span class="wcap future">Future capability</span>
+          </div>
+          <div class="wstage now">
+            <span class="widx">03</span>
+            <h4>Extract</h4>
+            <p>Relevant information is extracted into structured representations.</p>
+            <span class="wcap now">Current foundation</span>
+          </div>
+          <div class="wstage now">
+            <span class="widx">04</span>
+            <h4>Implement</h4>
+            <p>Models are implemented and checked against their sources.</p>
+            <span class="wcap now">Current foundation</span>
+          </div>
+          <div class="wstage">
+            <span class="widx">05</span>
+            <h4>Connect</h4>
+            <p>Compatible models are connected into a larger system.</p>
+            <span class="wcap future">Future capability</span>
+          </div>
+          <div class="wstage">
+            <span class="widx">06</span>
+            <h4>Simulate</h4>
+            <p>A simulation is generated for the user to inspect, test and iterate on.</p>
+            <span class="wcap future">Future capability</span>
+          </div>
+        </div>
+        <p class="lead muted" style="max-width: 760px; margin-top: 16px">
+          The goal is not merely to generate code, but to turn scientific
+          knowledge into traceable, composable computational models.
+        </p>
+      </div>
+    </section>
+
     <!-- ============================================================ CAPABILITY -->
     <section id="capability">
       <div class="wrap">
-        <p class="eyebrow"><b>E</b> Current versus future</p>
+        <p class="eyebrow"><b>G</b> Current versus future</p>
         <div class="sec-head">
           <h2>What exists today and what is being built</h2>
           <p class="lead muted">
@@ -362,10 +450,57 @@
       </div>
     </section>
 
+    <!-- ============================================================ VALIDATE -->
+    <section id="validate">
+      <div class="wrap">
+        <p class="eyebrow"><b>H</b> User validation and collaboration</p>
+        <div class="sec-head">
+          <h2>What are you trying to build?</h2>
+          <p class="lead muted">
+            We're working towards tools that make it easier to turn scientific
+            knowledge into working engineering simulations. If you're a hardware
+            founder, researcher or engineer, tell us what you're trying to build
+            and where your current workflow gets stuck.
+          </p>
+        </div>
+        <form id="validate-form" class="validate-form">
+          <label>
+            Name (optional)
+            <input type="text" name="name" placeholder="Your name" />
+          </label>
+          <label>
+            Email or preferred contact method
+            <input type="text" name="contact" placeholder="you@example.com or LinkedIn" />
+          </label>
+          <label>
+            What are you trying to build?
+            <textarea name="goal" rows="3" placeholder="Describe the physical system or process"></textarea>
+          </label>
+          <label>
+            What makes modelling, simulation or experimentation difficult today?
+            <textarea name="pain" rows="3" placeholder="Where your workflow gets stuck"></textarea>
+          </label>
+          <label class="checkbox">
+            <input type="checkbox" name="interest" value="yes" />
+            I am interested in testing the prototype or discussing a pilot.
+          </label>
+          <div class="validate-actions">
+            <button type="button" class="btn btn-primary" id="validate-submit">Open a GitHub issue with my answers</button>
+            <a class="btn btn-ghost" href="https://github.com/premlalpritish-wq/scaleup-ai-website/issues/new" target="_blank" rel="noopener">Open GitHub issues directly</a>
+          </div>
+          <p class="validate-note">
+            Submissions open a pre-filled GitHub issue in this repository. No
+            data is sent to a backend; nothing is stored by the site. If you
+            prefer, contact us through the repository's issue tracker directly.
+          </p>
+        </form>
+      </div>
+    </section>
+
     <!-- ============================================================ TEAM -->
     <section id="team">
       <div class="wrap">
-        <p class="eyebrow"><b>F</b> Team</p>
+        <p class="eyebrow"><b>I</b> Team</p>
         <div class="sec-head">
           <h2>A small team building a new kind of engineering tool</h2>
         </div>
@@ -397,7 +532,7 @@
     <!-- ============================================================ CTA -->
     <div class="cta" id="contact">
       <div class="wrap">
-        <p class="eyebrow" style="justify-content: center"><b>G</b> Get in touch</p>
+        <p class="eyebrow" style="justify-content: center"><b>J</b> Get in touch</p>
         <h2>Help us build the workshop.</h2>
         <p class="lead muted">
           We are building an interactive workshop that turns humanity's
