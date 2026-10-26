@@ -67,9 +67,9 @@ setTimeout(() => {
   const secondaryCta = [...d.querySelectorAll(".hero-cta .btn")].find((b) => /How it works/i.test(b.textContent));
   ok("hero: primary CTA present", !!primaryCta);
   ok("hero: secondary CTA present", !!secondaryCta);
-  ok("hero: primary CTA resolves", !!primaryCta && d.getElementById((primaryCta.getAttribute("href") || "").slice(1)) !== null, primaryCta ? primaryCta.getAttribute("href") : "");
+  ok("hero: primary CTA points to simulator", !!primaryCta && primaryCta.getAttribute("href") === "simulator/", primaryCta ? primaryCta.getAttribute("href") : "");
   ok("hero: secondary CTA resolves", !!secondaryCta && d.getElementById((secondaryCta.getAttribute("href") || "").slice(1)) !== null, secondaryCta ? secondaryCta.getAttribute("href") : "");
-  ok("hero: illustrative visual labelled", /Illustrative/i.test(txt(".hv-caption")), txt(".hv-caption"));
+  ok("hero: simulator screenshot caption present", /genuine screenshot/i.test(txt(".hv-caption")), txt(".hv-caption").slice(0, 60));
 
   /* ---------------------------------------------------- narrative sections */
   ok("narrative: workflow section present", !!d.getElementById("workflow"));
