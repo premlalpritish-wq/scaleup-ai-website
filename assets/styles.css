@@ -2985,3 +2985,30 @@ footer {
     scroll-behavior: auto;
   }
 }
+
+/* ---------------------------------------------------------------- capability */
+.cap-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+.cap {
+  background: var(--ink-850);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 18px 20px;
+}
+.cap h4 {
+  margin: 0 0 10px;
+  font-size: var(--fs-h4);
+  color: var(--text-hi);
+}
+.cap ul {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--text-lo);
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+}
+.cap ul li { margin-bottom: 6px; }

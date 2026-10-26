@@ -61,8 +61,8 @@ setTimeout(() => {
 
   /* ---------------------------------------------------- hero */
   ok("hero: single h1", n("h1") === 1, String(n("h1")));
-  ok("hero: headline present", /AI that figures out how to make anything/i.test(txt("h1")), txt("h1"));
-  ok("hero: supporting copy present", /Describe what you want to build/i.test(txt(".hero-sub")), txt(".hero-sub").slice(0, 60));
+  ok("hero: headline present", /Vibecoding for the physical world/i.test(txt("h1")), txt("h1"));
+  ok("hero: supporting copy present", /Describe what you want to make/i.test(txt(".hero-sub")), txt(".hero-sub").slice(0, 60));
   const primaryCta = [...d.querySelectorAll(".hero-cta .btn")].find((b) => /Explore the prototype/i.test(b.textContent));
   const secondaryCta = [...d.querySelectorAll(".hero-cta .btn")].find((b) => /How it works/i.test(b.textContent));
   ok("hero: primary CTA present", !!primaryCta);

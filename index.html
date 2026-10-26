@@ -3,16 +3,16 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>ScaleUp AI — AI that figures out how to make anything</title>
+    <title>ScaleUp AI - Vibecoding for the physical world</title>
     <meta
       name="description"
-      content="ScaleUp AI is building an AI-powered workshop that figures out how to make things, using everything humanity has already learned. Describe what you want to build; ScaleUp AI connects scientific and engineering knowledge to help construct executable models, explore how things work, and investigate what remains unknown."
+      content="ScaleUp AI is building vibecoding for the physical world: describe what you want to make, and AI researches the science, builds computational models, connects them into simulations, and helps you explore how your idea could work. Early prototype: recombinant human insulin production in E. coli."
     />
     <meta name="color-scheme" content="dark" />
-    <meta property="og:title" content="ScaleUp AI — AI that figures out how to make anything" />
+    <meta property="og:title" content="ScaleUp AI - Vibecoding for the physical world" />
     <meta
       property="og:description"
-      content="An AI-powered workshop that figures out how to make anything: describe what you want to build, and ScaleUp AI connects scientific and engineering knowledge to help construct executable models, explore how things work, and investigate what remains unknown."
+      content="Describe a physical thing you want to make. ScaleUp AI aims to have AI research the relevant science, construct computational models, connect them into simulations, and help you explore how your idea could work. Early prototype demonstrates the foundations on recombinant human insulin production in E. coli."
     />
     <link rel="stylesheet" href="assets/styles.css" />
     <link
@@ -36,10 +36,11 @@
           <small>v0.1</small>
         </a>
         <div class="nav-links" aria-label="Sections">
-          <a href="#workflow">Workflow</a>
+          <a href="#workflow">How it works</a>
+          <a href="#system">Technology</a>
           <a href="#prototype">Prototype</a>
-          <a href="#system">How it works</a>
-          <a href="#example">Example</a>
+          <a href="#example">Insulin example</a>
+          <a href="#capability">Capability</a>
           <a href="#team">Team</a>
           <a href="#contact">Contact</a>
         </div>
@@ -52,13 +53,13 @@
         <div class="hero-copy">
           <p class="eyebrow"><b>ScaleUp AI</b></p>
           <h1>
-            AI that figures out how to
-            <span class="accent">make anything</span>.
+            Vibecoding for the
+            <span class="accent">physical world</span>.
           </h1>
           <p class="lead hero-sub">
-            Describe what you want to build. ScaleUp AI connects scientific and
-            engineering knowledge to help construct executable models, explore
-            how things work, and investigate what remains unknown.
+            Describe what you want to make. ScaleUp AI is building AI that finds
+            the science, constructs computational models, connects them into
+            simulations, and helps you explore how your idea could work.
           </p>
           <div class="hero-cta">
             <a class="btn btn-primary" href="simulator/">
@@ -76,11 +77,10 @@
           </p>
         </div>
 
-        <!-- Simulator screenshot from the deployed Zielinski replay. -->
         <div class="hero-visual">
           <div class="hv-frame">
             <img class="hv-svg" src="assets/images/simulator-launcher-screenshot.png" alt="ScaleUp AI simulator launcher: choose between the Bioreactor Workshop, the Zielinski insulin replay, and the model and evidence explorer." loading="lazy" />
-            <p class="hv-caption">A genuine screenshot of the deployed simulator launcher at https://premlalpritish-wq.github.io/scaleup-ai-website/simulator/. Choose an experience; only the selected experience and its required assets are loaded.</p>
+            <p class="hv-caption">A genuine screenshot of the deployed simulator launcher. Choose an experience; only the selected experience and its required assets are loaded.</p>
           </div>
         </div>
       </div>
@@ -89,53 +89,57 @@
     <!-- ============================================================ WORKFLOW -->
     <section id="workflow">
       <div class="wrap">
-        <p class="eyebrow"><b>A</b> From an idea to something you can explore</p>
+        <p class="eyebrow"><b>A</b> Prompt to simulation</p>
         <div class="sec-head">
-          <h2>From an idea to something you can explore</h2>
+          <h2>From a description to a simulation</h2>
           <p class="lead muted">
-            A person should eventually be able to describe something they want
-            to build and use ScaleUp AI to explore how it could work. The six
-            stages below are a conceptual product workflow. Only the first
-            working pieces exist today; the rest are the direction.
+            The product vision is a prompt-to-simulation workflow for physical
+            systems. The five stages below describe the end-to-end experience
+            ScaleUp AI is building. Today only the manual foundations of stages
+            3-6 are demonstrated; the automated path from a natural-language
+            goal is the long-term objective.
           </p>
         </div>
         <div class="workflow-grid">
           <div class="wstage">
             <span class="widx">01</span>
             <h4>Describe</h4>
-            <p>Start with something you want to make: an object, a material, a biological system, or a process.</p>
+            <p>The user describes the physical system, product, or process they want to create.</p>
             <span class="wcap future">Future capability</span>
           </div>
           <div class="wstage">
             <span class="widx">02</span>
-            <h4>Discover</h4>
-            <p>Find relevant scientific and engineering knowledge across papers, equations, and experimental results.</p>
+            <h4>Research</h4>
+            <p>AI discovers and retrieves relevant scientific literature, equations, experimental results, and engineering knowledge.</p>
             <span class="wcap future">Future capability</span>
           </div>
           <div class="wstage now">
             <span class="widx">03</span>
-            <h4>Model</h4>
-            <p>Turn knowledge into structured computational models, with parameters, units, and assumptions recorded.</p>
+            <h4>Build models</h4>
+            <p>Extracted information is turned into executable computational models, preserving units, evidence, assumptions, and unknowns.</p>
             <span class="wcap now">Current foundation</span>
           </div>
           <div class="wstage">
             <span class="widx">04</span>
             <h4>Connect</h4>
-            <p>Reconcile interfaces, assumptions, units, and compatibility before separate models can be composed.</p>
+            <p>Compatible models are identified, their interfaces and dependencies reconciled, and missing information flagged.</p>
             <span class="wcap future">Future capability</span>
           </div>
           <div class="wstage">
             <span class="widx">05</span>
             <h4>Simulate</h4>
-            <p>Execute compatible models and explore their behaviour under different conditions.</p>
+            <p>The assembled models execute together so the user can explore system behaviour and investigate how to reach the desired outcome.</p>
             <span class="wcap future">Future capability</span>
           </div>
-          <div class="wstage now">
-            <span class="widx">06</span>
-            <h4>Investigate</h4>
-            <p>Examine limitations, alternatives, and unanswered questions rather than accepting a single answer.</p>
-            <span class="wcap now">Current foundation</span>
-          </div>
+        </div>
+        <div class="notice plain" style="margin-top: 22px">
+          <span class="ico">STATUS</span>
+          <span>
+            <b>Manual today, automated tomorrow.</b> The current prototype
+            demonstrates a manually assembled version of stages 3-5 on one
+            concrete problem. The end-to-end automated path from a
+            natural-language goal is being developed.
+          </span>
         </div>
       </div>
     </section>
@@ -143,41 +147,34 @@
     <!-- ============================================================ SYSTEM -->
     <section id="system">
       <div class="wrap">
-        <p class="eyebrow"><b>B</b> What the system understands</p>
+        <p class="eyebrow"><b>B</b> Technical foundations</p>
         <div class="sec-head">
-          <h2>What the system understands</h2>
+          <h2>What makes prompt-to-simulation possible</h2>
           <p class="lead muted">
-            Scientific knowledge is fragmented across papers, equations,
-            experimental results, and specialist communities. Reusing it
-            computationally requires more than summarising papers: relevant
-            equations, variables, parameters, units, assumptions, evidence, and
-            constraints must be extracted and represented in a structured form.
+            Five foundations underpin the product. They are the building blocks,
+            not proof that the entire automated workflow is complete.
           </p>
         </div>
         <div class="sys-grid">
           <div class="sys">
-            <h4>Extract</h4>
-            <p>Equations, variables, parameters, and conditions must be pulled out of prose, tables, and figures — each with its unit and its source.</p>
+            <h4>Literature extraction</h4>
+            <p>Turn scientific papers into structured process information: equations, variables, parameters, units, conditions, and sources.</p>
           </div>
           <div class="sys">
-            <h4>Provenance</h4>
-            <p>Reported facts and inferred quantities must stay distinct, so a value can be traced to the page and excerpt it came from.</p>
+            <h4>Evidence and provenance</h4>
+            <p>Distinguish reported facts, calculations, inferences, assumptions, and unknowns, so every value can be traced to its source.</p>
           </div>
           <div class="sys">
-            <h4>Assumptions</h4>
-            <p>Assumptions and uncertainty must be represented explicitly, not smoothed over to make the record look complete.</p>
+            <h4>Executable models</h4>
+            <p>Represent scientific relationships and process behaviour computationally, with units and interfaces declared.</p>
           </div>
           <div class="sys">
-            <h4>Units</h4>
-            <p>Units and model interfaces must be reconciled before separate models can be composed and executed together.</p>
+            <h4>Model composition</h4>
+            <p>Connect compatible models through declared interfaces, units, and dependencies; refuse incompatible connections and report why.</p>
           </div>
           <div class="sys">
-            <h4>Applicability</h4>
-            <p>Whether evidence and models apply to the same system must be evaluated — a difference in strain or condition is a compatibility question, not an automatic disqualification.</p>
-          </div>
-          <div class="sys">
-            <h4>Composition</h4>
-            <p>Compatible models must be composed into larger simulations without losing their evidence, assumptions, or limitations.</p>
+            <h4>Simulation and investigation</h4>
+            <p>Execute models, inspect results, and identify gaps that need further evidence or validation.</p>
           </div>
         </div>
         <div class="notice plain" style="margin-top: 22px">
@@ -195,7 +192,7 @@
       <div class="wrap">
         <p class="eyebrow"><b>C</b> The working prototype</p>
         <div class="sec-head">
-          <h2>A real, runnable workshop — not a mockup</h2>
+          <h2>A real, runnable workshop - not a mockup</h2>
           <p class="lead muted">
             The demonstration below is captured from the ScaleUp AI Godot
             prototype: a desktop application that composes scientific process
@@ -208,22 +205,22 @@
         <div class="proto-grid">
           <figure class="proto-fig">
             <img src="assets/images/workshop.png" alt="ScaleUp AI graph editor: models listed in a palette, an instance form, and a composition canvas." loading="lazy" />
-            <figcaption>Graph editor — compose models from a registered palette, fill their declared inputs, and run or validate the graph.</figcaption>
+            <figcaption>Graph editor - compose models from a registered palette, fill their declared inputs, and run or validate the graph.</figcaption>
           </figure>
           <figure class="proto-fig">
-            <img src="assets/images/replay3d.png" alt="3D evidence replay of the Zieliński insulin process: fermentation vessel, growth curve, purification results, and a list of what the model cannot tell us." loading="lazy" />
-            <figcaption>3D evidence replay — the fermentation vessel, published growth and purification data, and an explicit list of what the model cannot tell us.</figcaption>
+            <img src="assets/images/replay3d.png" alt="3D evidence replay of the Zielinski insulin process: fermentation vessel, growth curve, purification results, and a list of what the model cannot tell us." loading="lazy" />
+            <figcaption>3D evidence replay - the fermentation vessel, published growth and purification data, and an explicit list of what the model cannot tell us.</figcaption>
           </figure>
           <figure class="proto-fig">
             <img src="assets/images/composition.png" alt="Composition view showing models connected through declared ports." loading="lazy" />
-            <figcaption>Composition — models connect through declared ports and run in dependency order; incompatible or refused connections are reported, not hidden.</figcaption>
+            <figcaption>Composition - models connect through declared ports and run in dependency order; incompatible or refused connections are reported, not hidden.</figcaption>
           </figure>
         </div>
 
         <div class="proto-caps">
           <div class="proto-cap">
             <h4>Compose models</h4>
-            <p>Registered models (Zieliński insulin process, Ganjave, Morris material balance) are added from a palette and connected through typed, unit-aware ports. Required inputs have no defaults: a missing value blocks execution.</p>
+            <p>Registered models (Zielinski insulin process, Ganjave, Morris material balance) are added from a palette and connected through typed, unit-aware ports. Required inputs have no defaults: a missing value blocks execution.</p>
           </div>
           <div class="proto-cap">
             <h4>Run and validate</h4>
@@ -231,7 +228,7 @@
           </div>
           <div class="proto-cap">
             <h4>Replay evidence</h4>
-            <p>The 3D replay restates numbers read from a published paper and the accounting identities it supports. It reports no growth kinetics, no oxygen-transfer data, no AU calibration and no purification model — and declares those absences explicitly.</p>
+            <p>The 3D replay restates numbers read from a published paper and the accounting identities it supports. It reports no growth kinetics, no oxygen-transfer data, no AU calibration and no purification model - and declares those absences explicitly.</p>
           </div>
           <div class="proto-cap">
             <h4>Investigate gaps</h4>
@@ -263,15 +260,19 @@
     <!-- ============================================================ EXAMPLE -->
     <section id="example">
       <div class="wrap">
-        <p class="eyebrow"><b>D</b> A concrete example of scientific reasoning</p>
+        <p class="eyebrow"><b>D</b> A concrete proof of concept</p>
         <div class="sec-head">
-          <h2>A concrete example of scientific reasoning</h2>
+          <h2>Why start with insulin production</h2>
           <p class="lead muted">
-            The prototype above is built around a real paper about recombinant
-            human insulin production in <span class="mono">E. coli</span>. It
-            exposes missing dissolved-oxygen information, and shows how a
-            potentially relevant finding from a different strain can be inspected
-            without being automatically treated as transferable.
+            ScaleUp AI began with a concrete engineering goal: modelling
+            recombinant human insulin production using E. coli. This is the first
+            concrete biological engineering problem used to build and test the
+            approach. Scientific papers were researched and retrieved using
+            AI-assisted research; relevant information was extracted and encoded
+            into computational models; models were connected and executed through
+            a composition system; and a Godot environment was built to inspect
+            and visualise the resulting model and evidence. This is the manual
+            version of the workflow ScaleUp AI aims to automate.
           </p>
         </div>
         <div class="ex-grid">
@@ -279,7 +280,7 @@
             <h4>What the model exposes</h4>
             <p>
               The paper reports agitation, aeration, dissolved-oxygen control,
-              pressure, and exact feed profiles only partially — or not at all.
+              pressure, and exact feed profiles only partially - or not at all.
               The model records these as missing information rather than filling
               them in, so an engineer can see exactly what is unknown before
               attempting any prediction.
@@ -288,10 +289,10 @@
           <div class="ex-card">
             <h4>What a strain difference means</h4>
             <p>
-              A finding reported for a different <span class="mono">E. coli</span>
-              strain does not by itself prove evidence invalid. It introduces a
-              compatibility question — same organism, different background — that
-              must be evaluated before the evidence is reused.
+              A finding reported for a different E. coli strain does not by
+              itself prove evidence invalid. It introduces a compatibility
+              question - same organism, different background - that must be
+              evaluated before the evidence is reused.
             </p>
           </div>
           <div class="ex-card">
@@ -307,10 +308,64 @@
       </div>
     </section>
 
+    <!-- ============================================================ CAPABILITY -->
+    <section id="capability">
+      <div class="wrap">
+        <p class="eyebrow"><b>E</b> Current versus future</p>
+        <div class="sec-head">
+          <h2>What exists today and what is being built</h2>
+          <p class="lead muted">
+            The aspiration is ambitious; descriptions of current functionality
+            are precise. Three levels, clearly separated.
+          </p>
+        </div>
+        <div class="cap-grid">
+          <div class="cap">
+            <h4>Demonstrated today</h4>
+            <ul>
+              <li>A manually assembled literature-to-model workflow.</li>
+              <li>Structured scientific process information with traceable evidence and provenance.</li>
+              <li>An executable model composition pipeline with typed, unit-aware ports.</li>
+              <li>An interactive simulator and evidence replay for the insulin process.</li>
+            </ul>
+          </div>
+          <div class="cap">
+            <h4>Being developed</h4>
+            <ul>
+              <li>More reliable automated extraction and model construction.</li>
+              <li>Automated model discovery, compatibility assessment, and composition.</li>
+              <li>A progressively automated path from a natural-language goal to a runnable simulation.</li>
+            </ul>
+          </div>
+          <div class="cap">
+            <h4>Long-term vision</h4>
+            <ul>
+              <li>Describe almost any physical thing or process in natural language.</li>
+              <li>Have AI discover the relevant science and engineering knowledge.</li>
+              <li>Automatically construct and assemble the necessary computational models.</li>
+              <li>Generate an interactive simulation to explore how the physical idea could work.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="notice plain" style="margin-top: 22px">
+          <span class="ico">HONESTY</span>
+          <span>
+            <b>The insulin replay is evidence, not a prediction.</b> It restates
+            published values and reports its own gaps. It does not reliably
+            simulate arbitrary physical systems, automatically research and
+            construct every model end-to-end, predict real-world outcomes
+            accurately without validation, or produce manufacturing-ready
+            designs. The Ganjave model and other registered models are not
+            validated for predictive use.
+          </span>
+        </div>
+      </div>
+    </section>
+
     <!-- ============================================================ TEAM -->
     <section id="team">
       <div class="wrap">
-        <p class="eyebrow"><b>E</b> Team</p>
+        <p class="eyebrow"><b>F</b> Team</p>
         <div class="sec-head">
           <h2>A small team building a new kind of engineering tool</h2>
         </div>
@@ -342,7 +397,7 @@
     <!-- ============================================================ CTA -->
     <div class="cta" id="contact">
       <div class="wrap">
-        <p class="eyebrow" style="justify-content: center"><b>F</b> Get in touch</p>
+        <p class="eyebrow" style="justify-content: center"><b>G</b> Get in touch</p>
         <h2>Help us build the workshop.</h2>
         <p class="lead muted">
           We are building an interactive workshop that turns humanity's
@@ -362,8 +417,8 @@
     <footer>
       <div class="wrap foot-in">
         <div>
-          <strong style="color: var(--text-hi)">ScaleUp AI</strong> — AI that
-          figures out how to make anything. Pre-release.
+          <strong style="color: var(--text-hi)">ScaleUp AI</strong> - vibecoding
+          for the physical world. Pre-release.
         </div>
       </div>
     </footer>
