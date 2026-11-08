@@ -61,8 +61,8 @@ setTimeout(() => {
 
   /* ---------------------------------------------------- hero */
   ok("hero: single h1", n("h1") === 1, String(n("h1")));
-  ok("hero: headline present", /Turn Scientific Papers into Playable 3D Lab Simulations|Compile Peer-Reviewed Literature|Vibecoding for the physical world/i.test(txt("h1")), txt("h1"));
-  ok("hero: supporting copy present", /Stop guessing how a lab protocol scales|Describe what you want to make/i.test(txt(".hero-sub")), txt(".hero-sub").slice(0, 60));
+  ok("hero: headline present", /Vibecode physical products, grounded in science/i.test(txt("h1")), txt("h1"));
+  ok("hero: supporting copy present", /Describe the biological or chemical product you want to make/i.test(txt(".hero-sub")), txt(".hero-sub").slice(0, 60));
   const primaryCta = [...d.querySelectorAll(".hero-cta .btn")].find((b) => /EXPLORE 3D SIMULATOR|Launch Interactive Workbench|Explore the prototype/i.test(b.textContent));
   const secondaryCta = [...d.querySelectorAll(".hero-cta .btn")].find((b) => /HOW IT WORKS|Inspect Central Library/i.test(b.textContent));
   ok("hero: primary CTA present", !!primaryCta);

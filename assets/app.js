@@ -153,7 +153,7 @@
   const STAGE_STORIES = {
     overview: {
       hud: "OVERVIEW · FULL 6-STAGE BENCH",
-      title: "Overview · Complete 6-Stage Kelp Biorefinery",
+      title: "Full 6-Stage Bench",
       tier: "100% DIRECT EVIDENCE // MASS CONSERVED",
       transform: "Follows dry brown seaweed through mechanical milling, acid washing, hot alkaline extraction, high-speed spin separation, alcohol precipitation, and fibre wet-spinning.",
       params: "Takes 40 hours total. Recovers 33.1% of raw alginate from dry biomass across six connected tanks with zero mass lost.",
@@ -161,8 +161,8 @@
       provenance: "Verified from University of York Biotechnology research data (Dissertation Section 4)."
     },
     stage0: {
-      hud: "STEP 0 · MECHANICAL KNIFE MILLING",
-      title: "Step 0 · Grind Dry Seaweed (15g)",
+      hud: "STAGE 0 · MECHANICAL KNIFE MILLING",
+      title: "Stage 0: Grind Dry Kelp (15g)",
       tier: "DIRECT EVIDENCE // PARTICLE CONTINUITY",
       transform: "High-speed rotating blades crush raw dried kelp into a fine, consistent powder.",
       params: "Grinds 15.0 grams of kelp down to 0.5–1.0 mm grains so chemicals can penetrate evenly.",
@@ -170,17 +170,17 @@
       provenance: "Direct experimental protocol; starting solid condition (Dissertation Section 3.2)."
     },
     stage1: {
-      hud: "STEP 1 · ACID & MINERAL WASH",
-      title: "Step 1 · Acid Wash (Remove Minerals)",
+      hud: "STAGE 1 · CITRIC ACID WASH",
+      title: "Stage 1: Citric Acid Wash",
       tier: "DIRECT EVIDENCE // DISSOLUTION LOCK",
-      transform: "Soaks ground seaweed in mild hydrochloric acid to strip out unwanted calcium and magnesium ions.",
+      transform: "Soaks ground seaweed in mild acid to strip out unwanted calcium and magnesium ions.",
       params: "Runs at 20°C for 2 hours, washing away over 96% of mineral impurities so the gel dissolves cleanly.",
       eq: "Ca-(Alginate)₂ + 2 HCl → 2 Free Alginic Acid (solid) + CaCl₂ (liquid)",
       provenance: "Standard acid de-ashing protocol; fully verified from primary paper."
     },
     stage2: {
-      hud: "STEP 2 · HOT ALKALINE EXTRACTION",
-      title: "Step 2 · Dissolve into Alginate Gel (33.1% Yield)",
+      hud: "STAGE 2 · HOT ALKALINE EXTRACTION",
+      title: "Stage 2: Dissolve to Alginate Gel (33.1% Yield)",
       tier: "DIRECT EVIDENCE // RATE LIMITED",
       transform: "Heats the washed kelp in sodium carbonate solution, turning insoluble fibre into a thick liquid gel.",
       params: "Cooks at 50°C and pH 10 for 3 hours to extract a 33.1% yield of pure sodium alginate.",
@@ -188,8 +188,8 @@
       provenance: "Direct extraction data; DOI verified (Dissertation Section 4.1)."
     },
     stage3: {
-      hud: "STEP 3 · SPIN & NEUTRALISE",
-      title: "Step 3 · Centrifuge & Balance to pH 7",
+      hud: "STAGE 3 · SPIN & NEUTRALISE",
+      title: "Stage 3: Centrifuge & Balance to pH 7",
       tier: "DIRECT EVIDENCE // BUFFER STABLE",
       transform: "Spins the broth at 4,500 rpm to drop cellular debris, then adds acid drop-by-drop until neutral.",
       params: "Centrifuges for 30 minutes and buffers to exactly pH 7.0 to prevent polymer chains from breaking down.",
@@ -197,8 +197,8 @@
       provenance: "Lab centrifugation mass balance identity; pH-dependent boundary."
     },
     stage4: {
-      hud: "STEP 4 · CRYO-ETHANOL PRECIPITATION",
-      title: "Step 4 · Ice-Cold Ethanol Precipitation (91.5% Pure)",
+      hud: "STAGE 4 · CRYO-ETHANOL PRECIPITATION",
+      title: "Stage 4: -20°C Ethanol Precipitation (91.5% Pure)",
       tier: "DIRECT EVIDENCE // PHASE SEPARATION",
       transform: "Pours freezing ethanol into the clear liquid, causing pure alginate to suddenly clump into white gel strands.",
       params: "Chilled to -20°C with 1:1 alcohol ratio, isolating alginate at 91.5% uronic acid purity.",
@@ -206,8 +206,8 @@
       provenance: "HPLC assay verified from primary research paper (Dissertation Table 5.2)."
     },
     stage5: {
-      hud: "STEP 5 · FIBRE WET-SPINNING",
-      title: "Step 5 · Spin into Strong Fibres (43.1 MPa)",
+      hud: "STAGE 5 · FIBRE WET-SPINNING",
+      title: "Stage 5: Wet-Spin Strong Fibres (43.1 MPa)",
       tier: "DIRECT EVIDENCE // ISO-527 VERIFIED",
       transform: "Pumps the thick gel through a fine needle into a calcium bath, where it instantly hardens into yarn.",
       params: "Extrudes 65 µm filaments with a tensile breaking strength of 29.3 to 43.1 MPa (strong enough for textiles).",
@@ -216,7 +216,7 @@
     },
     anatomy: {
       hud: "2D EQUIPMENT BLUEPRINT",
-      title: "2D Equipment Blueprint (Anatomy SVG)",
+      title: "2D Equipment Blueprint (SVG)",
       tier: "PROCEDURAL BLUEPRINT // VERIFIED TOPOLOGY",
       transform: "A computer-generated blueprint mapping every physical tank, pipe, valve, and pump with real mass balance.",
       params: "Every input and output stream is checked so material cannot vanish between stages.",
