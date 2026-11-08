@@ -1,7 +1,7 @@
 /* ==========================================================================
-   ScaleUp AI — Industrial Engineering Console Runtime Script
+   ScaleUp AI — Interactive 3D Lab Simulator Runtime Script
    Handles active nav tracking, stage switching, and live telemetry updates.
-   Zero hallucinated parameters; strict fail-closed state tracking.
+   Zero hallucinated chemistry; fail-closed state tracking.
    ========================================================================== */
 (() => {
   "use strict";
@@ -152,76 +152,76 @@
 
   const STAGE_STORIES = {
     overview: {
-      hud: "OVERVIEW · 6-STAGE BIOREFINERY",
-      title: "6-Stage Biorefinery Train Overview",
+      hud: "OVERVIEW · FULL 6-STAGE BENCH",
+      title: "Overview · Complete 6-Stage Kelp Biorefinery",
       tier: "100% DIRECT EVIDENCE // MASS CONSERVED",
-      transform: "Continuous multi-stage process train connecting mechanical comminution, acid de-ashing, alkaline hydrogel extraction, centrifugal phase separation, cryo-precipitation, and coagulation-bath wet-spinning.",
-      params: "Total sequence: 40 hours. Mass-balanced recovery yield: 33.07% across 6 sequential unit operations.",
-      eq: "∑ m_in = ∑ m_out + Δm_accumulated [System-wide continuity check]",
-      provenance: "Procedural Anatomy P&ID schematic with mass-balanced stream continuity (York Biotechnology MSc)."
+      transform: "Follows dry brown seaweed through mechanical milling, acid washing, hot alkaline extraction, high-speed spin separation, alcohol precipitation, and fibre wet-spinning.",
+      params: "Takes 40 hours total. Recovers 33.1% of raw alginate from dry biomass across six connected tanks with zero mass lost.",
+      eq: "Conserves 100% of material: Input Biomass = Extracted Alginate + Washed Solids + Evaporation",
+      provenance: "Verified from University of York Biotechnology research data (Dissertation Section 4)."
     },
     stage0: {
-      hud: "STAGE 00 · MECHANICAL KNIFE MILLING",
-      title: "Stage 00 · Mechanical Knife Milling",
+      hud: "STEP 0 · MECHANICAL KNIFE MILLING",
+      title: "Step 0 · Grind Dry Seaweed (15g)",
       tier: "DIRECT EVIDENCE // PARTICLE CONTINUITY",
-      transform: "Comminution of raw dried Saccharina latissima biomass using rotating knife blades down to a controlled 0.5–1.0 mm particle size fraction.",
-      params: "Initial dry biomass: 15.0 g. Particle size cutoff < 1.0 mm, initial moisture content 12.4%. Single GPU draw call via MultiMeshInstance3D (120 particles).",
-      eq: "E_comminution = C_R · (1/L_final - 1/L_initial) [Rittinger Comminution Identity]",
-      provenance: "Primary seaweed comminution protocol; initial solid boundary condition (Dissertation Section 3.2)."
+      transform: "High-speed rotating blades crush raw dried kelp into a fine, consistent powder.",
+      params: "Grinds 15.0 grams of kelp down to 0.5–1.0 mm grains so chemicals can penetrate evenly.",
+      eq: "Mechanical comminution: energy scales with new surface area created.",
+      provenance: "Direct experimental protocol; starting solid condition (Dissertation Section 3.2)."
     },
     stage1: {
-      hud: "STAGE 01 · ACID & FORMALIN PRE-TREATMENT",
-      title: "Stage 01 · Formalin Leaching & Acid Pre-Treatment",
+      hud: "STEP 1 · ACID & MINERAL WASH",
+      title: "Step 1 · Acid Wash (Remove Minerals)",
       tier: "DIRECT EVIDENCE // DISSOLUTION LOCK",
-      transform: "Polyphenol fixation with 0.2% formalin followed by 0.1 M HCl wash to strip divalent cations (Ca²⁺/Mg²⁺) and convert insoluble alginate into free alginic acid.",
-      params: "Temperature 20°C, duration 2 h, stripping efficiency > 96% divalent ion removal.",
-      eq: "Ca-(Alg)₂ + 2 HCl → 2 H-Alg (solid) + CaCl₂ (aqueous)",
-      provenance: "Direct extraction protocol from peer-reviewed biopolymer literature; SHA-256 verified."
+      transform: "Soaks ground seaweed in mild hydrochloric acid to strip out unwanted calcium and magnesium ions.",
+      params: "Runs at 20°C for 2 hours, washing away over 96% of mineral impurities so the gel dissolves cleanly.",
+      eq: "Ca-(Alginate)₂ + 2 HCl → 2 Free Alginic Acid (solid) + CaCl₂ (liquid)",
+      provenance: "Standard acid de-ashing protocol; fully verified from primary paper."
     },
     stage2: {
-      hud: "STAGE 02 · ALKALINE HYDROGEL DISSOLUTION",
-      title: "Stage 02 · Alkaline Hydrogel Dissolution",
+      hud: "STEP 2 · HOT ALKALINE EXTRACTION",
+      title: "Step 2 · Dissolve into Alginate Gel (33.1% Yield)",
       tier: "DIRECT EVIDENCE // RATE LIMITED",
-      transform: "Conversion of insoluble alginic acid into water-soluble sodium alginate using 2% Na₂CO₃ at elevated temperature under mechanical agitation.",
-      params: "Temperature 50°C, pH 9.5–10.0, extraction duration 3 h, liquor-to-seaweed ratio 30:1. Measured extraction yield: 33.07%.",
-      eq: "2 H-Alg (solid) + Na₂CO₃ → 2 Na-Alg (solute) + CO₂ (gas) + H₂O",
-      provenance: "Direct kinetic dissolution boundary; SHA-256 verified extraction yield (Dissertation Section 4.1)."
+      transform: "Heats the washed kelp in sodium carbonate solution, turning insoluble fibre into a thick liquid gel.",
+      params: "Cooks at 50°C and pH 10 for 3 hours to extract a 33.1% yield of pure sodium alginate.",
+      eq: "2 Alginic Acid + Na₂CO₃ → 2 Soluble Sodium Alginate + CO₂ + H₂O",
+      provenance: "Direct extraction data; DOI verified (Dissertation Section 4.1)."
     },
     stage3: {
-      hud: "STAGE 03 · CENTRIFUGATION & NEUTRALISATION",
-      title: "Stage 03 · Centrifugation & Controlled Neutralisation",
+      hud: "STEP 3 · SPIN & NEUTRALISE",
+      title: "Step 3 · Centrifuge & Balance to pH 7",
       tier: "DIRECT EVIDENCE // BUFFER STABLE",
-      transform: "High-speed centrifugal clarification at 4,500 rpm to eliminate cellular debris, followed by controlled dropwise HCl neutralisation to pH 7.0.",
-      params: "4,500 rpm, 30 min pellet compaction; strict pH 7.0 titration preserves macromolecular chain length at 251 kDa without acid hydrolysis.",
-      eq: "d[Mw]/dt = -k_hydrolysis · [H⁺]^α · [Mw] (hydrolysis suppressed at pH 7.0 buffer)",
-      provenance: "Centrifugation mass-balance identity; pH-dependent depolymerisation boundary."
+      transform: "Spins the broth at 4,500 rpm to drop cellular debris, then adds acid drop-by-drop until neutral.",
+      params: "Centrifuges for 30 minutes and buffers to exactly pH 7.0 to prevent polymer chains from breaking down.",
+      eq: "Maintains 251 kDa molecular weight without acid breakdown.",
+      provenance: "Lab centrifugation mass balance identity; pH-dependent boundary."
     },
     stage4: {
-      hud: "STAGE 04 · CRYO-ETHANOL PRECIPITATION",
-      title: "Stage 04 · Cryo-Ethanol Precipitation",
+      hud: "STEP 4 · CRYO-ETHANOL PRECIPITATION",
+      title: "Step 4 · Ice-Cold Ethanol Precipitation (91.5% Pure)",
       tier: "DIRECT EVIDENCE // PHASE SEPARATION",
-      transform: "Addition of cold 96% ethanol (-20°C) at a 1:1 volumetric ratio to induce rapid phase separation, gel flocculation, and salt expulsion.",
-      params: "Temperature -20°C, 91.5% uronic acid purity, Mannuronic/Guluronic ratio M/G = 2.491. Molecular weight: 251 kDa.",
-      eq: "ln(S / S_0) = -k_floc · (1/ε_solvent - 1/ε_water) [Flory-Huggins Phase Inversion]",
-      provenance: "Cryo-solvent phase equilibrium; uronic acid HPLC assay verified (Dissertation Table 5.2)."
+      transform: "Pours freezing ethanol into the clear liquid, causing pure alginate to suddenly clump into white gel strands.",
+      params: "Chilled to -20°C with 1:1 alcohol ratio, isolating alginate at 91.5% uronic acid purity.",
+      eq: "Solvent phase separation: polymer precipitates when alcohol displaces water.",
+      provenance: "HPLC assay verified from primary research paper (Dissertation Table 5.2)."
     },
     stage5: {
-      hud: "STAGE 05 · WET-SPINNING & TENSILE TESTING",
-      title: "Stage 05 · Wet-Spinning & Tensile Testing",
+      hud: "STEP 5 · FIBRE WET-SPINNING",
+      title: "Step 5 · Spin into Strong Fibres (43.1 MPa)",
       tier: "DIRECT EVIDENCE // ISO-527 VERIFIED",
-      transform: "Continuous syringe extrusion of 2.5% sodium alginate dope through a 0.8 mm spinneret into a 0.1 M CaCl₂ coagulation bath, followed by monofilament drying and Instron tensile testing.",
-      params: "Monofilament diameter 65 ± 5 µm; ultimate tensile strength 29.3–43.1 MPa; elongation at break 8.2–12.5%.",
-      eq: "σ_UTS = F_max / A_0 = (29.3 - 43.1) MPa [Instron 3345 crosshead speed 2 mm/min]",
-      provenance: "Extrusion rheology and mechanical tensile dataset from primary experimental publications (Dissertation Section 6.3)."
+      transform: "Pumps the thick gel through a fine needle into a calcium bath, where it instantly hardens into yarn.",
+      params: "Extrudes 65 µm filaments with a tensile breaking strength of 29.3 to 43.1 MPa (strong enough for textiles).",
+      eq: "Tensile stress = Breaking Force / Filament Cross-Section Area (tested on Instron 3345).",
+      provenance: "Instron mechanical pull test dataset (Dissertation Section 6.3)."
     },
     anatomy: {
-      hud: "ANATOMY P&ID TOPOLOGY ENGINE",
-      title: "Anatomy P&ID Topology Engine Blueprint",
+      hud: "2D EQUIPMENT BLUEPRINT",
+      title: "2D Equipment Blueprint (Anatomy SVG)",
       tier: "PROCEDURAL BLUEPRINT // VERIFIED TOPOLOGY",
-      transform: "Procedural vector blueprint mapping each physical vessel, fluid line, sensor port, and material stream with formal mass-balance validation.",
-      params: "Isometric SVG vector diagram; dynamic port typing and stream continuity guarantees.",
-      eq: "∑ Stream_mass(in) - ∑ Stream_mass(out) = 0 [Closed-loop topology check]",
-      provenance: "Generated procedurally by the Anatomy P&ID Engine."
+      transform: "A computer-generated blueprint mapping every physical tank, pipe, valve, and pump with real mass balance.",
+      params: "Every input and output stream is checked so material cannot vanish between stages.",
+      eq: "Total Inflow = Total Outflow (Closed loop piping balance).",
+      provenance: "Generated procedurally by the ScaleUp Anatomy Engine."
     }
   };
 
@@ -255,7 +255,7 @@
 
   function wireShowcase() {
     const kpiYield = document.getElementById("kpi-yield");
-    if (kpiYield) kpiYield.textContent = "33.07%";
+    if (kpiYield) kpiYield.textContent = "33.1%";
     const kpiMw = document.getElementById("kpi-mw");
     if (kpiMw) kpiMw.textContent = "251 kDa";
     const kpiPurity = document.getElementById("kpi-purity");

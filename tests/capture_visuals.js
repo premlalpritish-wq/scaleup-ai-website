@@ -68,6 +68,23 @@ async function main() {
       const h1Text = await page.locator("h1").innerText();
       console.log(`[${vp.name}] H1 Text: ${h1Text.replace(/\s+/g, " ")}`);
 
+      // Verify all images loaded with naturalWidth > 0
+      const imgHandles = await page.locator("img").all();
+      for (const img of imgHandles) {
+        await img.scrollIntoViewIfNeeded();
+        await page.waitForTimeout(100);
+        const src = await img.getAttribute("src");
+        const alt = await img.getAttribute("alt");
+        const nw = await img.evaluate((el) => el.naturalWidth);
+        const nh = await img.evaluate((el) => el.naturalHeight);
+        const complete = await img.evaluate((el) => el.complete);
+        if (!complete || nw <= 0 || nh <= 0) {
+          throw new Error(`Broken image detected: src="${src}", alt="${alt}", naturalWidth=${nw}, naturalHeight=${nh}`);
+        }
+        console.log(`[${vp.name}] Image OK (${nw}x${nh}): ${src}`);
+      }
+      await page.evaluate(() => window.scrollTo(0, 0));
+
       const file = path.join(OUT_DIR, `${vp.name}.png`);
       await page.screenshot({ path: file, fullPage: true });
       console.log(`Saved screenshot: ${file}`);
