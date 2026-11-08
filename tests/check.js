@@ -87,10 +87,13 @@ setTimeout(() => {
   ok("a11y: lang set", d.documentElement.getAttribute("lang") === "en");
   ok("a11y: viewport meta", !!d.querySelector('meta[name="viewport"]'));
   ok("a11y: sections have ids", n("section[id]") >= 3, String(n("section[id]")));
+  /* ---------------------------------------------------- team credentials */
   ok("a11y: team has three people", n(".person") === 3, String(n(".person")));
   ok("a11y: names and roles present", /Pritish Premlal/.test(body) && /Samarpit Nag/.test(body) && /Sahil Pawar/.test(body) && /CEO/.test(body) && /CTO/.test(body) && /CPO/.test(body));
   const teamText = (d.querySelector("#team")?.textContent || "").replace(/\s+/g, " ");
-  ok("a11y: no credential claims", !/\bPhD\b|\bMSc\b|\bB\.?Tech\b|\bformerly\b/i.test(teamText));
+  ok("team: verified credentials present", /MSc Biotechnology/i.test(teamText) && /Chemical and Process Engineering/i.test(teamText) && /Biomedical Science/i.test(teamText));
+  ok("team: verified universities present", /University of York/i.test(teamText) && /University of Leeds/i.test(teamText));
+  ok("team: no roboticist label", !/roboticist|robotics/i.test(teamText));
 
   /* ---------------------------------------------------- footer */
   ok("footer: intact", n("footer") === 1 && /ScaleUp AI/.test(txt("footer")) && /Pre-release/.test(txt("footer")), txt("footer"));

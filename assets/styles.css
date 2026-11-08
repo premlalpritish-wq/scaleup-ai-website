@@ -605,52 +605,77 @@ body {
 }
 
 /* ==========================================================================
-   TEAM SECTION
+   TEAM SECTION (Leeds & York Bioprocess Pedigree)
    ========================================================================== */
 
 .team-section {
-  padding: 64px 24px 80px;
+  padding: 80px 24px 96px;
   border-top: 1px solid var(--border);
 }
 
 .team-container {
-  max-width: 900px;
+  max-width: 960px;
   margin: 0 auto;
   text-align: center;
 }
 
 .team-header h3 {
-  font-size: 1rem;
-  font-weight: 500;
-  color: var(--text-dim);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--accent);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 32px;
+  letter-spacing: 0.08em;
+  margin-bottom: 40px;
 }
 
 .team-grid {
-  display: flex;
-  justify-content: center;
-  gap: 48px;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
 }
 
 .person {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px 24px;
+  text-align: left;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.person:hover {
+  border-color: var(--border-light);
+  background: var(--surface-hover);
+  transform: translateY(-2px);
 }
 
 .person-name {
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 1.125rem;
+  font-weight: 700;
   color: var(--text);
+  letter-spacing: -0.02em;
 }
 
 .person-role {
-  font-size: 0.8125rem;
-  color: var(--text-dim);
-  font-weight: 500;
+  display: inline-block;
+  align-self: flex-start;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  background: rgba(99, 102, 241, 0.1);
+  color: #c7d2fe;
+  border: 1px solid rgba(99, 102, 241, 0.2);
+}
+
+.person-degrees {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+  margin-top: 4px;
 }
 
 /* ==========================================================================
@@ -697,7 +722,8 @@ body {
   }
 
   .team-grid {
-    gap: 28px;
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
 }
 
