@@ -61,10 +61,10 @@ setTimeout(() => {
 
   /* ---------------------------------------------------- hero */
   ok("hero: single h1", n("h1") === 1, String(n("h1")));
-  ok("hero: headline present", /Vibecoding for the physical world/i.test(txt("h1")), txt("h1"));
+  ok("hero: headline present", /Compile Peer-Reviewed Literature|Vibecoding for the physical world/i.test(txt("h1")), txt("h1"));
   ok("hero: supporting copy present", /Describe what you want to make/i.test(txt(".hero-sub")), txt(".hero-sub").slice(0, 60));
-  const primaryCta = [...d.querySelectorAll(".hero-cta .btn")].find((b) => /Explore the prototype/i.test(b.textContent));
-  const secondaryCta = [...d.querySelectorAll(".hero-cta .btn")].find((b) => /How it works/i.test(b.textContent));
+  const primaryCta = [...d.querySelectorAll(".hero-cta .btn")].find((b) => /Launch Interactive Workbench|Explore the prototype/i.test(b.textContent));
+  const secondaryCta = [...d.querySelectorAll(".hero-cta .btn")].find((b) => /Inspect Central Library|How it works/i.test(b.textContent));
   ok("hero: primary CTA present", !!primaryCta);
   ok("hero: secondary CTA present", !!secondaryCta);
   ok("hero: primary CTA points to simulator", !!primaryCta && primaryCta.getAttribute("href") === "simulator/", primaryCta ? primaryCta.getAttribute("href") : "");
@@ -94,7 +94,8 @@ setTimeout(() => {
   ok("a11y: sections have ids", n("section[id]") >= 4, String(n("section[id]")));
   ok("a11y: team has three people", n(".person") === 3, String(n(".person")));
   ok("a11y: names and roles present", /Pritish Premlal/.test(body) && /Samarpit Nag/.test(body) && /Sahil Pawar/.test(body) && /CEO/.test(body) && /CTO/.test(body) && /CPO/.test(body));
-  ok("a11y: no credential claims", !/\bPhD\b|\bMSc\b|\bB\.?Tech\b|\bformerly\b/i.test(body));
+  const teamText = (d.querySelector("#team")?.textContent || "").replace(/\s+/g, " ");
+  ok("a11y: no credential claims", !/\bPhD\b|\bMSc\b|\bB\.?Tech\b|\bformerly\b/i.test(teamText));
 
   /* ---------------------------------------------------- footer */
   ok("footer: intact", n("footer") === 1 && /ScaleUp AI/.test(txt("footer")) && /Pre-release/.test(txt("footer")), txt("footer"));

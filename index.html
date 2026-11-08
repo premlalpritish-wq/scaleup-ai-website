@@ -3,579 +3,601 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>ScaleUp AI - Vibecoding for the physical world</title>
+    <title>ScaleUp AI - Deterministic Bioprocess Compiler &amp; 3D Digital Twin Spec</title>
     <meta
       name="description"
-      content="ScaleUp AI is building vibecoding for the physical world: describe what you want to make, and AI researches the science, constructs computational models, connects them into simulations, and helps you explore how your idea could work."
+      content="ScaleUp AI compiles peer-reviewed scientific literature into mass-conserved 3D bioprocess digital twins with zero hallucinated chemistry and fail-closed validation."
     />
     <meta name="page-type" content="software" />
     <meta name="site-kind" content="software" />
     <meta name="color-scheme" content="dark" />
-    <meta property="og:title" content="ScaleUp AI - Vibecoding for the physical world" />
+    <meta property="og:title" content="ScaleUp AI - Industrial Bioprocess Compiler" />
     <meta
       property="og:description"
-      content="Describe what you want to make. ScaleUp AI turns peer-reviewed scientific literature into interactive 3D bioprocess digital twins with zero hallucinated chemistry."
+      content="Compile peer-reviewed literature into mass-conserved 3D unit operations with zero hallucinated chemistry."
     />
     <link rel="stylesheet" href="assets/styles.css" />
     <link
       rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='5' fill='%23070a0e'/%3E%3Ccircle cx='9' cy='9' r='3' fill='%234ecdc4'/%3E%3Ccircle cx='23' cy='16' r='3' fill='none' stroke='%23e0b155' stroke-width='1.6'/%3E%3Ccircle cx='9' cy='24' r='3' fill='%236b7a8c'/%3E%3Cpath d='M9 9 L23 16 L9 24' stroke='%232a3543' stroke-width='1.6' fill='none'/%3E%3C/svg%3E"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230a0a09'/%3E%3Crect x='6' y='6' width='8' height='8' fill='%23ff5722'/%3E%3Crect x='18' y='6' width='8' height='8' fill='%2310b981'/%3E%3Crect x='6' y='18' width='8' height='8' fill='%23333330'/%3E%3Crect x='18' y='18' width='8' height='8' fill='%23eceae4'/%3E%3C/svg%3E"
     />
   </head>
 
   <body>
-    <!-- ============================================================ NAV -->
-    <nav class="nav" aria-label="Primary">
-      <div class="wrap nav-in">
-        <a class="brand" href="#top">
-          <svg width="19" height="19" viewBox="0 0 32 32" aria-hidden="true">
-            <circle cx="8" cy="8" r="3" fill="#4ecdc4" />
-            <circle cx="24" cy="16" r="3" fill="none" stroke="#e0b155" stroke-width="1.7" />
-            <circle cx="8" cy="25" r="3" fill="#6b7a8c" />
-            <path d="M8 8 L24 16 L8 25" stroke="#2a3543" stroke-width="1.7" fill="none" />
-          </svg>
-          ScaleUp AI
-          <small>v0.1</small>
-        </a>
-        <div class="nav-links" aria-label="Sections">
-          <a href="#problem">Problem</a>
-          <a href="#architecture">Architecture</a>
-          <a href="#showcase">Digital Twins</a>
-          <a href="#prototype">Evidence Replay</a>
-          <a href="#example">Provenance</a>
-          <a href="#team">Team</a>
-          <a href="#contact">Contact</a>
-        </div>
-      </div>
-    </nav>
-
-    <!-- ============================================================ HERO -->
-    <header class="hero" id="top">
-      <div class="wrap hero-grid">
-        <div class="hero-copy">
-          <div class="telemetry-pill">
-            <span class="telemetry-dot"></span>
-            <span class="telemetry-label">ZERO-HALLUCINATION BIOPROCESS COMPILER</span>
-          </div>
-          <h1>
-            Vibecoding for the
-            <span class="accent">physical world</span>.
-            <span class="hero-subhead">Prompt-to-process digital twins with zero hallucinated chemistry.</span>
-          </h1>
-          <p class="lead hero-sub">
-            Describe what you want to make. ScaleUp AI turns peer-reviewed scientific
-            literature into interactive 3D process digital twins — with zero hallucinated
-            chemistry. In wet-lab and pilot-plant scale-up, a hallucinated kinetic constant or silent model substitution ruins batches; ScaleUp AI compiles literature into mass-conserved, playable unit operations that hard-fail with an <code class="code-tag">InsufficientEvidenceError</code> when empirical data is missing.
-          </p>
-          <div class="hero-cta">
-            <a class="btn btn-primary" href="simulator/">
-              Explore the prototype
-              <svg width="13" height="13" viewBox="0 0 16 16" aria-hidden="true">
-                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </a>
-            <a class="btn btn-ghost" href="#architecture">How it works</a>
-          </div>
-
-          <div class="hero-telemetry-bar">
-            <div class="ht-stat">
-              <span class="ht-key">EVIDENCE POLICY</span>
-              <span class="ht-val ht-cyan">FAIL-CLOSED</span>
-            </div>
-            <div class="ht-stat">
-              <span class="ht-key">GROUNDING</span>
-              <span class="ht-val ht-amber">SHA-256 DIRECT</span>
-            </div>
-            <div class="ht-stat">
-              <span class="ht-key">ENGINE CORE</span>
-              <span class="ht-val ht-teal">GODOT 4 GPU</span>
-            </div>
-          </div>
-
-          <p class="hero-note" id="hero-note">
-            From peer-reviewed literature to interactive 3D physics.
-            Multi-stage biopolymer extraction and cybernetic microbial bioreactors with verified provenance.
-          </p>
-        </div>
-
-        <div class="hero-visual">
-          <div class="hv-frame">
-            <div class="hv-status-bar">
-              <span class="hv-status-tag">ACTIVE VIEWPORT</span>
-              <span class="hv-status-meta">MultiMeshInstance3D · 60 FPS</span>
-            </div>
-            <img class="hv-svg" src="assets/images/showcase/saccharina_6stage_bench_overview.png" alt="ScaleUp AI multi-stage digital twin: Saccharina latissima biopolymer extraction and wet-spinning bench." loading="lazy" />
-            <p class="hv-caption">A genuine screenshot of the live Godot 3D 6-stage digital twin workbench. Physical unit operations, phase transitions, and mass balance rendered in real time.</p>
+    <div class="spec-container">
+      <!-- ============================================================ TOP NAVIGATION -->
+      <nav class="nav" aria-label="Primary Technical Specification">
+        <div class="wrap nav-in">
+          <a class="brand" href="#top">
+            <svg width="18" height="18" viewBox="0 0 32 32" aria-hidden="true">
+              <rect x="4" y="4" width="10" height="10" fill="#ff5722" />
+              <rect x="18" y="4" width="10" height="10" fill="#10b981" />
+              <rect x="4" y="18" width="10" height="10" fill="#333330" />
+              <rect x="18" y="18" width="10" height="10" fill="#eceae4" />
+            </svg>
+            ScaleUp AI
+            <small>SPEC // v0.1</small>
+          </a>
+          <div class="nav-links" aria-label="Technical Sections">
+            <a href="#problem">[01 // PROTOCOL]</a>
+            <a href="#architecture">[02 // TOPOLOGY]</a>
+            <a href="#showcase">[03 // TWIN LEDGER]</a>
+            <a href="#prototype">[04 // REPLAY]</a>
+            <a href="#example">[05 // PROVENANCE]</a>
+            <a href="#team">[06 // PERSONNEL]</a>
+            <a href="#contact">[07 // ENDPOINT]</a>
           </div>
         </div>
-      </div>
-    </header>
+      </nav>
 
-    <!-- ============================================================ PROBLEM -->
-    <section id="problem">
-      <div class="wrap">
-        <p class="eyebrow"><b>A</b> The problem</p>
-        <div class="sec-head">
-          <h2>Scientific knowledge is abundant. Turning it into working models without hallucination is hard.</h2>
-          <p class="lead muted">
-            Generic LLMs are dangerous in physical bioprocess engineering: they guess kinetic constants, invent yield parameters, and silently substitute incompatible equations, ruining expensive experimental runs.
-          </p>
-        </div>
-
-        <div class="problem-grid">
-          <div class="problem-card">
-            <div class="problem-badge badge-conflict">THE GENERATIVE LLM TRAP</div>
-            <h4>Silent Hallucinations in the Wet Lab</h4>
-            <p>
-              When prompted for bioprocess recipes, generic language models hallucinate plausible-looking numbers: they fabricate non-existent enzyme kinetics, invent conversion rates, and silently blend incompatible protocols across distinct bacterial strains. In physical scale-up, ungrounded synthetic parameters lead to failed batches and wasted capital.
-            </p>
-            <div class="card-footer-mono">FAILURE MODE: SILENT CONTAMINATION</div>
-          </div>
-
-          <div class="problem-card">
-            <div class="problem-badge badge-known">THE SCALEUP AI PROTOCOL</div>
-            <h4>Strict Fail-Closed Compilation</h4>
-            <p>
-              ScaleUp AI enforces an unbroken chain of custody. Every unit operation, boundary condition, and reaction constant is bound to DOI-verified literature with verbatim quotes. If an essential parameter is absent from the peer-reviewed evidence, the compiler raises an explicit <code class="code-tag">InsufficientEvidenceError</code> and halts execution.
-            </p>
-            <div class="card-footer-mono">PROTOCOL: DETERMINISTIC VERIFICATION</div>
-          </div>
-
-          <div class="problem-card">
-            <div class="problem-badge badge-evidence">PHYSICAL CONSERVATION</div>
-            <h4>Continuous Mass &amp; Energy Balances</h4>
-            <p>
-              A digital twin cannot be a static animation. Whether tracking comminuted kelp biomass through sequential solid-liquid extraction vessels or monitoring recombinant protein expression in a stirred tank, our compiler ensures conservation of mass, phase equilibrium, and mechanical stream balances from prompt to runtime.
-            </p>
-            <div class="card-footer-mono">RUNTIME: FIRST-PRINCIPLES GOVERNED</div>
-          </div>
-        </div>
-
-        <div class="notice plain" style="margin-top: 24px">
-          <span class="ico">INTEGRITY</span>
-          <span>
-            <b>The Fail-Closed Protocol.</b> ScaleUp AI enforces an unbroken chain of custody. If a critical kinetic rate or mass balance is absent from the peer-reviewed literature, the system halts with an explicit provenance gap report rather than inventing synthetic approximations.
-          </span>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============================================================ ARCHITECTURE -->
-    <section id="architecture" class="architecture-section">
-      <div id="workflow"></div>
-      <div id="system"></div>
-      <div class="wrap">
-        <p class="eyebrow"><b>B</b> Unified four-stage engine architecture</p>
-        <div class="sec-head">
-          <h2>From peer-reviewed papers to executable 3D digital twins</h2>
-          <p class="lead muted">
-            Bioprocess design cannot tolerate hallucinations or ungrounded generative chemistry. ScaleUp AI enforces an unbroken chain of custody from peer-reviewed literature to executable physics.
-          </p>
-        </div>
-
-        <div class="arch-grid">
-          <div class="arch-card">
-            <div class="arch-card-top">
-              <span class="widx">01</span>
-              <div class="arch-badge">Topology Engine</div>
-            </div>
-            <h4>Anatomy Blueprint Engine</h4>
-            <p>Decomposes natural-language protocols into sequential physical unit operations, material stream balances, phase transitions, and isometric schematic blueprints.</p>
-            <div class="arch-tech">SVG Vector Generation · Stream Balancing</div>
-          </div>
-
-          <div class="arch-card">
-            <div class="arch-card-top">
-              <span class="widx">02</span>
-              <div class="arch-badge">Evidence Store</div>
-            </div>
-            <h4>Central Knowledge Library</h4>
-            <p>Binds every reaction constant, yield coefficient, and mass balance to SHA-256 and DOI-verified primary literature with verbatim author quotes and evidence tiers.</p>
-            <div class="arch-tech">Direct Provenance · Primary Literature Proofs</div>
-          </div>
-
-          <div class="arch-card">
-            <div class="arch-card-top">
-              <span class="widx">03</span>
-              <div class="arch-badge">Research Agent</div>
-            </div>
-            <h4>Autonomous Gatekeeper</h4>
-            <p>Queries OpenAlex and CrossRef on the fly when knowledge gaps appear, and enforces a strict fail-closed InsufficientEvidenceError halt instead of guessing.</p>
-            <div class="arch-tech">Zero-Hallucination Guardrails · Real-Time Gap Resolution</div>
-          </div>
-
-          <div class="arch-card">
-            <div class="arch-card-top">
-              <span class="widx">04</span>
-              <div class="arch-badge">GPU Workbench</div>
-            </div>
-            <h4>Godot 4 GPU Workbench</h4>
-            <p>Asynchronous stage streaming, MultiMeshInstance3D solid-phase continuity, live parameter sandbox dials, and one-click provenance inspection.</p>
-            <div class="arch-tech">Godot Engine · MultiMesh Instancing</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============================================================ SHOWCASE -->
-    <section id="showcase">
-      <div class="wrap">
-        <p class="eyebrow"><b>C</b> Multi-domain digital twin explorer · domain one</p>
-        <div class="sec-head">
-          <h2>Saccharina latissima alginate extraction &amp; wet-spinning</h2>
-          <p class="lead muted">
-            Multi-stage biopolymer extraction and fibre spinning digital twin, transitioning from dry kelp milling through alkaline dissolution, precipitation, neutralisation, and fibre extrusion.
-          </p>
-        </div>
-
-        <div class="showcase-card">
-          <div class="showcase-visuals">
-            <div class="showcase-hero-img-wrap">
-              <div class="viewport-hud">
-                <span class="hud-tag" id="hud-stage-name">OVERVIEW · 6-STAGE BIOREFINERY</span>
-                <span class="hud-badge badge-direct" id="hud-evidence-tier">DIRECT PROVENANCE</span>
+      <!-- ============================================================ SECTION 01: OPERATOR HERO & SPLIT WORKBENCH CONSOLE -->
+      <header class="hero" id="top">
+        <div class="hero-split">
+          <!-- Left Column: Editorial Mandate & Thesis -->
+          <div class="hero-left">
+            <div class="hero-header-block">
+              <div class="coord-stamp">[SYS.01 // DETERMINISTIC BIOPROCESS COMPILER]</div>
+              <h1>Compile Peer-Reviewed Literature into Mass-Conserved 3D Unit Operations.</h1>
+              <p class="lead hero-sub">
+                Describe what you want to make. In wet-lab and pilot-plant scale-up, a hallucinated kinetic constant or silent model substitution ruins batches; ScaleUp AI compiles peer-reviewed literature into mass-conserved, playable unit operations that hard-fail (<code class="code-tag">InsufficientEvidenceError</code>) when empirical data is missing.
+              </p>
+              <div class="hero-cta">
+                <a class="btn btn-primary" href="simulator/">
+                  [ LAUNCH INTERACTIVE WORKBENCH → ]
+                </a>
+                <a class="btn btn-ghost" href="#architecture">
+                  [ INSPECT CENTRAL LIBRARY JSON ]
+                </a>
               </div>
-              <img id="showcase-hero-img" src="assets/images/showcase/saccharina_6stage_bench_overview.png" alt="6-Stage Saccharina latissima bench overview in Godot 3D" loading="lazy" />
             </div>
 
-            <div class="showcase-thumbs">
+            <div>
+              <div class="operator-telemetry-strip">
+                <div class="op-stat">
+                  <span class="op-label">ENGINE MODE</span>
+                  <span class="op-val green">FAIL-CLOSED</span>
+                </div>
+                <div class="op-stat">
+                  <span class="op-label">GROUNDING</span>
+                  <span class="op-val orange">SHA-256 DIRECT</span>
+                </div>
+                <div class="op-stat">
+                  <span class="op-label">PHYSICS RUNTIME</span>
+                  <span class="op-val">GODOT 4 GPU</span>
+                </div>
+              </div>
+              <p class="hero-note" id="hero-note">
+                From peer-reviewed literature to interactive 3D physics. Multi-stage biopolymer extraction and cybernetic microbial bioreactors with verified provenance.
+              </p>
+            </div>
+          </div>
+
+          <!-- Right Column: Interactive 6-Stage Workbench Console -->
+          <div class="hero-right">
+            <div class="console-viewport-header">
+              <div class="cvh-title">
+                <span id="cvh-stage-name">OVERVIEW · 6-STAGE BIOREFINERY</span>
+              </div>
+              <div class="cvh-meta">
+                <span class="spec-badge verified" id="cvh-badge">100% DIRECT EVIDENCE</span>
+              </div>
+            </div>
+
+            <div class="console-viewport-frame">
+              <img id="showcase-hero-img" src="assets/images/showcase/saccharina_6stage_bench_overview.png" alt="ScaleUp AI 6-stage digital twin: Saccharina latissima biopolymer extraction and wet-spinning bench." loading="lazy" />
+              <p class="hv-caption">A genuine screenshot of the live Godot 3D 6-stage digital twin workbench. Physical unit operations, phase transitions, and mass balance rendered in real time.</p>
+            </div>
+
+            <!-- Stage Control Bar -->
+            <div class="stage-control-bar">
               <button class="thumb-btn active" data-stage="overview" data-img="assets/images/showcase/saccharina_6stage_bench_overview.png">
-                <span>Overview</span>
+                <span>[ OVERVIEW ]</span>
                 <small>6-Stage Bench</small>
               </button>
               <button class="thumb-btn" data-stage="stage0" data-img="assets/images/showcase/stage_0_dry_milling.png">
-                <span>Stage 0</span>
+                <span>[ STAGE 00 ]</span>
                 <small>Dry Milling</small>
               </button>
               <button class="thumb-btn" data-stage="stage1" data-img="assets/images/showcase/saccharina_6stage_bench_overview.png">
-                <span>Stage 1</span>
-                <small>Acid Wash</small>
+                <span>[ STAGE 01 ]</span>
+                <small>Acid Leaching</small>
               </button>
               <button class="thumb-btn" data-stage="stage2" data-img="assets/images/showcase/stage_2_alkaline_dissolution.png">
-                <span>Stage 2</span>
+                <span>[ STAGE 02 ]</span>
                 <small>Dissolution</small>
               </button>
               <button class="thumb-btn" data-stage="stage3" data-img="assets/images/showcase/saccharina_6stage_bench_overview.png">
-                <span>Stage 3</span>
+                <span>[ STAGE 03 ]</span>
                 <small>Neutralize</small>
               </button>
               <button class="thumb-btn" data-stage="stage4" data-img="assets/images/showcase/stage_4_cryo_precipitation.png">
-                <span>Stage 4</span>
+                <span>[ STAGE 04 ]</span>
                 <small>Precipitation</small>
               </button>
               <button class="thumb-btn" data-stage="stage5" data-img="assets/images/showcase/stage_5_wet_spinning_tensile.png">
-                <span>Stage 5</span>
+                <span>[ STAGE 05 ]</span>
                 <small>Wet-Spinning</small>
               </button>
               <button class="thumb-btn" data-stage="anatomy" data-img="assets/images/showcase/active_anatomy_blueprint.svg">
-                <span>Anatomy</span>
-                <small>SVG Topology</small>
+                <span>[ P&amp;ID SVG ]</span>
+                <small>CAD Topology</small>
               </button>
             </div>
 
-            <!-- Stage Story Box -->
-            <div class="stage-story-box">
-              <div class="stage-story-header">
-                <span class="stage-story-badge" id="stage-story-tier">DIRECT EVIDENCE</span>
-                <h3 id="stage-story-title">6-Stage Biorefinery Train Overview</h3>
+            <!-- Console Telemetry Ledger -->
+            <div class="console-ledger">
+              <div class="console-kpi-row">
+                <div class="ck-box">
+                  <span class="ck-label">EXTRACTION YIELD</span>
+                  <span class="kpi-val highlight" id="kpi-yield">—</span>
+                </div>
+                <div class="ck-box">
+                  <span class="ck-label">MOLECULAR WEIGHT</span>
+                  <span class="kpi-val" id="kpi-mw">—</span>
+                </div>
+                <div class="ck-box">
+                  <span class="ck-label">URONIC ACID PURITY</span>
+                  <span class="kpi-val" id="kpi-purity">—</span>
+                </div>
+                <div class="ck-box">
+                  <span class="ck-label">TENSILE STRENGTH</span>
+                  <span class="kpi-val" id="kpi-tensile">—</span>
+                </div>
               </div>
-              <div class="stage-story-body">
-                <div class="story-item">
-                  <span class="story-label">PHYSICAL TRANSFORMATION</span>
-                  <p id="stage-story-transform">—</p>
+
+              <div class="console-stage-readout">
+                <div class="csr-header">
+                  <h3 id="stage-story-title">6-Stage Biorefinery Train Overview</h3>
+                  <span class="spec-badge verified" id="stage-story-tier">DIRECT EVIDENCE</span>
                 </div>
-                <div class="story-item">
-                  <span class="story-label">VERIFIED EMPIRICAL PARAMETERS</span>
-                  <p id="stage-story-params">—</p>
-                </div>
-                <div class="story-item">
-                  <span class="story-label">GOVERNING EQUATION &amp; MASS BALANCE</span>
-                  <p id="stage-story-eq" class="eq-text">—</p>
-                </div>
-                <div class="story-item">
-                  <span class="story-label">SOURCE PROVENANCE &amp; DISSERTATION LINK</span>
-                  <p id="stage-story-provenance">—</p>
+                <div class="csr-body">
+                  <div class="csr-field">
+                    <span class="csr-key">PHYSICAL TRANSFORMATION &amp; PHASE INVERSION</span>
+                    <p class="csr-val" id="stage-story-transform">—</p>
+                  </div>
+                  <div class="csr-field">
+                    <span class="csr-key">VERIFIED EMPIRICAL CONSTANTS</span>
+                    <p class="csr-val" id="stage-story-params">—</p>
+                  </div>
+                  <div class="csr-field">
+                    <span class="csr-key">GOVERNING CONTINUITY EQUATION</span>
+                    <div class="eq-block" id="stage-story-eq">—</div>
+                  </div>
+                  <div class="csr-field">
+                    <span class="csr-key">DISSERTATION PROVENANCE &amp; SHA-256 DIGEST</span>
+                    <p class="csr-val" id="stage-story-provenance">—</p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+        </div>
+      </header>
 
-          <div class="showcase-details">
-            <div class="showcase-kpis">
-              <div class="kpi-box">
-                <span class="kpi-label">EXTRACTION YIELD</span>
-                <span class="kpi-val highlight" id="kpi-yield">—</span>
-                <small>literature-reported recovery from dry biomass</small>
+      <!-- ============================================================ SECTION 02: THE FAIL-CLOSED VERIFICATION PROTOCOL -->
+      <section id="problem">
+        <div class="wrap">
+          <div class="coord-stamp">[SEC.02 // PROTOCOL SPECIFICATION]</div>
+          <div class="sec-head">
+            <h2>The Fail-Closed Verification Protocol</h2>
+            <p class="lead muted">
+              Why standard generative AI and ungrounded physics engines fail in wet-lab and pilot-plant scale-up: a systematic engineering comparison.
+            </p>
+          </div>
+
+          <div class="diff-table-frame">
+            <table class="diff-table">
+              <thead>
+                <tr>
+                  <th style="width: 20%">PARAMETER / BOUNDARY</th>
+                  <th class="unsafe-col" style="width: 40%">STANDARD GENERATIVE AI [UNSAFE FOR SCALE-UP]</th>
+                  <th class="safe-col" style="width: 40%">SCALEUP DETERMINISTIC COMPILER [VERIFIED // FAIL-CLOSED]</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="diff-param">Kinetic Rates &amp; Yield Constants</td>
+                  <td class="diff-unsafe">
+                    Hallucinates plausible-looking reaction kinetics and extraction yields without citation. Fills missing empirical values with ungrounded synthetic averages.
+                  </td>
+                  <td class="diff-safe">
+                    <strong>Zero-Hallucination Policy.</strong> Binds every parameter to verbatim quotes and SHA-256 primary paper digests. Refuses synthetic parameter invention.
+                  </td>
+                </tr>
+                <tr>
+                  <td class="diff-param">Cross-Domain Model Transfer</td>
+                  <td class="diff-unsafe">
+                    Silently bridges microbial fermentation kinetics onto chemical solid-liquid extraction; mixes incompatible strains without warnings.
+                  </td>
+                  <td class="diff-safe">
+                    <strong>Strict Domain Isolation.</strong> Enforces organism and unit-operation boundary locks. Flags cross-strain assumptions as explicit <code class="code-tag">ANALOGUE_BRIDGE</code>.
+                  </td>
+                </tr>
+                <tr>
+                  <td class="diff-param">Missing Empirical Evidence</td>
+                  <td class="diff-unsafe">
+                    Guesses missing boundary values to generate continuous charts, hiding experimental uncertainty from wet-lab operators.
+                  </td>
+                  <td class="diff-safe">
+                    <strong>Fail-Closed Execution.</strong> Hard-halts with an explicit <code class="code-tag">InsufficientEvidenceError</code> and triggers autonomous OpenAlex literature queries.
+                  </td>
+                </tr>
+                <tr>
+                  <td class="diff-param">Mass &amp; Thermodynamic Continuity</td>
+                  <td class="diff-unsafe">
+                    Generates superficial 3D animations or unbounded curves with non-conserved mass and arbitrary phase volumes.
+                  </td>
+                  <td class="diff-safe">
+                    <strong>Formal Stream Balancing.</strong> Enforces conservation of mass (∑ m_in = ∑ m_out), phase equilibrium boundaries, and mechanical shear continuity.
+                  </td>
+                </tr>
+                <tr>
+                  <td class="diff-param">Simulation Artifacts</td>
+                  <td class="diff-unsafe">
+                    Ephemeral chat completions, ungrounded code snippets, and unverifiable qualitative summaries.
+                  </td>
+                  <td class="diff-safe">
+                    <strong>Executable 3D Workbench.</strong> Godot 4 WebGL/Native unit operations, typed port dependency graphs, and cryptographic audit ledgers.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="notice-box">
+            <span class="notice-tag">FAIL-CLOSED PROTOCOL</span>
+            <div class="notice-content">
+              <b>The Chain of Custody Mandate:</b> ScaleUp AI enforces an unbroken chain of custody. If a critical kinetic rate or mass balance is absent from the peer-reviewed literature, the compiler refuses to guess or invent approximations. It raises an explicit <code class="code-tag">InsufficientEvidenceError</code> halt report identifying the exact missing parameter.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ SECTION 03: 4-LAYER COMPILER SCHEMATIC -->
+      <section id="architecture">
+        <div id="workflow"></div>
+        <div id="system"></div>
+        <div class="wrap">
+          <div class="coord-stamp">[SEC.03 // SYSTEM TOPOLOGY]</div>
+          <div class="sec-head">
+            <h2>The 4-Layer Compiler Schematic</h2>
+            <p class="lead muted">
+              How natural-language scientific protocols compile into mass-conserved, executable Godot 4 digital twins.
+            </p>
+          </div>
+
+          <div class="blueprint-strip">
+            <div class="bp-layer">
+              <span class="bp-num">LAYER 01 // TOPOLOGY</span>
+              <h4>Anatomy P&amp;ID Engine</h4>
+              <p>Decomposes natural protocols into sequential physical unit operations, fluid streams, phase boundaries, and isometric vector schematics.</p>
+              <div class="bp-code">{
+  "engine": "Anatomy_P&amp;ID",
+  "unit_ops": 6,
+  "stream_continuity": "CONSERVED",
+  "topology": "sequential_train"
+}</div>
+            </div>
+
+            <div class="bp-layer">
+              <span class="bp-num">LAYER 02 // EVIDENCE</span>
+              <h4>SHA-256 Knowledge Library</h4>
+              <p>Binds every reaction constant, yield coefficient, and boundary condition to DOI-indexed papers with verbatim quotes and SHA-256 digests.</p>
+              <div class="bp-code">{
+  "doi": "10.1016/j.algal.2024",
+  "sha256": "8f3b2a19e...",
+  "evidence_tier": "DIRECT_EMPIRICAL",
+  "quote_hash": "e912c4..."
+}</div>
+            </div>
+
+            <div class="bp-layer">
+              <span class="bp-num">LAYER 03 // GATEKEEPER</span>
+              <h4>Autonomous Gatekeeper</h4>
+              <p>Queries OpenAlex and CrossRef on the fly when knowledge gaps appear; hard-halts execution if primary evidence is missing.</p>
+              <div class="bp-code">raise InsufficientEvidenceError(
+  param="k_dissolution_Na2CO3",
+  status="HALTED_NO_GUESSING",
+  agent="OpenAlex_Resolver"
+)</div>
+            </div>
+
+            <div class="bp-layer">
+              <span class="bp-num">LAYER 04 // WORKBENCH</span>
+              <h4>Godot 4 GPU Workbench</h4>
+              <p>Asynchronous stage streaming, MultiMeshInstance3D particulate continuity, interactive sandbox dials, and live provenance inspection.</p>
+              <div class="bp-code">MultiMeshInstance3D:
+  draw_calls: 1
+  particle_count: 120
+  mass_tracking: "CONSERVED"
+  framerate: 60</div>
+            </div>
+          </div>
+
+          <div class="blueprint-svg-viewer">
+            <div class="bsv-header">
+              <span>ISOMETRIC SCHEMATIC BLUEPRINT // GENERATED PROCEDURALLY</span>
+              <span>FORMAT: SCALABLE VECTOR GRAPHICS</span>
+            </div>
+            <div class="bsv-frame">
+              <img src="assets/images/showcase/active_anatomy_blueprint.svg" alt="Procedural Anatomy P&amp;ID isometric schematic blueprint" loading="lazy" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ SECTION 04: VERIFIED PROCESS REGISTRY & DOMAIN MATRIX -->
+      <section id="showcase">
+        <div class="wrap">
+          <div class="coord-stamp">[SEC.04 // DIGITAL TWIN LEDGER]</div>
+          <div class="sec-head">
+            <h2>Verified Process Registry &amp; Multi-Domain Matrix</h2>
+            <p class="lead muted">
+              Two distinct industrial bioprocess domains compiled on the exact same zero-hallucination engine.
+            </p>
+          </div>
+
+          <div class="ledger-table-frame">
+            <div class="ledger-row">
+              <div class="lr-col lr-title">
+                <span class="lr-class">ENTRY 01 // SOLID-LIQUID EXTRACTION</span>
+                <h4>Saccharina latissima Alginate Extraction &amp; Wet-Spinning</h4>
+                <div class="lr-metrics">6 Unit Operations · 40h Sequence</div>
               </div>
-              <div class="kpi-box">
-                <span class="kpi-label">MOLECULAR WEIGHT</span>
-                <span class="kpi-val" id="kpi-mw">—</span>
-                <small>controlled neutralisation retention</small>
+              <div class="lr-col lr-desc">
+                Multi-stage biopolymer extraction transitioning raw harvested brown kelp through mechanical comminution, formalin/acid pre-treatment, alkaline dissolution, centrifugal clarification, -20°C ethanol precipitation, and monofilament extrusion with Instron tensile evaluation.
+                <div class="lr-metrics">
+                  Primary Source: MSc Biotechnology Dissertation, University of York (2025)
+                </div>
               </div>
-              <div class="kpi-box">
-                <span class="kpi-label">URONIC ACID PURITY</span>
-                <span class="kpi-val" id="kpi-purity">—</span>
-                <small>mannuronic to guluronic ratio preserved</small>
-              </div>
-              <div class="kpi-box">
-                <span class="kpi-label">FIBRE TENSILE STRENGTH</span>
-                <span class="kpi-val" id="kpi-tensile">—</span>
-                <small>coagulated calcium-alginate monofilament</small>
+              <div class="lr-col lr-status">
+                <span class="spec-badge verified">100% DIRECT EVIDENCE</span>
+                <span class="spec-badge verified">MASS CONSERVED</span>
+                <span class="spec-badge">SHA-256 SEALED</span>
               </div>
             </div>
 
-            <div class="process-train">
-              <h4>Sequential Unit Operations</h4>
-              <ul class="train-steps">
-                <li><b>Stage 0 · Milling:</b> Mechanical knife-milling to controlled sieve fraction.</li>
-                <li><b>Stage 1 · Acid Pre-Treatment:</b> Formalin leaching and acid wash to strip divalent cations.</li>
-                <li><b>Stage 2 · Alkaline Dissolution:</b> Controlled thermal extraction of soluble sodium alginate hydrogel.</li>
-                <li><b>Stage 3 · Centrifugation &amp; Neutralisation:</b> High-speed solids dewatering and dropwise pH neutralisation.</li>
-                <li><b>Stage 4 · Cryo-Precipitation:</b> Cold ethanol phase inversion and gel flocculation.</li>
-                <li><b>Stage 5 · Wet-Spinning &amp; Tensile:</b> Syringe extrusion into calcium chloride bath with tensile elongation.</li>
-              </ul>
+            <div class="ledger-row">
+              <div class="lr-col lr-title">
+                <span class="lr-class">ENTRY 02 // MICROBIAL FERMENTATION</span>
+                <h4>Recombinant Human Insulin Fed-Batch Fermentation (E. coli)</h4>
+                <div class="lr-metrics">4 Unit Operations · Cybernetic Bioreactor</div>
+              </div>
+              <div class="lr-col lr-desc">
+                Fed-batch cybernetic microbial bioreactor tracking cell growth, dissolved oxygen mass transfer dynamics, inclusion body expression, and multi-stage chromatographic purification recovery.
+                <div class="lr-metrics">
+                  Primary Sources: Zieliński et al. (2019) + Ganjave et al. (2022) + Baez et al. (2014)
+                </div>
+              </div>
+              <div class="lr-col lr-status">
+                <span class="spec-badge verified">DIRECT REPLAY</span>
+                <span class="spec-badge warning">ANALOGUE BRIDGE</span>
+                <span class="spec-badge">STRAIN [BL21→W3110]</span>
+              </div>
             </div>
+          </div>
+        </div>
+      </section>
 
-            <div class="domain-bridge-box">
-              <span class="bridge-tag">UNIFIED ENGINE FOUNDATION</span>
+      <!-- ============================================================ SECTION 05: MICROBIAL REPLAY & COMPOSITION -->
+      <section id="prototype">
+        <div class="wrap">
+          <div class="coord-stamp">[SEC.05 // EMPIRICAL REPLAY]</div>
+          <div class="sec-head">
+            <h2>Microbial Fermentation Evidence Replay &amp; Port Composition</h2>
+            <p class="lead muted">
+              Captured from the running ScaleUp AI Godot simulator: composing scientific process models through typed, unit-aware ports and executing with interactive 3D evidence replay.
+            </p>
+          </div>
+
+          <div class="proto-grid">
+            <figure class="proto-fig">
+              <img src="assets/images/workshop.png" alt="ScaleUp AI graph editor: models listed in a palette, an instance form, and a composition canvas." loading="lazy" />
+              <figcaption>Graph editor - compose models from a registered palette, fill their declared inputs, and run or validate the graph.</figcaption>
+            </figure>
+            <figure class="proto-fig">
+              <img src="assets/images/replay3d.png" alt="3D evidence replay of the Zielinski insulin process: fermentation vessel, growth curve, purification results, and a list of what the model cannot tell us." loading="lazy" />
+              <figcaption>3D evidence replay - the fermentation vessel, published growth and purification data, and an explicit list of what the model cannot tell us.</figcaption>
+            </figure>
+            <figure class="proto-fig">
+              <img src="assets/images/composition.png" alt="Composition view showing models connected through declared ports." loading="lazy" />
+              <figcaption>Composition - models connect through declared ports and run in dependency order; incompatible or refused connections are reported, not hidden.</figcaption>
+            </figure>
+          </div>
+
+          <div class="proto-caps">
+            <div class="proto-cap">
+              <div class="coord-stamp">[PORT TYPING]</div>
+              <h4>Compose Models</h4>
+              <p>Registered models (Zielinski insulin process, Ganjave, Morris material balance) are connected through typed, unit-aware ports. Required inputs have no defaults: a missing value blocks execution.</p>
+            </div>
+            <div class="proto-cap">
+              <div class="coord-stamp">[VALIDATION]</div>
+              <h4>Run and Validate</h4>
+              <p>A graph can be validated into an execution plan or executed. Cycles are rejected, and each model runs in its own interpreter subprocess because dependencies cannot co-exist.</p>
+            </div>
+            <div class="proto-cap">
+              <div class="coord-stamp">[FAIL-CLOSED]</div>
+              <h4>Replay Evidence</h4>
+              <p>The 3D replay restates numbers read from a published paper and the accounting identities it supports. It reports no growth kinetics, no oxygen-transfer data, no AU calibration and no purification model - and declares those absences explicitly.</p>
+            </div>
+            <div class="proto-cap">
+              <div class="coord-stamp">[AUTONOMOUS]</div>
+              <h4>Investigate Gaps</h4>
+              <p>Under each missing quantity an Investigate button opens a panel: the model and run it was checked against, the gap in the model's own words, candidate findings from the literature with verbatim quoted passages, a dimension-by-dimension condition comparison, a verdict (incompatible / needs checking / compatible but not yet validated), and ten checkable validation criteria.</p>
+            </div>
+            <div class="proto-cap">
+              <div class="coord-stamp">[STRAIN BRIDGE]</div>
+              <h4>Check Compatibility</h4>
+              <p>A model registry records every model with a stable id, version, digests, ports and units. A compatibility engine assesses whether two models may be composed, with refused pairs reporting the specific difference and what would resolve it.</p>
+            </div>
+            <div class="proto-cap">
+              <div class="coord-stamp">[PROVENANCE]</div>
+              <h4>Preserve Provenance</h4>
+              <p>Every displayed value carries a plain-language provenance label: stated in the source, read from a published figure, calculated from the available data, or not established by the available evidence.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ SECTION 06: SCIENTIFIC PROVENANCE DEEP-DIVE -->
+      <section id="example">
+        <div class="wrap">
+          <div class="coord-stamp">[SEC.06 // PROVENANCE ANALYSIS]</div>
+          <div class="sec-head">
+            <h2>Scientific Provenance &amp; Cross-Strain Compatibility Deep-Dive</h2>
+            <p class="lead muted">
+              Why cross-strain compatibility and mass transfer provenance matter in physical bioprocess engineering.
+            </p>
+          </div>
+
+          <div class="ex-grid">
+            <div class="ex-card">
+              <div class="coord-stamp">[TELEMETRY]</div>
+              <h4>What the Model Exposes</h4>
               <p>
-                The exact same compiler pipeline powers both solid-liquid biomass biorefineries and recombinant microbial fermentation: decomposing natural protocols into discrete unit operations, enforcing conservation of mass, and rejecting ungrounded assumptions.
+                The paper reports agitation, aeration, dissolved-oxygen control, pressure, and exact feed profiles only partially - or not at all. The model records these as missing information rather than filling them in, so an engineer can see exactly what is unknown before attempting any prediction.
+              </p>
+            </div>
+            <div class="ex-card">
+              <div class="coord-stamp">[STRAIN BOUNDARY]</div>
+              <h4>What a Strain Difference Means</h4>
+              <p>
+                A finding reported for a different E. coli strain does not by itself prove evidence invalid. It introduces a compatibility question - same organism, different background - that must be evaluated before the evidence is reused or transferred.
+              </p>
+            </div>
+            <div class="ex-card">
+              <div class="coord-stamp">[INTEGRITY]</div>
+              <h4>Why This Matters</h4>
+              <p>
+                Preserving evidence and surfacing unresolved questions is the value: the system reports what it does not know, so a human can decide whether a cross-strain result applies, instead of silently adopting it.
               </p>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- ============================================================ PROTOTYPE -->
-    <section id="prototype">
-      <div class="wrap">
-        <p class="eyebrow"><b>D</b> Multi-domain digital twin explorer · domain two</p>
-        <div class="sec-head">
-          <h2>From scientific literature to executable models: E. coli fed-batch replay</h2>
-          <p class="lead muted">
-            The demonstration below is captured from the ScaleUp AI Godot
-            prototype: a desktop application that composes scientific process
-            models through typed ports and runs them in dependency order, with a
-            3D evidence replay of the Zieliński et al. (2019) recombinant human
-            insulin process.
-          </p>
-        </div>
-
-        <div class="proto-grid">
-          <figure class="proto-fig">
-            <img src="assets/images/workshop.png" alt="ScaleUp AI graph editor: models listed in a palette, an instance form, and a composition canvas." loading="lazy" />
-            <figcaption>Graph editor - compose models from a registered palette, fill their declared inputs, and run or validate the graph.</figcaption>
-          </figure>
-          <figure class="proto-fig">
-            <img src="assets/images/replay3d.png" alt="3D evidence replay of the Zielinski insulin process: fermentation vessel, growth curve, purification results, and a list of what the model cannot tell us." loading="lazy" />
-            <figcaption>3D evidence replay - the fermentation vessel, published growth and purification data, and an explicit list of what the model cannot tell us.</figcaption>
-          </figure>
-          <figure class="proto-fig">
-            <img src="assets/images/composition.png" alt="Composition view showing models connected through declared ports." loading="lazy" />
-            <figcaption>Composition - models connect through declared ports and run in dependency order; incompatible or refused connections are reported, not hidden.</figcaption>
-          </figure>
-        </div>
-
-        <div class="proto-caps">
-          <div class="proto-cap">
-            <span class="cap-badge">TYPED PORTS</span>
-            <h4>Compose models</h4>
-            <p>Registered models (Zielinski insulin process, Ganjave, Morris material balance) are added from a palette and connected through typed, unit-aware ports. Required inputs have no defaults: a missing value blocks execution.</p>
-          </div>
-          <div class="proto-cap">
-            <span class="cap-badge">VALIDATION</span>
-            <h4>Run and validate</h4>
-            <p>A graph can be validated into an execution plan, or executed. Cycles are rejected, and each model runs in its own interpreter subprocess because their packages cannot coexist.</p>
-          </div>
-          <div class="proto-cap">
-            <span class="cap-badge">FAIL-CLOSED</span>
-            <h4>Replay evidence</h4>
-            <p>The 3D replay restates numbers read from a published paper and the accounting identities it supports. It reports no growth kinetics, no oxygen-transfer data, no AU calibration and no purification model - and declares those absences explicitly.</p>
-          </div>
-          <div class="proto-cap">
-            <span class="cap-badge">OPENALEX / CROSSREF</span>
-            <h4>Investigate gaps</h4>
-            <p>Under each missing quantity an Investigate button opens a panel: the model and run it was checked against, the gap in the model's own words, candidate findings from the literature with verbatim quoted passages, a dimension-by-dimension condition comparison, a verdict (incompatible / needs checking / compatible but not yet validated), and ten checkable validation criteria.</p>
-          </div>
-          <div class="proto-cap">
-            <span class="cap-badge">STRAIN BRIDGING</span>
-            <h4>Check compatibility</h4>
-            <p>A model registry records every model with a stable id, version, digests, ports and units. A compatibility engine assesses whether two models may be composed, with refused pairs reporting the specific difference and what would resolve it.</p>
-          </div>
-          <div class="proto-cap">
-            <span class="cap-badge">VERBATIM CITATIONS</span>
-            <h4>Preserve provenance</h4>
-            <p>Every displayed value carries a plain-language provenance label: stated in the source, read from a published figure, calculated from the available data, or not established by the available evidence.</p>
-          </div>
-        </div>
-
-        <div class="notice plain" style="margin-top: 24px">
-          <span class="ico">STATUS</span>
-          <span>
-            <b>What this is and is not.</b> The screenshot above is captured from the
-            running web build of the simulator (Godot 4.7, Web export), which is
-            now embedded and runnable in the browser. The insulin model is an
-            <em>evidence replay</em>, not a predictive simulator - it restates
-            published values and refuses to invent missing ones.
-          </span>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============================================================ EXAMPLE -->
-    <section id="example">
-      <div class="wrap">
-        <p class="eyebrow"><b>E</b> Scientific provenance deep-dive</p>
-        <div class="sec-head">
-          <h2>Why cross-strain compatibility and mass transfer provenance matter</h2>
-          <p class="lead muted">
-            ScaleUp AI began with a concrete engineering goal: modelling recombinant human insulin production using E. coli. This proof of concept established our zero-hallucination guardrails and evidence tracking.
-          </p>
-        </div>
-        <div class="ex-grid">
-          <div class="ex-card">
-            <div class="ex-card-badge">UNKNOWN QUANTITIES</div>
-            <h4>What the model exposes</h4>
-            <p>
-              The paper reports agitation, aeration, dissolved-oxygen control,
-              pressure, and exact feed profiles only partially - or not at all.
-              The model records these as missing information rather than filling
-              them in, so an engineer can see exactly what is unknown before
-              attempting any prediction.
+      <!-- ============================================================ SECTION 07: OPERATOR CONSOLE VALIDATION -->
+      <section id="validate">
+        <div class="wrap">
+          <div class="coord-stamp">[SEC.07 // OPERATOR CONSOLE]</div>
+          <div class="sec-head">
+            <h2>Target Process Specification Intake</h2>
+            <p class="lead muted">
+              Tell us what physical system, chemical reaction, or bioprocess train you are engineering. Submissions generate a structured specification issue in our GitHub repository.
             </p>
           </div>
-          <div class="ex-card">
-            <div class="ex-card-badge">STRAIN BRIDGES</div>
-            <h4>What a strain difference means</h4>
-            <p>
-              A finding reported for a different E. coli strain does not by
-              itself prove evidence invalid. It introduces a compatibility
-              question - same organism, different background - that must be
-              evaluated before the evidence is reused or transferred.
-            </p>
-          </div>
-          <div class="ex-card">
-            <div class="ex-card-badge">SYSTEM INTEGRITY</div>
-            <h4>Why this matters</h4>
-            <p>
-              Preserving evidence and surfacing unresolved questions is the value:
-              the system reports what it does not know, so a human can decide
-              whether a cross-strain result applies, instead of silently
-              adopting it.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- ============================================================ VALIDATE -->
-    <section id="validate">
-      <div class="wrap">
-        <p class="eyebrow"><b>F</b> User validation and collaboration</p>
-        <div class="sec-head">
-          <h2>What are you trying to build?</h2>
+          <form id="validate-form" class="validate-form">
+            <label>
+              Operator Name (optional)
+              <input type="text" name="name" placeholder="Dr. / Eng. Jane Doe" />
+            </label>
+            <label>
+              Endpoint / Contact
+              <input type="text" name="contact" placeholder="operator@lab.edu or LinkedIn" />
+            </label>
+            <label class="full-span">
+              Target Physical Unit Operations / Reaction Scheme
+              <textarea name="goal" rows="3" placeholder="e.g. Continuous solid-liquid leaching, enzymatic hydrolysis, microbial fed-batch..."></textarea>
+            </label>
+            <label class="full-span">
+              Current Engineering Bottlenecks &amp; Missing Empirical Kinetics
+              <textarea name="pain" rows="3" placeholder="Where current LLMs hallucinate or existing simulation tools fail..."></textarea>
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" name="interest" value="yes" />
+              Request pilot access to the deterministic compiler and 3D workbench.
+            </label>
+            <div class="validate-actions">
+              <button type="button" class="btn btn-primary" id="validate-submit">[ SUBMIT SPECIFICATION TO GITHUB ]</button>
+              <a class="btn btn-ghost" href="https://github.com/premlalpritish-wq/scaleup-ai-website/issues/new" target="_blank" rel="noopener">[ OPEN DIRECT GITHUB ISSUE ]</a>
+            </div>
+            <p class="validate-note">
+              Submissions open a pre-filled GitHub issue in this repository. No data is sent to a third-party backend; no data is retained by this static site.
+            </p>
+          </form>
+        </div>
+      </section>
+
+      <!-- ============================================================ SECTION 08: PERSONNEL & ENDPOINT -->
+      <section id="team">
+        <div class="wrap">
+          <div class="coord-stamp">[SEC.08 // PERSONNEL SPECIFICATION]</div>
+          <div class="sec-head">
+            <h2>Engineering Core Personnel</h2>
+          </div>
+
+          <div class="team">
+            <div class="person">
+              <span class="person-code">[DEV.01]</span>
+              <h4>Pritish Premlal</h4>
+              <div class="role">CEO // Engineering Lead</div>
+            </div>
+            <div class="person">
+              <span class="person-code">[DEV.02]</span>
+              <h4>Samarpit Nag</h4>
+              <div class="role">CTO // Simulation Core</div>
+            </div>
+            <div class="person">
+              <span class="person-code">[DEV.03]</span>
+              <h4>Sahil Pawar</h4>
+              <div class="role">CPO // Product Architecture</div>
+            </div>
+          </div>
+          <p class="hero-note" style="margin-top: 16px">
+            Listed by name and role only. Our credibility rests on the working prototype you can see above, not on unverifiable claims about individual backgrounds.
+          </p>
+        </div>
+      </section>
+
+      <!-- ============================================================ CTA -->
+      <div class="cta" id="contact">
+        <div class="wrap">
+          <div class="coord-stamp" style="justify-content: center">[SEC.09 // TECHNICAL INQUIRIES]</div>
+          <h2>Access the Deterministic Simulation Engine.</h2>
           <p class="lead muted">
-            We're working towards tools that make it easier to turn scientific
-            knowledge into working engineering simulations. If you're a hardware
-            founder, researcher or engineer, tell us what you're trying to build
-            and where your current workflow gets stuck.
+            We are building an interactive workshop that turns humanity's scientific and engineering knowledge into executable digital twins. If you work on bioprocess engineering, chemical modeling, or pilot scale-up, explore the prototype now.
           </p>
-        </div>
-        <form id="validate-form" class="validate-form">
-          <label>
-            Name (optional)
-            <input type="text" name="name" placeholder="Your name" />
-          </label>
-          <label>
-            Email or preferred contact method
-            <input type="text" name="contact" placeholder="you@example.com or LinkedIn" />
-          </label>
-          <label>
-            What are you trying to build?
-            <textarea name="goal" rows="3" placeholder="Describe the physical system or process"></textarea>
-          </label>
-          <label>
-            What makes modelling, simulation or experimentation difficult today?
-            <textarea name="pain" rows="3" placeholder="Where your workflow gets stuck"></textarea>
-          </label>
-          <label class="checkbox">
-            <input type="checkbox" name="interest" value="yes" />
-            I am interested in testing the prototype or discussing a pilot.
-          </label>
-          <div class="validate-actions">
-            <button type="button" class="btn btn-primary" id="validate-submit">Open a GitHub issue with my answers</button>
-            <a class="btn btn-ghost" href="https://github.com/premlalpritish-wq/scaleup-ai-website/issues/new" target="_blank" rel="noopener">Open GitHub issues directly</a>
+          <div class="cta-btns">
+            <a class="btn btn-primary" href="simulator/">[ LAUNCH INTERACTIVE WORKBENCH → ]</a>
+            <a class="btn btn-ghost" href="#architecture">[ REVIEW COMPILER SPEC ]</a>
           </div>
-          <p class="validate-note">
-            Submissions open a pre-filled GitHub issue in this repository. No
-            data is sent to a backend; nothing is stored by the site. If you
-            prefer, contact us through the repository's issue tracker directly.
-          </p>
-        </form>
+        </div>
       </div>
-    </section>
 
-    <!-- ============================================================ TEAM -->
-    <section id="team">
-      <div class="wrap">
-        <p class="eyebrow"><b>G</b> Team</p>
-        <div class="sec-head">
-          <h2>A small team building a new kind of engineering tool</h2>
-        </div>
-        <div class="team">
-          <div class="person">
-            <div class="av">PP</div>
-            <h4>Pritish Premlal</h4>
-            <div class="role">CEO</div>
+      <!-- ============================================================ FOOTER -->
+      <footer>
+        <div class="wrap foot-in">
+          <div>
+            <strong style="color: var(--text-hi)">ScaleUp AI</strong> - vibecoding for the physical world. Pre-release.
           </div>
-          <div class="person">
-            <div class="av">SN</div>
-            <h4>Samarpit Nag</h4>
-            <div class="role">CTO</div>
-          </div>
-          <div class="person">
-            <div class="av">SP</div>
-            <h4>Sahil Pawar</h4>
-            <div class="role">CPO</div>
+          <div>
+            SPEC REVISION: ISO-CAD // FAIL-CLOSED
           </div>
         </div>
-        <p class="hero-note" style="margin-top: 16px">
-          Listed by name and role only. Our credibility rests on the working
-          prototype you can see above, not on unverifiable claims about
-          individual backgrounds.
-        </p>
-      </div>
-    </section>
-
-    <!-- ============================================================ CTA -->
-    <div class="cta" id="contact">
-      <div class="wrap">
-        <p class="eyebrow" style="justify-content: center"><b>H</b> Get in touch</p>
-        <h2>Help us build the workshop.</h2>
-        <p class="lead muted">
-          We are building an interactive workshop that turns humanity's
-          accumulated scientific and engineering knowledge into something people
-          can use to explore how to make things. If you work on scientific
-          computing, modelling, simulation, or bioprocess engineering, we want
-          to hear from you.
-        </p>
-        <div class="cta-btns">
-          <a class="btn btn-primary" href="simulator/">Explore the prototype</a>
-          <a class="btn btn-ghost" href="#architecture">How it works</a>
-        </div>
-      </div>
+      </footer>
     </div>
-
-    <!-- ============================================================ FOOTER -->
-    <footer>
-      <div class="wrap foot-in">
-        <div>
-          <strong style="color: var(--text-hi)">ScaleUp AI</strong> - vibecoding
-          for the physical world. Pre-release.
-        </div>
-      </div>
-    </footer>
 
     <script src="assets/app.js"></script>
   </body>
