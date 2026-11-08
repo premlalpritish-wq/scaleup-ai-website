@@ -5,15 +5,32 @@ const { chromium } = require("playwright");
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
   await page.goto("https://premlalpritish-wq.github.io/scaleup-ai-website/", { waitUntil: "networkidle" });
 
-  const h1 = await page.locator("h1").innerText();
-  console.log("Live H1:", h1);
+  const title = await page.title();
+  console.log("Live Title:", title);
+
+  const brand = await page.locator(".brand-name").innerText();
+  console.log("Live Brand:", brand);
 
   const teamHeading = await page.locator("#team h3").innerText();
   console.log("Live Team Heading:", teamHeading);
 
+  const footer = await page.locator("footer").innerText();
+  console.log("Live Footer:", footer);
+
+  const bodyText = await page.locator("body").innerText();
+
+  if (/ScaleUp AI/i.test(bodyText)) {
+    throw new Error('Found forbidden "ScaleUp AI" string in rendered body text!');
+  }
+  console.log("Zero occurrences of 'ScaleUp AI' confirmed.");
+
+  if (/roboticist|robotics/i.test(bodyText)) {
+    throw new Error('Found forbidden "roboticist" or "robotics" string on page!');
+  }
+  console.log("Zero occurrences of 'roboticist' confirmed.");
+
   const persons = await page.locator(".person").all();
   console.log(`Live Team Cards: ${persons.length}`);
-
   for (const p of persons) {
     const name = await p.locator(".person-name").innerText();
     const role = await p.locator(".person-role").innerText();
@@ -21,12 +38,6 @@ const { chromium } = require("playwright");
     console.log(`- ${name} [${role}]: ${degrees}`);
   }
 
-  // Ensure no "roboticist" appears anywhere on the page
-  const bodyText = await page.locator("body").innerText();
-  if (/roboticist|robotics/i.test(bodyText)) {
-    throw new Error('Found forbidden "roboticist" or "robotics" on page!');
-  }
-
-  console.log("Team credentials and anti-roboticist checks passed!");
+  console.log("All live assertions verified 100% successfully on GitHub Pages!");
   await browser.close();
 })();
