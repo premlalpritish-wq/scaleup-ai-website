@@ -149,9 +149,38 @@
       window.open(url, "_blank", "noopener");
     });
   }
+
+  function wireShowcase() {
+    const kpiYield = document.getElementById("kpi-yield");
+    if (kpiYield) kpiYield.textContent = "33.07%";
+    const kpiMw = document.getElementById("kpi-mw");
+    if (kpiMw) kpiMw.textContent = "251 kDa";
+    const kpiPurity = document.getElementById("kpi-purity");
+    if (kpiPurity) kpiPurity.textContent = "91.5%";
+    const kpiTensile = document.getElementById("kpi-tensile");
+    if (kpiTensile) kpiTensile.textContent = "29.3 – 43.1 MPa";
+
+    const thumbBtns = document.querySelectorAll(".thumb-btn");
+    const heroImg = document.getElementById("showcase-hero-img");
+    thumbBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        thumbBtns.forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        const src = btn.getAttribute("data-img");
+        if (heroImg && src) {
+          heroImg.src = src;
+        }
+      });
+    });
+  }
+
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", wireValidateForm);
+    document.addEventListener("DOMContentLoaded", () => {
+      wireValidateForm();
+      wireShowcase();
+    });
   } else {
     wireValidateForm();
+    wireShowcase();
   }
 })();

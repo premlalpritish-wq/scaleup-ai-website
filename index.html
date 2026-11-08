@@ -38,6 +38,8 @@
         <div class="nav-links" aria-label="Sections">
           <a href="#problem">Problem</a>
           <a href="#workflow">How it works</a>
+          <a href="#architecture">Architecture</a>
+          <a href="#showcase">Digital Twin</a>
           <a href="#prototype">Prototype</a>
           <a href="#vision">Vision</a>
           <a href="#validate">Validate</a>
@@ -57,7 +59,7 @@
             <span class="accent">physical world</span>.
           </h1>
           <p class="lead hero-sub">
-            Describe what you want to build. We're developing AI that turns
+            Describe what you want to make. We're developing AI that turns
             scientific knowledge into executable models you can connect,
             simulate and inspect.
           </p>
@@ -68,12 +70,11 @@
                 <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </a>
-            <a class="btn btn-ghost" href="#validate">Help shape what we build</a>
+            <a class="btn btn-ghost" href="#workflow">How it works</a>
           </div>
           <p class="hero-note" id="hero-note">
-            An early-stage research prototype. The workshop vision is the
-            destination; the current software demonstrates the first working
-            pieces, not the whole journey.
+            Prompt-to-process digital twins with zero-hallucination scientific integrity.
+            From microbial bioreactors to multi-stage biopolymer extraction and wet-spinning.
           </p>
         </div>
 
@@ -175,10 +176,137 @@
       </div>
     </section>
 
+    <!-- ============================================================ ARCHITECTURE -->
+    <section id="architecture">
+      <div class="wrap">
+        <p class="eyebrow"><b>C</b> Scientific integrity protocol</p>
+        <div class="sec-head">
+          <h2>The 4-stage zero-hallucination architecture</h2>
+          <p class="lead muted">
+            Bioprocess design cannot tolerate hallucinations or ungrounded generative chemistry. ScaleUp AI enforces an unbroken chain of custody from peer-reviewed literature to executable physics.
+          </p>
+        </div>
+        <div class="arch-grid">
+          <div class="arch-card">
+            <span class="widx">01</span>
+            <div class="arch-badge">Topology Engine</div>
+            <h4>Anatomy P&amp;ID Engine</h4>
+            <p>Decomposes natural-language protocols into physical unit operations, material streams, phase transitions, and isometric schematic blueprints.</p>
+            <div class="arch-tech">SVG Vector Generation · Stream Balancing</div>
+          </div>
+          <div class="arch-card">
+            <span class="widx">02</span>
+            <div class="arch-badge">Evidence Store</div>
+            <h4>Central Knowledge Library</h4>
+            <p>Binds every reaction constant, yield coefficient, and mass balance to SHA-256 and DOI-verified primary literature with verbatim author quotes.</p>
+            <div class="arch-tech">Direct Provenance · Primary Literature Proofs</div>
+          </div>
+          <div class="arch-card">
+            <span class="widx">03</span>
+            <div class="arch-badge">Research Agent</div>
+            <h4>Autonomous Gatekeeper</h4>
+            <p>Queries OpenAlex and CrossRef on the fly when knowledge gaps appear, and refuses execution rather than guessing missing values.</p>
+            <div class="arch-tech">Zero-Hallucination Guardrails · Real-Time Gap Resolution</div>
+          </div>
+          <div class="arch-card">
+            <span class="widx">04</span>
+            <div class="arch-badge">GPU Workbench</div>
+            <h4>Godot Interactive 3D</h4>
+            <p>Asynchronous GPU-instanced 3D phase transitions, mass-conserved batch continuity, live parameter sandbox dials, and one-click provenance inspection.</p>
+            <div class="arch-tech">Godot Engine · MultiMesh Instancing</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ SHOWCASE -->
+    <section id="showcase">
+      <div class="wrap">
+        <p class="eyebrow"><b>D</b> Featured digital twin</p>
+        <div class="sec-head">
+          <h2>Saccharina latissima alginate extraction &amp; wet-spinning</h2>
+          <p class="lead muted">
+            Multi-stage biopolymer extraction and fibre spinning digital twin, transitioning from dry kelp milling through alkaline dissolution, precipitation, neutralisation, and fibre extrusion.
+          </p>
+        </div>
+
+        <div class="showcase-card">
+          <div class="showcase-visuals">
+            <div class="showcase-hero-img-wrap">
+              <img id="showcase-hero-img" src="assets/images/showcase/saccharina_6stage_bench_overview.png" alt="6-Stage Saccharina latissima bench overview in Godot 3D" loading="lazy" />
+            </div>
+            <div class="showcase-thumbs">
+              <button class="thumb-btn active" data-img="assets/images/showcase/saccharina_6stage_bench_overview.png">
+                <span>Overview</span>
+                <small>6-Stage Bench</small>
+              </button>
+              <button class="thumb-btn" data-img="assets/images/showcase/stage_0_dry_milling.png">
+                <span>Stage 0</span>
+                <small>Dry Milling</small>
+              </button>
+              <button class="thumb-btn" data-img="assets/images/showcase/stage_2_alkaline_dissolution.png">
+                <span>Stage 2</span>
+                <small>Dissolution</small>
+              </button>
+              <button class="thumb-btn" data-img="assets/images/showcase/stage_4_cryo_precipitation.png">
+                <span>Stage 4</span>
+                <small>Precipitation</small>
+              </button>
+              <button class="thumb-btn" data-img="assets/images/showcase/stage_5_wet_spinning_tensile.png">
+                <span>Stage 5</span>
+                <small>Wet-Spinning</small>
+              </button>
+              <button class="thumb-btn" data-img="assets/images/showcase/active_anatomy_blueprint.svg">
+                <span>Anatomy</span>
+                <small>SVG Topology</small>
+              </button>
+            </div>
+          </div>
+
+          <div class="showcase-details">
+            <div class="showcase-kpis">
+              <div class="kpi-box">
+                <span class="kpi-label">EXTRACTION YIELD</span>
+                <span class="kpi-val highlight" id="kpi-yield">—</span>
+                <small>literature-reported recovery from dry biomass</small>
+              </div>
+              <div class="kpi-box">
+                <span class="kpi-label">MOLECULAR WEIGHT</span>
+                <span class="kpi-val" id="kpi-mw">—</span>
+                <small>controlled neutralisation retention</small>
+              </div>
+              <div class="kpi-box">
+                <span class="kpi-label">URONIC ACID PURITY</span>
+                <span class="kpi-val" id="kpi-purity">—</span>
+                <small>mannuronic to guluronic ratio preserved</small>
+              </div>
+              <div class="kpi-box">
+                <span class="kpi-label">FIBRE TENSILE STRENGTH</span>
+                <span class="kpi-val" id="kpi-tensile">—</span>
+                <small>coagulated calcium-alginate monofilament</small>
+              </div>
+            </div>
+
+            <div class="process-train">
+              <h4>Process train unit operations</h4>
+              <ul class="train-steps">
+                <li><b>Stage 0 · Milling:</b> Mechanical knife-milling to controlled sieve fraction.</li>
+                <li><b>Stage 1 · Acid Pre-Treatment:</b> Formalin leaching and acid wash to strip divalent cations.</li>
+                <li><b>Stage 2 · Alkaline Dissolution:</b> Controlled thermal extraction of soluble sodium alginate hydrogel.</li>
+                <li><b>Stage 3 · Centrifugation &amp; Neutralisation:</b> High-speed solids dewatering and dropwise pH neutralisation.</li>
+                <li><b>Stage 4 · Cryo-Precipitation:</b> Cold ethanol phase inversion and gel flocculation.</li>
+                <li><b>Stage 5 · Wet-Spinning &amp; Tensile:</b> Syringe extrusion into calcium chloride bath with tensile elongation.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ============================================================ PROTOTYPE -->
     <section id="prototype">
       <div class="wrap">
-        <p class="eyebrow"><b>C</b> From scientific literature to executable models</p>
+        <p class="eyebrow"><b>E</b> From scientific literature to executable models</p>
         <div class="sec-head">
           <h2>From scientific literature to executable models</h2>
           <p class="lead muted">
@@ -248,7 +376,7 @@
     <!-- ============================================================ SYSTEM -->
     <section id="system">
       <div class="wrap">
-        <p class="eyebrow"><b>D</b> Technical foundations</p>
+        <p class="eyebrow"><b>F</b> Technical foundations</p>
         <div class="sec-head">
           <h2>What makes prompt-to-simulation possible</h2>
           <p class="lead muted">
@@ -291,7 +419,7 @@
     <!-- ============================================================ EXAMPLE -->
     <section id="example">
       <div class="wrap">
-        <p class="eyebrow"><b>E</b> A concrete proof of concept</p>
+        <p class="eyebrow"><b>G</b> A concrete proof of concept</p>
         <div class="sec-head">
           <h2>Why start with insulin production</h2>
           <p class="lead muted">
@@ -342,7 +470,7 @@
     <!-- ============================================================ VISION -->
     <section id="vision">
       <div class="wrap">
-        <p class="eyebrow"><b>F</b> Future vision</p>
+        <p class="eyebrow"><b>H</b> Future vision</p>
         <div class="sec-head">
           <h2>Build systems, not isolated models</h2>
           <p class="lead muted">
@@ -399,7 +527,7 @@
     <!-- ============================================================ CAPABILITY -->
     <section id="capability">
       <div class="wrap">
-        <p class="eyebrow"><b>G</b> Current versus future</p>
+        <p class="eyebrow"><b>I</b> Current versus future</p>
         <div class="sec-head">
           <h2>What exists today and what is being built</h2>
           <p class="lead muted">
@@ -453,7 +581,7 @@
     <!-- ============================================================ VALIDATE -->
     <section id="validate">
       <div class="wrap">
-        <p class="eyebrow"><b>H</b> User validation and collaboration</p>
+        <p class="eyebrow"><b>J</b> User validation and collaboration</p>
         <div class="sec-head">
           <h2>What are you trying to build?</h2>
           <p class="lead muted">
@@ -500,7 +628,7 @@
     <!-- ============================================================ TEAM -->
     <section id="team">
       <div class="wrap">
-        <p class="eyebrow"><b>I</b> Team</p>
+        <p class="eyebrow"><b>K</b> Team</p>
         <div class="sec-head">
           <h2>A small team building a new kind of engineering tool</h2>
         </div>
