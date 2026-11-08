@@ -16,3 +16,5 @@ data/scaleup_data.js text eol=lf
 *.woff binary
 *.woff2 binary
 *.pdf binary
+*.wasm binary
+*.pck binary

@@ -1,9 +1,58 @@
 /* ==========================================================================
    ScaleUp — Lovable-Style Clean Runtime Script
-   Handles interactive prompt presets, showcase step switching, and nav tracking.
+   Handles interactive prompt presets, showcase step switching, nav tracking,
+   and Live Godot 4 WebAssembly 3D simulation integration.
    ========================================================================== */
 (() => {
   "use strict";
+
+  const PRESETS = {
+    overview: {
+      key: "saccharina",
+      title: "🌿 Saccharina latissima Alginate Extraction",
+      query: "preset=saccharina"
+    },
+    stage0: {
+      key: "saccharina",
+      title: "🌿 Saccharina latissima — Step 1: Knife Milling",
+      query: "preset=saccharina"
+    },
+    stage2: {
+      key: "saccharina",
+      title: "🌿 Saccharina latissima — Step 2: Alkaline Dissolution",
+      query: "preset=saccharina"
+    },
+    stage3: {
+      key: "saccharina",
+      title: "🌿 Saccharina latissima — Step 3: Spin Separation & pH Balance",
+      query: "preset=saccharina"
+    },
+    stage4: {
+      key: "saccharina",
+      title: "🌿 Saccharina latissima — Step 4: Cryo-Ethanol Precipitation",
+      query: "preset=saccharina"
+    },
+    stage5: {
+      key: "saccharina",
+      title: "🌿 Saccharina latissima — Step 5: Wet-Spinning & Tensile Pull",
+      query: "preset=saccharina"
+    },
+    anatomy: {
+      key: "saccharina",
+      title: "🌿 Procedural Anatomy Schematic (York MSc Model)",
+      query: "preset=saccharina"
+    },
+    "stage-insulin": {
+      key: "ecoli",
+      title: "🧬 E. coli Fed-Batch Fermentation (Zielinski Replay)",
+      query: "preset=ecoli"
+    },
+    "stage-unverified": {
+      key: "unverified_halt",
+      title: "🧪 InsufficientEvidenceError (Scientific Integrity Guard)",
+      query: "preset=unverified_halt"
+    }
+  };
 
   const SHOWCASE_DATA = {
     overview: {
@@ -98,6 +147,21 @@
     }
   };
 
+  let currentPresetKey = "saccharina";
+  let isShowcaseLiveActive = false;
+
+  function notifyIframePreset(iframe, presetKey) {
+    if (!iframe || !iframe.contentWindow) return;
+    try {
+      iframe.contentWindow.postMessage({ preset: presetKey }, "*");
+      if (typeof iframe.contentWindow.scaleupSwitchPreset === "function") {
+        iframe.contentWindow.scaleupSwitchPreset(presetKey);
+      }
+    } catch {
+      // Cross-origin fallback if applicable
+    }
+  }
+
   function setStage(key) {
     const data = SHOWCASE_DATA[key] || SHOWCASE_DATA.overview;
     const heroImg = document.getElementById("showcase-hero-img");
@@ -132,6 +196,107 @@
       } else {
         p.classList.remove("active");
         p.setAttribute("aria-selected", "false");
+      }
+    });
+
+    const presetInfo = PRESETS[key] || PRESETS.overview;
+    currentPresetKey = presetInfo.key;
+
+    // Notify any active live iframe
+    const showcaseIframe = document.getElementById("showcase-live-iframe");
+    if (isShowcaseLiveActive && showcaseIframe) {
+      notifyIframePreset(showcaseIframe, currentPresetKey);
+    }
+
+    const modal = document.getElementById("sim-modal");
+    const modalIframe = document.getElementById("modal-live-iframe");
+    if (modal && modal.style.display !== "none" && modalIframe) {
+      const modalTitle = document.getElementById("modal-preset-title");
+      if (modalTitle) modalTitle.textContent = presetInfo.title;
+      const directBtn = document.getElementById("btn-modal-direct");
+      if (directBtn) directBtn.href = "simulator/live/index.html?" + presetInfo.query;
+      notifyIframePreset(modalIframe, currentPresetKey);
+    }
+  }
+
+  function openSimModal(presetKey) {
+    const modal = document.getElementById("sim-modal");
+    const modalIframe = document.getElementById("modal-live-iframe");
+    const modalTitle = document.getElementById("modal-preset-title");
+    const directBtn = document.getElementById("btn-modal-direct");
+    if (!modal || !modalIframe) return;
+
+    const presetObj = Object.values(PRESETS).find((p) => p.key === presetKey) || PRESETS.overview;
+    if (modalTitle) modalTitle.textContent = presetObj.title;
+    if (directBtn) directBtn.href = "simulator/live/index.html?" + presetObj.query;
+
+    modalIframe.src = "simulator/live/index.html?" + presetObj.query;
+    modal.style.display = "flex";
+    modal.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeSimModal() {
+    const modal = document.getElementById("sim-modal");
+    const modalIframe = document.getElementById("modal-live-iframe");
+    if (!modal) return;
+
+    modal.style.display = "none";
+    modal.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+    if (modalIframe) {
+      modalIframe.src = "about:blank";
+    }
+  }
+
+  function toggleShowcaseLive(presetKey) {
+    const heroImg = document.getElementById("showcase-hero-img");
+    const embedContainer = document.getElementById("live-embed-container");
+    const iframe = document.getElementById("showcase-live-iframe");
+    const btn = document.getElementById("btn-launch-live");
+    if (!embedContainer || !iframe || !btn) return;
+
+    const presetObj = Object.values(PRESETS).find((p) => p.key === presetKey) || PRESETS.overview;
+
+    if (!isShowcaseLiveActive) {
+      isShowcaseLiveActive = true;
+      if (heroImg) heroImg.style.display = "none";
+      embedContainer.style.display = "block";
+      iframe.src = "simulator/live/index.html?" + presetObj.query;
+      btn.textContent = "✕ Return to Static Screenshots";
+    } else {
+      isShowcaseLiveActive = false;
+      embedContainer.style.display = "none";
+      if (heroImg) heroImg.style.display = "block";
+      iframe.src = "about:blank";
+      btn.textContent = "▶ Open Live 3D Workbench";
+    }
+  }
+
+  function wireLiveSimulation() {
+    const btnSimulateHero = document.getElementById("btn-simulate-3d");
+    if (btnSimulateHero) {
+      btnSimulateHero.addEventListener("click", (e) => {
+        e.preventDefault();
+        openSimModal(currentPresetKey);
+      });
+    }
+
+    const btnLaunchLive = document.getElementById("btn-launch-live");
+    if (btnLaunchLive) {
+      btnLaunchLive.addEventListener("click", () => {
+        toggleShowcaseLive(currentPresetKey);
+      });
+    }
+
+    const btnCloseModal = document.getElementById("btn-close-modal");
+    if (btnCloseModal) {
+      btnCloseModal.addEventListener("click", closeSimModal);
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        closeSimModal();
       }
     });
   }
@@ -210,6 +375,7 @@
   document.addEventListener("DOMContentLoaded", () => {
     wireShowcase();
     wirePromptBox();
+    wireLiveSimulation();
     wireNavTracking();
   });
 })();

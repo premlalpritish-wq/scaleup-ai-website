@@ -80,8 +80,8 @@
                   <span id="prompt-status-text">Zero hallucinated science &middot; Citation locked</span>
                 </div>
                 <div class="hero-cta">
-                  <a class="btn btn-pill btn-primary btn-simulate" href="simulator/">
-                    Open Simulator &rarr;
+                  <a class="btn btn-pill btn-primary btn-simulate" id="btn-simulate-3d" href="#showcase">
+                    Simulate in 3D &rarr;
                   </a>
                   <a class="btn btn-pill btn-ghost" href="#showcase">
                     View 3D Demo &darr;
@@ -122,12 +122,24 @@
             </div>
 
             <!-- Main Stage Viewport -->
-            <div class="window-viewport">
+            <div class="window-viewport" id="window-viewport">
               <img
                 id="showcase-hero-img"
                 src="assets/images/showcase/saccharina_6stage_bench_overview.png"
                 alt="ScaleUp 6-stage bioprocess simulation workbench"
               />
+              <div class="live-embed-container" id="live-embed-container" style="display: none;">
+                <iframe
+                  id="showcase-live-iframe"
+                  class="showcase-live-iframe"
+                  src=""
+                  title="ScaleUp Godot 4 WebAssembly Simulation"
+                  allow="cross-origin-isolated"
+                ></iframe>
+              </div>
+              <button type="button" class="btn btn-pill btn-primary btn-launch-live" id="btn-launch-live">
+                &rtrif; Open Live 3D Workbench
+              </button>
               <p class="hv-caption">A genuine screenshot of the live Godot 3D 6-stage digital twin workbench.</p>
             </div>
 
@@ -230,6 +242,37 @@
           <p>&copy; 2026 ScaleUp. All rights reserved.</p>
         </div>
       </footer>
+    </div>
+
+    <!-- Full-Window Live 3D Interactive Workbench Modal -->
+    <div id="sim-modal" class="sim-modal" role="dialog" aria-modal="true" aria-hidden="true" style="display: none;">
+      <div class="sim-modal-header">
+        <div class="sim-modal-title">
+          <span class="badge-dot"></span>
+          <span id="modal-preset-title">🌿 Saccharina latissima Alginate Extraction</span>
+          <span class="modal-tag">Live 3D WebAssembly Twin</span>
+        </div>
+        <div class="sim-modal-legend">
+          Left-Drag: Orbit &middot; Scroll: Zoom &middot; Space: Play/Pause &middot; 1&ndash;6: Jump Stage
+        </div>
+        <div class="sim-modal-actions">
+          <a id="btn-modal-direct" class="btn btn-pill btn-ghost" href="simulator/live/index.html" target="_blank" rel="noopener">
+            Full Window &UpperRightArrow;
+          </a>
+          <button type="button" id="btn-close-modal" class="btn btn-pill btn-primary">
+            &times; Back to Overview
+          </button>
+        </div>
+      </div>
+      <div class="sim-modal-body">
+        <iframe
+          id="modal-live-iframe"
+          class="sim-modal-iframe"
+          src=""
+          title="ScaleUp Godot 4 Live Simulation"
+          allow="cross-origin-isolated"
+        ></iframe>
+      </div>
     </div>
 
     <script src="assets/app.js"></script>

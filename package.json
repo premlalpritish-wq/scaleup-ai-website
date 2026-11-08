@@ -9,6 +9,7 @@
     "test:responsive": "node tests/responsive.js",
     "test:graph": "node tests/graph.js",
     "test:safety": "node tests/safety.js",
+    "test:wasm": "node tests/test_live_wasm.js",
     "test:visual": "node tests/capture_visuals.js",
     "serve": "python -m http.server 8811"
   },
