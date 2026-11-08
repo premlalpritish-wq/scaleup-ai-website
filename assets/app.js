@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ScaleUp AI — Lovable-Style Clean Runtime Script
+   ScaleUp — Lovable-Style Clean Runtime Script
    Handles interactive prompt presets, showcase step switching, and nav tracking.
    ========================================================================== */
 (() => {

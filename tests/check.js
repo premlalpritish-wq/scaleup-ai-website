@@ -1,4 +1,4 @@
-/* Headless render + claims check for the ScaleUp AI website (Lovable Redesign).
+/* Headless render + claims check for the ScaleUp website (Lovable Redesign).
  *
  * Loads index.html and assets/app.js in jsdom, then asserts that the page
  * renders the new Lovable product narrative, that the prompt-first showcase is
@@ -95,9 +95,10 @@ setTimeout(() => {
   ok("team: verified universities present", /University of York/i.test(teamText) && /University of Leeds/i.test(teamText));
   ok("team: no roboticist label", !/roboticist|robotics/i.test(teamText));
 
-  /* ---------------------------------------------------- footer */
-  ok("footer: intact", n("footer") === 1 && /ScaleUp AI/.test(txt("footer")) && /Pre-release/.test(txt("footer")), txt("footer"));
-  ok("footer: no metric or count", !/\d/.test(txt("footer")), txt("footer"));
+  /* ---------------------------------------------------- footer & brand */
+  ok("footer: intact", n("footer") === 1 && /ScaleUp/.test(txt("footer")), txt("footer"));
+  ok("footer: copyright notice present", /ScaleUp/.test(txt("footer")) && !/ScaleUp AI/i.test(txt("footer")));
+  ok("brand: no 'ScaleUp AI' string in body", !/ScaleUp AI/i.test(body));
 
   /* ---------------------------------------------------- claims sweep */
   const negation = /no|not|never|nothing|without|cannot|zero|imply/i;
