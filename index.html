@@ -6,13 +6,13 @@
     <title>ScaleUp AI - Vibecoding for the physical world</title>
     <meta
       name="description"
-      content="ScaleUp AI is building vibecoding for the physical world: describe what you want to make, and AI researches the science, constructs computational models, connects them into simulations, and helps you explore how your idea could work. Early prototype: recombinant human insulin production in E. coli."
+      content="ScaleUp AI is building vibecoding for the physical world: describe what you want to make, and AI researches the science, constructs computational models, connects them into simulations, and helps you explore how your idea could work."
     />
     <meta name="color-scheme" content="dark" />
     <meta property="og:title" content="ScaleUp AI - Vibecoding for the physical world" />
     <meta
       property="og:description"
-      content="Describe a physical thing you want to make. ScaleUp AI aims to have AI discover relevant science, construct computational models, connect them into simulations, and help you explore how your idea could work. Early prototype demonstrates the foundations on recombinant human insulin production in E. coli."
+      content="Describe a physical thing you want to make. ScaleUp AI turns peer-reviewed scientific literature into interactive 3D process digital twins with zero hallucinated chemistry."
     />
     <link rel="stylesheet" href="assets/styles.css" />
     <link
@@ -37,12 +37,9 @@
         </a>
         <div class="nav-links" aria-label="Sections">
           <a href="#problem">Problem</a>
-          <a href="#workflow">How it works</a>
           <a href="#architecture">Architecture</a>
-          <a href="#showcase">Digital Twin</a>
-          <a href="#prototype">Prototype</a>
-          <a href="#vision">Vision</a>
-          <a href="#validate">Validate</a>
+          <a href="#showcase">Digital Twins</a>
+          <a href="#prototype">Evidence Replay</a>
           <a href="#team">Team</a>
           <a href="#contact">Contact</a>
         </div>
@@ -59,9 +56,9 @@
             <span class="accent">physical world</span>.
           </h1>
           <p class="lead hero-sub">
-            Describe what you want to make. We're developing AI that turns
-            scientific knowledge into executable models you can connect,
-            simulate and inspect.
+            Describe what you want to make. ScaleUp AI turns peer-reviewed scientific
+            literature into interactive 3D process digital twins — with zero hallucinated
+            chemistry.
           </p>
           <div class="hero-cta">
             <a class="btn btn-primary" href="simulator/">
@@ -70,18 +67,18 @@
                 <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </a>
-            <a class="btn btn-ghost" href="#workflow">How it works</a>
+            <a class="btn btn-ghost" href="#architecture">How it works</a>
           </div>
           <p class="hero-note" id="hero-note">
-            Prompt-to-process digital twins with zero-hallucination scientific integrity.
-            From microbial bioreactors to multi-stage biopolymer extraction and wet-spinning.
+            From peer-reviewed literature to interactive 3D physics.
+            Multi-stage biopolymer extraction and cybernetic microbial bioreactors with verified provenance.
           </p>
         </div>
 
         <div class="hero-visual">
           <div class="hv-frame">
-            <img class="hv-svg" src="assets/images/simulator-launcher-screenshot.png" alt="ScaleUp AI simulator launcher: choose between the Bioreactor Workshop, the Zielinski insulin replay, and the model and evidence explorer." loading="lazy" />
-            <p class="hv-caption">A genuine screenshot of the deployed simulator launcher. Choose an experience; only the selected experience and its required assets are loaded.</p>
+            <img class="hv-svg" src="assets/images/showcase/saccharina_6stage_bench_overview.png" alt="ScaleUp AI 6-stage digital twin: Saccharina latissima biopolymer extraction and wet-spinning bench." loading="lazy" />
+            <p class="hv-caption">A genuine screenshot of the live Godot 3D 6-stage digital twin workbench. Physical unit operations, phase transitions, and mass balance rendered in real time.</p>
           </div>
         </div>
       </div>
@@ -92,96 +89,38 @@
       <div class="wrap">
         <p class="eyebrow"><b>A</b> The problem</p>
         <div class="sec-head">
-          <h2>Scientific knowledge is abundant. Turning it into working models is still hard.</h2>
+          <h2>Scientific knowledge is abundant. Turning it into working models without hallucination is hard.</h2>
           <p class="lead muted">
-            This is the founder's firsthand experience, and a hypothesis about a
-            broader engineering problem. It is not a claim that every engineer
-            faces the same workflow.
+            Generic LLMs are dangerous in physical bioprocess engineering: they guess kinetic constants, invent yield parameters, and silently substitute incompatible equations, ruining expensive experimental runs.
           </p>
         </div>
         <p class="lead muted" style="max-width: 760px">
-          When we tried to model recombinant human insulin production using
-          E. coli, the work looked like this:
+          Whether engineering a 6-stage solid-liquid biopolymer extraction train or recombinant human insulin production in E. coli, turning published science into executable models has historically required months of manual translation:
         </p>
         <ol class="problem-steps">
-          <li>Finding relevant scientific papers.</li>
-          <li>Extracting experimental conditions, parameters, and equations.</li>
-          <li>Translating scientific information into executable code.</li>
-          <li>Building individual process models.</li>
-          <li>Connecting the models into a simulation.</li>
+          <li>Finding relevant scientific papers across disparate sources.</li>
+          <li>Extracting experimental conditions, kinetic boundaries, and mass balances.</li>
+          <li>Distinguishing direct findings from analogue cross-strain hypotheses.</li>
+          <li>Translating reaction mechanics into executable computational code.</li>
+          <li>Connecting individual unit operations into an unbroken, mass-conserved process simulation.</li>
         </ol>
-        <p class="lead muted" style="max-width: 760px; margin-top: 16px">
-          The science already existed in the literature. The hard part was turning
-          it into reusable, executable models. ScaleUp AI is building towards a
-          future where that translation is automated.
-        </p>
-      </div>
-    </section>
-
-    <!-- ============================================================ WORKFLOW -->
-    <section id="workflow">
-      <div class="wrap">
-        <p class="eyebrow"><b>B</b> Prompt to simulation</p>
-        <div class="sec-head">
-          <h2>From a description to a simulation</h2>
-          <p class="lead muted">
-            The product vision is a prompt-to-simulation workflow for physical
-            systems. The five stages below describe the end-to-end experience
-            ScaleUp AI is building. Today only the manual foundations of stages
-            3 to 5 are demonstrated; the automated path from a natural-language
-            goal is the long-term objective.
-          </p>
-        </div>
-        <div class="workflow-grid">
-          <div class="wstage">
-            <span class="widx">01</span>
-            <h4>Describe</h4>
-            <p>The user describes the physical system, product, or process they want to create.</p>
-            <span class="wcap future">Future capability</span>
-          </div>
-          <div class="wstage">
-            <span class="widx">02</span>
-            <h4>Research</h4>
-            <p>AI discovers and retrieves relevant scientific literature, equations, experimental results, and engineering knowledge.</p>
-            <span class="wcap future">Future capability</span>
-          </div>
-          <div class="wstage now">
-            <span class="widx">03</span>
-            <h4>Build models</h4>
-            <p>Extracted information is turned into executable computational models, preserving units, evidence, assumptions, and unknowns.</p>
-            <span class="wcap now">Current foundation</span>
-          </div>
-          <div class="wstage">
-            <span class="widx">04</span>
-            <h4>Connect</h4>
-            <p>Compatible models are identified, their interfaces and dependencies reconciled, and missing information flagged.</p>
-            <span class="wcap future">Future capability</span>
-          </div>
-          <div class="wstage">
-            <span class="widx">05</span>
-            <h4>Simulate</h4>
-            <p>The assembled models execute together so the user can explore system behaviour and investigate how to reach the desired outcome.</p>
-            <span class="wcap future">Future capability</span>
-          </div>
-        </div>
         <div class="notice plain" style="margin-top: 22px">
-          <span class="ico">STATUS</span>
+          <span class="ico">INTEGRITY</span>
           <span>
-            <b>Manual today, automated tomorrow.</b> The current prototype
-            demonstrates a manually assembled version of stages 3 to 5 on one
-            concrete problem. The end-to-end automated path from a
-            natural-language goal is being developed.
+            <b>The Fail-Closed Protocol.</b> ScaleUp AI enforces an unbroken chain of custody. If a critical kinetic rate or mass balance is absent from the peer-reviewed literature, the system halts with an explicit provenance gap report rather than inventing synthetic approximations.
           </span>
         </div>
       </div>
     </section>
 
     <!-- ============================================================ ARCHITECTURE -->
-    <section id="architecture">
+    <section id="architecture" class="architecture-section">
+      <div id="workflow"></div>
+      <div id="system"></div>
       <div class="wrap">
-        <p class="eyebrow"><b>C</b> Scientific integrity protocol</p>
+        <p class="eyebrow"><b>B</b> Unified 4-stage engine architecture</p>
         <div class="sec-head">
-          <h2>The 4-stage zero-hallucination architecture</h2>
+          <h2>From peer-reviewed papers to executable 3D digital twins</h2>
           <p class="lead muted">
             Bioprocess design cannot tolerate hallucinations or ungrounded generative chemistry. ScaleUp AI enforces an unbroken chain of custody from peer-reviewed literature to executable physics.
           </p>
@@ -222,7 +161,7 @@
     <!-- ============================================================ SHOWCASE -->
     <section id="showcase">
       <div class="wrap">
-        <p class="eyebrow"><b>D</b> Featured digital twin</p>
+        <p class="eyebrow"><b>C</b> Featured digital twin — biopolymer extraction</p>
         <div class="sec-head">
           <h2>Saccharina latissima alginate extraction &amp; wet-spinning</h2>
           <p class="lead muted">
@@ -236,30 +175,60 @@
               <img id="showcase-hero-img" src="assets/images/showcase/saccharina_6stage_bench_overview.png" alt="6-Stage Saccharina latissima bench overview in Godot 3D" loading="lazy" />
             </div>
             <div class="showcase-thumbs">
-              <button class="thumb-btn active" data-img="assets/images/showcase/saccharina_6stage_bench_overview.png">
+              <button class="thumb-btn active" data-stage="overview" data-img="assets/images/showcase/saccharina_6stage_bench_overview.png">
                 <span>Overview</span>
                 <small>6-Stage Bench</small>
               </button>
-              <button class="thumb-btn" data-img="assets/images/showcase/stage_0_dry_milling.png">
+              <button class="thumb-btn" data-stage="stage0" data-img="assets/images/showcase/stage_0_dry_milling.png">
                 <span>Stage 0</span>
                 <small>Dry Milling</small>
               </button>
-              <button class="thumb-btn" data-img="assets/images/showcase/stage_2_alkaline_dissolution.png">
+              <button class="thumb-btn" data-stage="stage1" data-img="assets/images/showcase/saccharina_6stage_bench_overview.png">
+                <span>Stage 1</span>
+                <small>Acid Wash</small>
+              </button>
+              <button class="thumb-btn" data-stage="stage2" data-img="assets/images/showcase/stage_2_alkaline_dissolution.png">
                 <span>Stage 2</span>
                 <small>Dissolution</small>
               </button>
-              <button class="thumb-btn" data-img="assets/images/showcase/stage_4_cryo_precipitation.png">
+              <button class="thumb-btn" data-stage="stage3" data-img="assets/images/showcase/saccharina_6stage_bench_overview.png">
+                <span>Stage 3</span>
+                <small>pH Neutralize</small>
+              </button>
+              <button class="thumb-btn" data-stage="stage4" data-img="assets/images/showcase/stage_4_cryo_precipitation.png">
                 <span>Stage 4</span>
                 <small>Precipitation</small>
               </button>
-              <button class="thumb-btn" data-img="assets/images/showcase/stage_5_wet_spinning_tensile.png">
+              <button class="thumb-btn" data-stage="stage5" data-img="assets/images/showcase/stage_5_wet_spinning_tensile.png">
                 <span>Stage 5</span>
                 <small>Wet-Spinning</small>
               </button>
-              <button class="thumb-btn" data-img="assets/images/showcase/active_anatomy_blueprint.svg">
+              <button class="thumb-btn" data-stage="anatomy" data-img="assets/images/showcase/active_anatomy_blueprint.svg">
                 <span>Anatomy</span>
                 <small>SVG Topology</small>
               </button>
+            </div>
+
+            <!-- Stage Story Box -->
+            <div class="stage-story-box">
+              <div class="stage-story-header">
+                <span class="stage-story-badge">STAGE DETAIL</span>
+                <h3 id="stage-story-title">6-Stage Biorefinery Train Overview</h3>
+              </div>
+              <div class="stage-story-body">
+                <div class="story-item">
+                  <span class="story-label">PHYSICAL TRANSFORMATION</span>
+                  <p id="stage-story-transform">—</p>
+                </div>
+                <div class="story-item">
+                  <span class="story-label">VERIFIED EMPIRICAL PARAMETERS</span>
+                  <p id="stage-story-params">—</p>
+                </div>
+                <div class="story-item">
+                  <span class="story-label">SOURCE PROVENANCE</span>
+                  <p id="stage-story-provenance">—</p>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -306,9 +275,9 @@
     <!-- ============================================================ PROTOTYPE -->
     <section id="prototype">
       <div class="wrap">
-        <p class="eyebrow"><b>E</b> From scientific literature to executable models</p>
+        <p class="eyebrow"><b>D</b> Featured digital twin — cybernetic fermentation</p>
         <div class="sec-head">
-          <h2>From scientific literature to executable models</h2>
+          <h2>From scientific literature to executable models: E. coli fed-batch replay</h2>
           <p class="lead muted">
             The demonstration below is captured from the ScaleUp AI Godot
             prototype: a desktop application that composes scientific process
@@ -373,65 +342,14 @@
       </div>
     </section>
 
-    <!-- ============================================================ SYSTEM -->
-    <section id="system">
-      <div class="wrap">
-        <p class="eyebrow"><b>F</b> Technical foundations</p>
-        <div class="sec-head">
-          <h2>What makes prompt-to-simulation possible</h2>
-          <p class="lead muted">
-            Five foundations underpin the product. They are the building blocks,
-            not proof that the entire automated workflow is complete.
-          </p>
-        </div>
-        <div class="sys-grid">
-          <div class="sys">
-            <h4>Literature extraction</h4>
-            <p>Turn scientific papers into structured process information: equations, variables, parameters, units, conditions, and sources.</p>
-          </div>
-          <div class="sys">
-            <h4>Evidence and provenance</h4>
-            <p>Distinguish reported facts, calculations, inferences, assumptions, and unknowns, so every value can be traced to its source.</p>
-          </div>
-          <div class="sys">
-            <h4>Executable models</h4>
-            <p>Represent scientific relationships and process behaviour computationally, with units and interfaces declared.</p>
-          </div>
-          <div class="sys">
-            <h4>Model composition</h4>
-            <p>Connect compatible models through declared interfaces, units, and dependencies; refuse incompatible connections and report why.</p>
-          </div>
-          <div class="sys">
-            <h4>Simulation and investigation</h4>
-            <p>Execute models, inspect results, and identify gaps that need further evidence or validation.</p>
-          </div>
-        </div>
-        <div class="notice plain" style="margin-top: 22px">
-          <span class="ico">THESIS</span>
-          <span>
-            <b>Scientific knowledge must become computationally reusable without
-            losing its evidence, assumptions, or limitations.</b>
-          </span>
-        </div>
-      </div>
-    </section>
-
     <!-- ============================================================ EXAMPLE -->
     <section id="example">
       <div class="wrap">
-        <p class="eyebrow"><b>G</b> A concrete proof of concept</p>
+        <p class="eyebrow"><b>E</b> Scientific provenance deep-dive</p>
         <div class="sec-head">
-          <h2>Why start with insulin production</h2>
+          <h2>Why cross-strain compatibility and mass transfer provenance matter</h2>
           <p class="lead muted">
-            ScaleUp AI began with a concrete engineering goal: modelling
-            recombinant human insulin production using E. coli. This is the first
-            concrete biological engineering problem used to build and test the
-            approach. Scientific papers were researched and retrieved using
-            AI-assisted research; relevant information was extracted and encoded
-            into computational models; models were connected and executed through
-            a composition system; and a Godot environment was built to inspect
-            and visualise the resulting model and evidence. This is the manual
-            version of the workflow ScaleUp AI aims to automate.
+            ScaleUp AI began with a concrete engineering goal: modelling recombinant human insulin production using E. coli. This proof of concept established our zero-hallucination guardrails and evidence tracking.
           </p>
         </div>
         <div class="ex-grid">
@@ -451,7 +369,7 @@
               A finding reported for a different E. coli strain does not by
               itself prove evidence invalid. It introduces a compatibility
               question - same organism, different background - that must be
-              evaluated before the evidence is reused.
+              evaluated before the evidence is reused or transferred.
             </p>
           </div>
           <div class="ex-card">
@@ -467,121 +385,10 @@
       </div>
     </section>
 
-    <!-- ============================================================ VISION -->
-    <section id="vision">
-      <div class="wrap">
-        <p class="eyebrow"><b>H</b> Future vision</p>
-        <div class="sec-head">
-          <h2>Build systems, not isolated models</h2>
-          <p class="lead muted">
-            The intended future workflow, from a natural-language goal to a
-            runnable simulation. This is a product vision, not a claim that all
-            six steps are already automated.
-          </p>
-        </div>
-        <div class="workflow-grid">
-          <div class="wstage">
-            <span class="widx">01</span>
-            <h4>Describe</h4>
-            <p>A user describes a physical system they want to build.</p>
-            <span class="wcap future">Future capability</span>
-          </div>
-          <div class="wstage">
-            <span class="widx">02</span>
-            <h4>Search</h4>
-            <p>AI searches for relevant scientific literature and experimental evidence.</p>
-            <span class="wcap future">Future capability</span>
-          </div>
-          <div class="wstage now">
-            <span class="widx">03</span>
-            <h4>Extract</h4>
-            <p>Relevant information is extracted into structured representations.</p>
-            <span class="wcap now">Current foundation</span>
-          </div>
-          <div class="wstage now">
-            <span class="widx">04</span>
-            <h4>Implement</h4>
-            <p>Models are implemented and checked against their sources.</p>
-            <span class="wcap now">Current foundation</span>
-          </div>
-          <div class="wstage">
-            <span class="widx">05</span>
-            <h4>Connect</h4>
-            <p>Compatible models are connected into a larger system.</p>
-            <span class="wcap future">Future capability</span>
-          </div>
-          <div class="wstage">
-            <span class="widx">06</span>
-            <h4>Simulate</h4>
-            <p>A simulation is generated for the user to inspect, test and iterate on.</p>
-            <span class="wcap future">Future capability</span>
-          </div>
-        </div>
-        <p class="lead muted" style="max-width: 760px; margin-top: 16px">
-          The goal is not merely to generate code, but to turn scientific
-          knowledge into traceable, composable computational models.
-        </p>
-      </div>
-    </section>
-
-    <!-- ============================================================ CAPABILITY -->
-    <section id="capability">
-      <div class="wrap">
-        <p class="eyebrow"><b>I</b> Current versus future</p>
-        <div class="sec-head">
-          <h2>What exists today and what is being built</h2>
-          <p class="lead muted">
-            The aspiration is ambitious; descriptions of current functionality
-            are precise. Three levels, clearly separated.
-          </p>
-        </div>
-        <div class="cap-grid">
-          <div class="cap">
-            <h4>Demonstrated today</h4>
-            <ul>
-              <li>A manually assembled literature-to-model workflow.</li>
-              <li>Structured scientific process information with traceable evidence and provenance.</li>
-              <li>An executable model composition pipeline with typed, unit-aware ports.</li>
-              <li>An interactive simulator and evidence replay for the insulin process.</li>
-            </ul>
-          </div>
-          <div class="cap">
-            <h4>Being developed</h4>
-            <ul>
-              <li>More reliable automated extraction and model construction.</li>
-              <li>Automated model discovery, compatibility assessment, and composition.</li>
-              <li>A progressively automated path from a natural-language goal to a runnable simulation.</li>
-            </ul>
-          </div>
-          <div class="cap">
-            <h4>Long-term vision</h4>
-            <ul>
-              <li>Describe almost any physical thing or process in natural language.</li>
-              <li>Have AI discover the relevant science and engineering knowledge.</li>
-              <li>Automatically construct and assemble the necessary computational models.</li>
-              <li>Generate an interactive simulation to explore how the physical idea could work.</li>
-            </ul>
-          </div>
-        </div>
-        <div class="notice plain" style="margin-top: 22px">
-          <span class="ico">HONESTY</span>
-          <span>
-            <b>The insulin replay is evidence, not a prediction.</b> It restates
-            published values and reports its own gaps. It does not reliably
-            simulate arbitrary physical systems, automatically research and
-            construct every model end-to-end, predict real-world outcomes
-            accurately without validation, or produce manufacturing-ready
-            designs. The Ganjave model and other registered models are not
-            validated for predictive use.
-          </span>
-        </div>
-      </div>
-    </section>
-
     <!-- ============================================================ VALIDATE -->
     <section id="validate">
       <div class="wrap">
-        <p class="eyebrow"><b>J</b> User validation and collaboration</p>
+        <p class="eyebrow"><b>F</b> User validation and collaboration</p>
         <div class="sec-head">
           <h2>What are you trying to build?</h2>
           <p class="lead muted">
@@ -628,7 +435,7 @@
     <!-- ============================================================ TEAM -->
     <section id="team">
       <div class="wrap">
-        <p class="eyebrow"><b>K</b> Team</p>
+        <p class="eyebrow"><b>G</b> Team</p>
         <div class="sec-head">
           <h2>A small team building a new kind of engineering tool</h2>
         </div>
@@ -660,7 +467,7 @@
     <!-- ============================================================ CTA -->
     <div class="cta" id="contact">
       <div class="wrap">
-        <p class="eyebrow" style="justify-content: center"><b>J</b> Get in touch</p>
+        <p class="eyebrow" style="justify-content: center"><b>H</b> Get in touch</p>
         <h2>Help us build the workshop.</h2>
         <p class="lead muted">
           We are building an interactive workshop that turns humanity's
@@ -671,7 +478,7 @@
         </p>
         <div class="cta-btns">
           <a class="btn btn-primary" href="simulator/">Explore the prototype</a>
-          <a class="btn btn-ghost" href="#system">How it works</a>
+          <a class="btn btn-ghost" href="#architecture">How it works</a>
         </div>
       </div>
     </div>

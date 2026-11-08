@@ -2865,7 +2865,7 @@ footer {
 }
 .showcase-thumbs {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(8, 1fr);
   gap: 8px;
 }
 .thumb-btn {
@@ -2902,6 +2902,61 @@ footer {
   font-size: 0.65rem;
   color: var(--text-xlo);
   white-space: nowrap;
+}
+
+.stage-story-box {
+  background: var(--ink-850);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 16px 18px;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.stage-story-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 8px;
+}
+.stage-story-badge {
+  font-family: var(--mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.1em;
+  color: var(--known);
+  background: rgba(78, 205, 196, 0.08);
+  border: 1px solid rgba(78, 205, 196, 0.25);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.stage-story-header h3 {
+  font-size: var(--fs-sm);
+  color: var(--text-hi);
+  margin: 0;
+}
+.stage-story-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.story-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.story-label {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  color: var(--text-xlo);
+}
+.story-item p {
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+  color: var(--text);
+  margin: 0;
 }
 .showcase-details {
   display: flex;
@@ -2992,6 +3047,9 @@ footer {
   }
   .showcase-card {
     grid-template-columns: 1fr;
+  }
+  .showcase-thumbs {
+    grid-template-columns: repeat(4, 1fr);
   }
   .hero-grid {
     grid-template-columns: 1fr;
