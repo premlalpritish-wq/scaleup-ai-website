@@ -9,9 +9,11 @@
     "test:responsive": "node tests/responsive.js",
     "test:graph": "node tests/graph.js",
     "test:safety": "node tests/safety.js",
+    "test:visual": "node tests/capture_visuals.js",
     "serve": "python -m http.server 8811"
   },
   "devDependencies": {
-    "jsdom": "^26.0.0"
+    "jsdom": "^26.0.0",
+    "playwright": "^1.65.0"
   }
 }

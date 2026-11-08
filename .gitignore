@@ -29,3 +29,4 @@ dist/
 build/
 coverage/
 .cache/
+tests/screenshots/
