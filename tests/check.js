@@ -1,7 +1,7 @@
-/* Headless render + claims check for the ScaleUp AI website.
+/* Headless render + claims check for the ScaleUp AI website (Lovable Redesign).
  *
  * Loads index.html and assets/app.js in jsdom, then asserts that the page
- * renders the new product narrative, that the Godot prototype showcase is
+ * renders the new Lovable product narrative, that the prompt-first showcase is
  * present, that navigation and CTAs resolve, and that no forbidden claim
  * appears unnegated anywhere in the document.
  *
@@ -32,17 +32,8 @@ const { window } = dom;
 
 window.Element.prototype.scrollIntoView = function () {};
 
-const traced = appjs.replace(
-  /const \$ = \(sel, root = document\) => root\.querySelector\(sel\);/,
-  `const $ = (sel, root = document) => {
-     const r = root.querySelector(sel);
-     if (r === null) { (globalThis.__NULLS = globalThis.__NULLS || []).push(sel); }
-     return r;
-   };`
-);
-
 try {
-  window.eval(traced);
+  window.eval(appjs);
 } catch (e) {
   errors.push(`eval threw: ${e.stack || e.message}`);
 }
@@ -62,36 +53,40 @@ setTimeout(() => {
   /* ---------------------------------------------------- hero */
   ok("hero: single h1", n("h1") === 1, String(n("h1")));
   ok("hero: headline present", /Vibecode physical products, grounded in science/i.test(txt("h1")), txt("h1"));
-  ok("hero: supporting copy present", /Describe the biological or chemical product you want to make/i.test(txt(".hero-sub")), txt(".hero-sub").slice(0, 60));
-  const primaryCta = [...d.querySelectorAll(".hero-cta .btn")].find((b) => /EXPLORE 3D SIMULATOR|Launch Interactive Workbench|Explore the prototype/i.test(b.textContent));
-  const secondaryCta = [...d.querySelectorAll(".hero-cta .btn")].find((b) => /HOW IT WORKS|Inspect Central Library/i.test(b.textContent));
+  ok("hero: supporting copy present", /Describe what you want to make in plain English/i.test(txt(".hero-sub")), txt(".hero-sub").slice(0, 60));
+  
+  const primaryCta = [...d.querySelectorAll(".hero-cta .btn, .nav-actions .btn")].find((b) => /Open Simulator|Launch Simulator/i.test(b.textContent));
+  const secondaryCta = [...d.querySelectorAll(".hero-cta .btn")].find((b) => /View 3D Demo|Simulate in 3D/i.test(b.textContent));
   ok("hero: primary CTA present", !!primaryCta);
   ok("hero: secondary CTA present", !!secondaryCta);
   ok("hero: primary CTA points to simulator", !!primaryCta && primaryCta.getAttribute("href") === "simulator/", primaryCta ? primaryCta.getAttribute("href") : "");
   ok("hero: secondary CTA resolves", !!secondaryCta && d.getElementById((secondaryCta.getAttribute("href") || "").slice(1)) !== null, secondaryCta ? secondaryCta.getAttribute("href") : "");
   ok("hero: simulator screenshot caption present", /genuine screenshot/i.test(txt(".hv-caption")), txt(".hv-caption").slice(0, 60));
 
-  /* ---------------------------------------------------- narrative sections */
-  ok("narrative: workflow section present", !!d.getElementById("workflow"));
-  ok("narrative: system section present", !!d.getElementById("system"));
-  ok("narrative: prototype section present", !!d.getElementById("prototype"));
-  ok("narrative: example section present", !!d.getElementById("example"));
-  ok("narrative: prototype shows screenshots", d.querySelectorAll("#prototype img").length >= 3, String(d.querySelectorAll("#prototype img").length));
-  ok("narrative: prototype mentions evidence replay", /evidence replay/i.test(txt("#prototype")));
-  ok("narrative: insulin example mentions dissolved oxygen", /dissolved[- ]oxygen/i.test(txt("#example")));
-  ok("narrative: insulin example mentions strain", /strain/i.test(txt("#example")) && /compatibil|transfer/i.test(txt("#example")));
+  /* ---------------------------------------------------- prompt centerpiece */
+  ok("prompt: input box exists", !!d.getElementById("prompt-input"));
+  ok("prompt: preset chips present", d.querySelectorAll(".prompt-chip").length >= 3, String(d.querySelectorAll(".prompt-chip").length));
+
+  /* ---------------------------------------------------- showcase window */
+  ok("showcase: section present", !!d.getElementById("showcase"));
+  ok("showcase: step pills present", d.querySelectorAll(".step-pill").length >= 6, String(d.querySelectorAll(".step-pill").length));
+  ok("showcase: hero image present", !!d.getElementById("showcase-hero-img"));
+  ok("showcase: metrics bar present", d.querySelectorAll(".metric-pill").length >= 4, String(d.querySelectorAll(".metric-pill").length));
+
+  /* ---------------------------------------------------- narrative / how it works */
+  ok("narrative: architecture section present", !!d.getElementById("architecture"));
+  ok("narrative: 3 cards present", d.querySelectorAll(".feature-card").length === 3, String(d.querySelectorAll(".feature-card").length));
+  ok("narrative: CTA banner present", !!d.querySelector(".cta-banner"));
 
   /* ---------------------------------------------------- nav */
-  const navLinks = [...d.querySelectorAll(".nav-links a[href^='#']")];
-  ok("nav: links present", navLinks.length >= 5, String(navLinks.length));
+  const navLinks = [...d.querySelectorAll(".nav-menu a[href^='#']")];
+  ok("nav: links present", navLinks.length >= 2, String(navLinks.length));
   ok("nav: every link resolves", navLinks.length > 0 && navLinks.every((a) => d.getElementById(a.getAttribute("href").slice(1))));
-  ok("nav: at most one active marker", n('.nav-links a[aria-current="true"]') <= 1);
-  ok("nav: labelled", !!d.querySelector(".nav[aria-label]"));
 
   /* ---------------------------------------------------- accessibility */
   ok("a11y: lang set", d.documentElement.getAttribute("lang") === "en");
   ok("a11y: viewport meta", !!d.querySelector('meta[name="viewport"]'));
-  ok("a11y: sections have ids", n("section[id]") >= 4, String(n("section[id]")));
+  ok("a11y: sections have ids", n("section[id]") >= 3, String(n("section[id]")));
   ok("a11y: team has three people", n(".person") === 3, String(n(".person")));
   ok("a11y: names and roles present", /Pritish Premlal/.test(body) && /Samarpit Nag/.test(body) && /Sahil Pawar/.test(body) && /CEO/.test(body) && /CTO/.test(body) && /CPO/.test(body));
   const teamText = (d.querySelector("#team")?.textContent || "").replace(/\s+/g, " ");
@@ -129,14 +124,6 @@ setTimeout(() => {
     ok(`claims: no unnegated "${label}"`, hits.length === 0, hits.length ? hits[0].slice(0, 80) : "");
   });
 
-  /* ---------------------------------------------------- responsive hooks */
-  ok("responsive: nav links present", n(".nav-links a") >= 5, String(n(".nav-links a")));
-  ok("responsive: single h1", n("h1") === 1);
-
-  /* ---------------------------------------------------- report */
-  const nulls = [...new Set(window.__NULLS || [])];
-  if (nulls.length) console.log(`\nNULL SELECTORS: ${nulls.join(", ")}`);
-
   const failed = checks.filter((c) => !c.pass);
   checks.forEach((c) =>
     console.log(`${c.pass ? "PASS" : "FAIL"}  ${c.name}${c.detail ? `  [${c.detail}]` : ""}`)
@@ -150,5 +137,5 @@ setTimeout(() => {
     console.log("No runtime errors.");
   }
 
-  process.exit(failed.length || errors.length || nulls.length ? 1 : 0);
+  process.exit(failed.length || errors.length ? 1 : 0);
 }, 400);

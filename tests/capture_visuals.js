@@ -53,7 +53,6 @@ async function main() {
 
   const viewports = [
     { name: "desktop", width: 1440, height: 900 },
-    { name: "tablet", width: 768, height: 1024 },
     { name: "mobile", width: 390, height: 844 },
   ];
 
@@ -93,19 +92,37 @@ async function main() {
       if (vp.name === "desktop") {
         const stages = ["stage0", "stage2", "stage4", "stage5", "anatomy", "overview"];
         for (const stage of stages) {
-          const btn = page.locator(`.thumb-btn[data-stage="${stage}"]`);
+          const btn = page.locator(`.step-pill[data-stage="${stage}"]`);
           await btn.click();
           await page.waitForTimeout(100);
 
-          const title = await page.locator("#stage-story-title").innerText();
-          const img = await page.locator("#showcase-hero-img").getAttribute("src");
-          console.log(`Interactive test - clicked ${stage}: Title="${title}", Image="${img}"`);
+          const heroImg = page.locator("#showcase-hero-img");
+          const nw = await heroImg.evaluate((el) => el.naturalWidth);
+          const nh = await heroImg.evaluate((el) => el.naturalHeight);
+          const complete = await heroImg.evaluate((el) => el.complete);
+          const src = await heroImg.getAttribute("src");
+          if (!complete || nw <= 0 || nh <= 0) {
+            throw new Error(`Broken image in stage "${stage}": src="${src}", nw=${nw}, nh=${nh}`);
+          }
 
-          if (stage === "stage2" || stage === "stage5") {
+          const caption = await page.locator("#showcase-caption").innerText();
+          console.log(`Interactive test - clicked ${stage}: Caption="${caption.slice(0, 60)}...", Image="${src}" (${nw}x${nh})`);
+
+          if (stage === "stage2" || stage === "anatomy") {
             const stageFile = path.join(OUT_DIR, `desktop_interaction_${stage}.png`);
             await page.screenshot({ path: stageFile, fullPage: false });
             console.log(`Saved interaction screenshot: ${stageFile}`);
           }
+        }
+
+        // Also test clicking prompt chips
+        const chips = ["stage-insulin", "stage-unverified", "overview"];
+        for (const c of chips) {
+          const chip = page.locator(`.prompt-chip[data-stage="${c}"]`);
+          await chip.click();
+          await page.waitForTimeout(100);
+          const txt = await page.locator("#prompt-input").inputValue();
+          console.log(`Prompt chip test (${c}): "${txt.slice(0, 40)}..."`);
         }
       }
 

@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="en" data-type="software">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>ScaleUp AI - Vibecode physical products, grounded in science.</title>
     <meta
       name="description"
-      content="Describe the biological or chemical product you want to make. ScaleUp turns your prompt into an interactive 3D lab simulation—pulling real equations and parameters from peer-reviewed papers, tracking the physical batch from tank to tank, and stopping immediately if a single step lacks experimental proof."
+      content="Describe what you want to make in plain English. ScaleUp pulls the real science from published papers and builds an interactive 3D lab simulation in seconds."
     />
     <meta name="page-type" content="software" />
     <meta name="site-kind" content="software" />
@@ -14,587 +14,217 @@
     <meta property="og:title" content="ScaleUp AI - Vibecode physical products, grounded in science." />
     <meta
       property="og:description"
-      content="Describe the biological or chemical product you want to make. ScaleUp turns your prompt into an interactive 3D lab simulation—pulling real equations and parameters from peer-reviewed papers, tracking the physical batch from tank to tank, and stopping immediately if a single step lacks experimental proof."
+      content="Describe what you want to make in plain English. ScaleUp pulls the real science from published papers and builds an interactive 3D lab simulation in seconds."
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="assets/styles.css" />
     <link
       rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230a0a09'/%3E%3Crect x='6' y='6' width='8' height='8' fill='%23ff5722'/%3E%3Crect x='18' y='6' width='8' height='8' fill='%2310b981'/%3E%3Crect x='6' y='18' width='8' height='8' fill='%23333330'/%3E%3Crect x='18' y='18' width='8' height='8' fill='%23eceae4'/%3E%3C/svg%3E"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23090a0d'/%3E%3Ccircle cx='12' cy='12' r='4' fill='%236366f1'/%3E%3Ccircle cx='20' cy='20' r='4' fill='%2310b981'/%3E%3C/svg%3E"
     />
   </head>
 
   <body>
-    <div class="spec-container">
-      <!-- ============================================================ TOP NAVIGATION -->
-      <nav class="nav" aria-label="Primary Technical Specification">
-        <div class="wrap nav-in">
+    <!-- Background subtle ambient lighting -->
+    <div class="ambient-glow" aria-hidden="true"></div>
+
+    <div class="page-wrap">
+      <!-- Minimal Top Navigation -->
+      <header class="nav-header">
+        <nav class="nav-container" aria-label="Primary Navigation">
           <a class="brand" href="#top">
-            <svg width="18" height="18" viewBox="0 0 32 32" aria-hidden="true">
-              <rect x="4" y="4" width="10" height="10" fill="#ff5722" />
-              <rect x="18" y="4" width="10" height="10" fill="#10b981" />
-              <rect x="4" y="18" width="10" height="10" fill="#333330" />
-              <rect x="18" y="18" width="10" height="10" fill="#eceae4" />
-            </svg>
-            ScaleUp AI
-            <small>v0.1</small>
+            <span class="brand-dot"></span>
+            <span class="brand-name">ScaleUp AI</span>
           </a>
-          <div class="nav-links" aria-label="Sections">
-            <a href="#problem">Why Not Standard AI</a>
+          <div class="nav-menu">
             <a href="#architecture">How It Works</a>
-            <a href="#showcase">Verified Twins</a>
-            <a href="#prototype">3D Replay</a>
-            <a href="#example">Scientific Proof</a>
+            <a href="#showcase">Showcase</a>
             <a href="#team">Team</a>
-            <a href="#contact">Contact</a>
           </div>
-        </div>
-      </nav>
-
-      <!-- ============================================================ HERO & 3D WORKBENCH CONSOLE -->
-      <header class="hero" id="top">
-        <div class="hero-split">
-          <!-- Left Column: Clear Mission & Human-Friendly Copy -->
-          <div class="hero-left">
-            <div class="hero-header-block">
-              <div class="coord-stamp">[SCALEUP AI // PROMPT-TO-SIMULATION ENGINE]</div>
-              <h1>Vibecode physical products, grounded in science.</h1>
-              <p class="lead hero-sub">
-                Describe the biological or chemical product you want to make. ScaleUp turns your prompt into an interactive 3D lab simulation—pulling real equations and parameters from peer-reviewed papers, tracking the physical batch from tank to tank, and stopping immediately if a single step lacks experimental proof.
-              </p>
-              <div class="hero-cta">
-                <a class="btn btn-primary" href="simulator/">
-                  [ EXPLORE 3D SIMULATOR → ]
-                </a>
-                <a class="btn btn-ghost" href="#architecture">
-                  [ HOW IT WORKS ]
-                </a>
-              </div>
-            </div>
-
-            <div>
-              <div class="operator-telemetry-strip">
-                <div class="op-stat">
-                  <span class="op-label">ACCURACY</span>
-                  <span class="op-val green">ZERO HALLUCINATIONS</span>
-                </div>
-                <div class="op-stat">
-                  <span class="op-label">EVIDENCE</span>
-                  <span class="op-val orange">DIRECT FROM PAPERS</span>
-                </div>
-                <div class="op-stat">
-                  <span class="op-label">RUNTIME</span>
-                  <span class="op-val">GODOT 4 3D PHYSICS</span>
-                </div>
-              </div>
-              <p class="hero-note" id="hero-note">
-                From peer-reviewed literature to interactive 3D physics. Multi-stage biopolymer extraction and cybernetic microbial bioreactors with verified provenance.
-              </p>
-            </div>
+          <div class="nav-actions">
+            <a class="btn btn-pill btn-primary" href="simulator/">Open Simulator</a>
           </div>
-
-          <!-- Right Column: Interactive 6-Stage Lab Console -->
-          <div class="hero-right">
-            <div class="console-viewport-header">
-              <div class="cvh-title">
-                <span id="cvh-stage-name">OVERVIEW · 6-STAGE BIOREFINERY</span>
-              </div>
-              <div class="cvh-meta">
-                <span class="spec-badge verified" id="cvh-badge">100% DIRECT EVIDENCE</span>
-              </div>
-            </div>
-
-            <div class="console-viewport-frame">
-              <img id="showcase-hero-img" src="assets/images/showcase/saccharina_6stage_bench_overview.png" alt="ScaleUp AI 6-stage digital twin: Saccharina latissima biopolymer extraction and wet-spinning bench." loading="lazy" />
-              <p class="hv-caption">A genuine screenshot of the live Godot 3D 6-stage digital twin workbench. Physical unit operations, phase transitions, and mass balance rendered in real time.</p>
-            </div>
-
-            <!-- Stage Control Bar -->
-            <div class="stage-control-bar">
-              <button class="thumb-btn active" data-stage="overview" data-img="assets/images/showcase/saccharina_6stage_bench_overview.png">
-                <span>[ OVERVIEW ]</span>
-                <small>Full 6-Stage Bench</small>
-              </button>
-              <button class="thumb-btn" data-stage="stage0" data-img="assets/images/showcase/stage_0_dry_milling.png">
-                <span>[ STAGE 0 ]</span>
-                <small>Grind Dry Kelp (15g)</small>
-              </button>
-              <button class="thumb-btn" data-stage="stage1" data-img="assets/images/showcase/saccharina_6stage_bench_overview.png">
-                <span>[ STAGE 1 ]</span>
-                <small>Citric Acid Wash</small>
-              </button>
-              <button class="thumb-btn" data-stage="stage2" data-img="assets/images/showcase/stage_2_alkaline_dissolution.png">
-                <span>[ STAGE 2 ]</span>
-                <small>Dissolve to Alginate Gel (33.1% Yield)</small>
-              </button>
-              <button class="thumb-btn" data-stage="stage3" data-img="assets/images/showcase/saccharina_6stage_bench_overview.png">
-                <span>[ STAGE 3 ]</span>
-                <small>Centrifuge &amp; Balance to pH 7</small>
-              </button>
-              <button class="thumb-btn" data-stage="stage4" data-img="assets/images/showcase/stage_4_cryo_precipitation.png">
-                <span>[ STAGE 4 ]</span>
-                <small>-20°C Ethanol Precipitation (91.5% Pure)</small>
-              </button>
-              <button class="thumb-btn" data-stage="stage5" data-img="assets/images/showcase/stage_5_wet_spinning_tensile.png">
-                <span>[ STAGE 5 ]</span>
-                <small>Wet-Spin Strong Fibres (43.1 MPa)</small>
-              </button>
-              <button class="thumb-btn" data-stage="anatomy" data-img="assets/images/showcase/active_anatomy_blueprint.svg">
-                <span>[ BLUEPRINT ]</span>
-                <small>2D Equipment Blueprint (SVG)</small>
-              </button>
-            </div>
-
-            <!-- Console Telemetry Ledger -->
-            <div class="console-ledger">
-              <div class="console-kpi-row">
-                <div class="ck-box">
-                  <span class="ck-label">EXTRACTION YIELD</span>
-                  <span class="kpi-val highlight" id="kpi-yield">—</span>
-                </div>
-                <div class="ck-box">
-                  <span class="ck-label">MOLECULAR WEIGHT</span>
-                  <span class="kpi-val" id="kpi-mw">—</span>
-                </div>
-                <div class="ck-box">
-                  <span class="ck-label">URONIC ACID PURITY</span>
-                  <span class="kpi-val" id="kpi-purity">—</span>
-                </div>
-                <div class="ck-box">
-                  <span class="ck-label">TENSILE STRENGTH</span>
-                  <span class="kpi-val" id="kpi-tensile">—</span>
-                </div>
-              </div>
-
-              <div class="console-stage-readout">
-                <div class="csr-header">
-                  <h3 id="stage-story-title">Overview · Complete 6-Stage Kelp Biorefinery</h3>
-                  <span class="spec-badge verified" id="stage-story-tier">100% DIRECT EVIDENCE</span>
-                </div>
-                <div class="csr-body">
-                  <div class="csr-field">
-                    <span class="csr-key">WHAT HAPPENS IN THE TANK</span>
-                    <p class="csr-val" id="stage-story-transform">—</p>
-                  </div>
-                  <div class="csr-field">
-                    <span class="csr-key">MEASURED RESULTS &amp; SETTINGS</span>
-                    <p class="csr-val" id="stage-story-params">—</p>
-                  </div>
-                  <div class="csr-field">
-                    <span class="csr-key">GOVERNING CONTINUITY EQUATION</span>
-                    <div class="eq-block" id="stage-story-eq">—</div>
-                  </div>
-                  <div class="csr-field">
-                    <span class="csr-key">SOURCE SCIENTIFIC PAPER</span>
-                    <p class="csr-val" id="stage-story-provenance">—</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        </nav>
       </header>
 
-      <!-- ============================================================ SECTION 02: WHY STANDARD AI FAILS -->
-      <section id="problem">
-        <div class="wrap">
-          <div class="coord-stamp">[WHY STANDARD AI FAILS IN THE PHYSICAL WORLD]</div>
-          <div class="sec-head">
-            <h2>Why Standard AI Fails in the Physical World</h2>
-            <p class="lead muted">
-              In software, an AI hallucinating a variable throws a syntax error. In bioprocessing, an AI guessing a kinetic constant ruins an expensive pilot batch.
+      <main>
+        <!-- ==================== 1. HERO SECTION (Lovable Prompt-First) ==================== -->
+        <section class="hero" id="top">
+          <div class="hero-content">
+            <div class="badge-pill">
+              <span class="badge-dot"></span>
+              <span>Prompt-to-Simulation Engine</span>
+            </div>
+
+            <h1 class="hero-title">Vibecode physical products, grounded in science.</h1>
+
+            <p class="hero-sub">
+              Describe what you want to make in plain English. ScaleUp pulls the real science from published papers and builds an interactive 3D lab simulation in seconds.
             </p>
-          </div>
 
-          <div class="diff-table-frame">
-            <table class="diff-table">
-              <thead>
-                <tr>
-                  <th style="width: 22%">WHAT MATTERS IN THE LAB</th>
-                  <th class="unsafe-col" style="width: 39%">STANDARD AI [GUESSES THE SCIENCE]</th>
-                  <th class="safe-col" style="width: 39%">SCALEUP AI [100% CITATION-LOCKED]</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td class="diff-param">Reaction Rates &amp; Yields</td>
-                  <td class="diff-unsafe">
-                    Ask an LLM how to scale a wet-lab protocol and it will quietly make up missing rate constants or mix up bacterial growth with chemical extraction. In the real world, one fake number ruins the batch.
-                  </td>
-                  <td class="diff-safe">
-                    <strong>100% Citation-Locked.</strong> Every vessel, temperature, and yield curve is locked to an exact quote and DOI from published research. If a number hasn't been proven in a real paper, ScaleUp halts and shows you the exact gap—zero guesswork.
-                  </td>
-                </tr>
-                <tr>
-                  <td class="diff-param">Mixing Up Unrelated Science</td>
-                  <td class="diff-unsafe">
-                    Silently copies math from E. coli bacteria experiments onto seaweed chemical extraction protocols without warning.
-                  </td>
-                  <td class="diff-safe">
-                    <strong>Strict Domain Isolation.</strong> Keeps distinct biological systems separated. If data comes from a different strain, it warns you clearly.
-                  </td>
-                </tr>
-                <tr>
-                  <td class="diff-param">When Data Is Missing</td>
-                  <td class="diff-unsafe">
-                    Fills in blanks with fake averages so the graph looks smooth, hiding real risks from lab operators.
-                  </td>
-                  <td class="diff-safe">
-                    <strong>Stops Safely.</strong> Halts with an explicit <code class="code-tag">InsufficientEvidenceError</code> and searches published literature for the missing number.
-                  </td>
-                </tr>
-                <tr>
-                  <td class="diff-param">Conservation of Matter</td>
-                  <td class="diff-unsafe">
-                    Draws pretty animations where mass disappears between steps and phase volumes do not add up.
-                  </td>
-                  <td class="diff-safe">
-                    <strong>Rigorous Physics.</strong> Tracks every gram entering Tank A through Tank B, precipitates, and waste streams with zero mass loss.
-                  </td>
-                </tr>
-                <tr>
-                  <td class="diff-param">What You Actually Get</td>
-                  <td class="diff-unsafe">
-                    Text paragraphs and untested code snippets that you have to spend months debugging by hand.
-                  </td>
-                  <td class="diff-safe">
-                    <strong>Playable 3D Virtual Bench.</strong> Interactive Godot 4 digital twin where you can test what happens before touching real glass.
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div class="notice-box">
-            <span class="notice-tag">FAIL-CLOSED PROTOCOL</span>
-            <div class="notice-content">
-              <b>The Chain of Custody Mandate:</b> ScaleUp AI enforces an unbroken chain of custody. If a critical kinetic rate or mass balance is absent from the peer-reviewed literature, the compiler refuses to guess or invent approximations. It raises an explicit <code class="code-tag">InsufficientEvidenceError</code> halt report identifying the exact missing parameter.
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ============================================================ SECTION 03: HOW IT WORKS -->
-      <section id="architecture">
-        <div id="workflow"></div>
-        <div id="system"></div>
-        <div class="wrap">
-          <div class="coord-stamp">[HOW IT WORKS]</div>
-          <div class="sec-head">
-            <h2>Four Steps from Paper to Playable Simulation</h2>
-            <p class="lead muted">
-              How natural-language scientific protocols compile into mass-conserved, interactive 3D digital twins.
-            </p>
-          </div>
-
-          <div class="blueprint-strip">
-            <div class="bp-layer">
-              <span class="bp-num">STEP 01 // LAB BLUEPRINT</span>
-              <h4>01. Prompt &rarr; Lab Blueprint</h4>
-              <p>Breaks your product prompt down into a verified sequence of physical equipment, pipes, and material flows.</p>
-              <div class="bp-code">{
-  "step": "Map_Equipment",
-  "vessels": 6,
-  "flow_balance": "CONSERVED",
-  "blueprint": "P&amp;ID_SVG"
-}</div>
-            </div>
-
-            <div class="bp-layer">
-              <span class="bp-num">STEP 02 // REAL PAPERS</span>
-              <h4>02. Grounded in Real Papers</h4>
-              <p>Connects every vessel, temperature, and reaction rate to peer-reviewed papers with exact DOIs and quotes.</p>
-              <div class="bp-code">{
-  "doi": "10.1016/j.algal.2024",
-  "sha256": "8f3b2a19e...",
-  "verified_quote": "e912c4...",
-  "status": "DIRECT_EVIDENCE"
-}</div>
-            </div>
-
-            <div class="bp-layer">
-              <span class="bp-num">STEP 03 // SAFE HALT</span>
-              <h4>03. Auto-Research or Safe Halt</h4>
-              <p>If a number is missing, ScaleUp searches published literature. If unproven, it halts safely (InsufficientEvidenceError)—zero guesswork.</p>
-              <div class="bp-code">raise InsufficientEvidenceError(
-  missing_param="dissolution_rate",
-  action="SEARCHING_OPENALEX",
-  status="HALTED_NO_GUESSING"
-)</div>
-            </div>
-
-            <div class="bp-layer">
-              <span class="bp-num">STEP 04 // 3D PLAYGROUND</span>
-              <h4>04. Play &amp; Stress-Test in 3D</h4>
-              <p>Opens a live Godot 4 workbench where you can watch the batch transform, test edge cases, and tweak settings before touching real glass.</p>
-              <div class="bp-code">Godot4_Simulation:
-  active_vessels: 6
-  particle_tracking: 120
-  mass_conservation: 100%
-  framerate: 60 FPS</div>
-            </div>
-          </div>
-
-          <div class="blueprint-svg-viewer">
-            <div class="bsv-header">
-              <span>ISOMETRIC SCHEMATIC BLUEPRINT // GENERATED PROCEDURALLY</span>
-              <span>VERIFIED MASS CONTINUITY</span>
-            </div>
-            <div class="bsv-frame">
-              <img src="assets/images/showcase/active_anatomy_blueprint.svg" alt="Procedural Anatomy P&amp;ID isometric schematic blueprint" width="1260" height="540" />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ============================================================ SECTION 04: VERIFIED PROCESSES -->
-      <section id="showcase">
-        <div class="wrap">
-          <div class="coord-stamp">[VERIFIED PROCESS REGISTRY]</div>
-          <div class="sec-head">
-            <h2>Real Working Digital Twins in the System</h2>
-            <p class="lead muted">
-              Two completely different industrial processes running on the exact same zero-hallucination simulation engine.
-            </p>
-          </div>
-
-          <div class="ledger-table-frame">
-            <div class="ledger-row">
-              <div class="lr-col lr-title">
-                <span class="lr-class">PROCESS 01 // SOLID-LIQUID EXTRACTION</span>
-                <h4>Kelp Biopolymer Extraction (Saccharina latissima)</h4>
-                <div class="lr-metrics">Six Sequential Unit Operations · 40h Sequence</div>
+            <!-- Interactive Lovable-style Prompt Box -->
+            <div class="prompt-box-card">
+              <div class="prompt-input-row">
+                <textarea
+                  id="prompt-input"
+                  class="prompt-textarea"
+                  rows="2"
+                  aria-label="Simulation prompt"
+                >Extract purified sodium alginate from 15g dry sugar kelp and wet-spin high-strength fibres...</textarea>
               </div>
-              <div class="lr-col lr-desc">
-                Follows raw dried brown kelp through mechanical milling, acid mineral washing, hot alkaline gel dissolution, high-speed spin separation, ice-cold ethanol precipitation, and needle wet-spinning into strong textile yarns.
-                <div class="lr-metrics">
-                  Primary Source: University of York Biotechnology Master's Research (2025)
+              <div class="prompt-footer-row">
+                <div class="prompt-indicator">
+                  <span class="pulse-icon"></span>
+                  <span id="prompt-status-text">Zero hallucinated science &middot; Citation locked</span>
+                </div>
+                <div class="hero-cta">
+                  <a class="btn btn-pill btn-primary btn-simulate" href="simulator/">
+                    Open Simulator &rarr;
+                  </a>
+                  <a class="btn btn-pill btn-ghost" href="#showcase">
+                    View 3D Demo &darr;
+                  </a>
                 </div>
               </div>
-              <div class="lr-col lr-status">
-                <span class="spec-badge verified">100% DIRECT EVIDENCE</span>
-                <span class="spec-badge verified">MASS CONSERVED</span>
-                <span class="spec-badge">SHA-256 SEALED</span>
+            </div>
+
+            <!-- Clickable Prompt Preset Chips -->
+            <div class="prompt-chips-row" aria-label="Preset Prompts">
+              <button class="prompt-chip active" data-prompt="Extract purified sodium alginate from 15g dry sugar kelp and wet-spin high-strength fibres..." data-stage="overview">
+                🌿 Seaweed to Alginate Fibre (6 Stages)
+              </button>
+              <button class="prompt-chip" data-prompt="Replay Zielinski human insulin fed-batch fermentation in E. coli with continuous DO control..." data-stage="stage-insulin">
+                🧬 E. coli Fed-Batch Fermentation
+              </button>
+              <button class="prompt-chip" data-prompt="Test high-temperature rapid extraction without literature kinetic constants..." data-stage="stage-unverified">
+                🧪 Test Unverified Process (See Safe-Stop)
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== 2. INTERACTIVE 3D SHOWCASE WINDOW ==================== -->
+        <section class="showcase-section" id="showcase">
+          <div class="showcase-window">
+            <!-- Window Top Bar with Step Pills -->
+            <div class="window-topbar">
+              <div class="window-pills" role="tablist">
+                <button class="step-pill active" data-stage="overview" role="tab" aria-selected="true">Full Lab Bench</button>
+                <button class="step-pill" data-stage="stage0" role="tab" aria-selected="false">1. Grind Dry Kelp</button>
+                <button class="step-pill" data-stage="stage2" role="tab" aria-selected="false">2. Dissolve into Gel</button>
+                <button class="step-pill" data-stage="stage3" role="tab" aria-selected="false">3. Spin &amp; Balance pH</button>
+                <button class="step-pill" data-stage="stage4" role="tab" aria-selected="false">4. Cold Ethanol Clot</button>
+                <button class="step-pill" data-stage="stage5" role="tab" aria-selected="false">5. Spin Strong Fibre</button>
+                <button class="step-pill" data-stage="anatomy" role="tab" aria-selected="false">2D Flow Diagram</button>
               </div>
             </div>
 
-            <div class="ledger-row">
-              <div class="lr-col lr-title">
-                <span class="lr-class">PROCESS 02 // MICROBIAL FERMENTATION</span>
-                <h4>Human Insulin Fermentation (E. coli Bacteria)</h4>
-                <div class="lr-metrics">Four Sequential Unit Operations · Cybernetic Bioreactor</div>
+            <!-- Main Stage Viewport -->
+            <div class="window-viewport">
+              <img
+                id="showcase-hero-img"
+                src="assets/images/showcase/saccharina_6stage_bench_overview.png"
+                alt="ScaleUp AI 6-stage bioprocess simulation workbench"
+              />
+              <p class="hv-caption">A genuine screenshot of the live Godot 3D 6-stage digital twin workbench.</p>
+            </div>
+
+            <!-- Minimal Bottom Bar inside Studio Frame -->
+            <div class="window-bottombar">
+              <div class="bottombar-info">
+                <p id="showcase-caption" class="showcase-caption">
+                  Full six-stage bioprocess: tracks dried kelp through milling, acid washing, gel dissolution, spin separation, ethanol precipitation, and fibre wet-spinning.
+                </p>
               </div>
-              <div class="lr-col lr-desc">
-                Fed-batch bacterial bioreactor tracking cell growth, oxygen transfer, protein expression, and chromatographic purification recovery without unverified parameter assumptions.
-                <div class="lr-metrics">
-                  Primary Sources: Zieliński et al. (2019) + Ganjave et al. (2022) + Baez et al. (2014)
-                </div>
-              </div>
-              <div class="lr-col lr-status">
-                <span class="spec-badge verified">DIRECT REPLAY</span>
-                <span class="spec-badge warning">ANALOGUE BRIDGE</span>
-                <span class="spec-badge">STRAIN [BL21→W3110]</span>
+              <div class="bottombar-metrics">
+                <span class="metric-pill highlight" id="pill-metric-1">33.1% Yield</span>
+                <span class="metric-pill" id="pill-metric-2">251 kDa Chain Length</span>
+                <span class="metric-pill" id="pill-metric-3">43.1 MPa Fibre Strength</span>
+                <span class="metric-pill verified" id="pill-metric-4">&check; Backed by York MSc Thesis</span>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <!-- ============================================================ SECTION 05: 3D REPLAY -->
-      <section id="prototype">
-        <div class="wrap">
-          <div class="coord-stamp">[3D EVIDENCE REPLAY]</div>
-          <div class="sec-head">
-            <h2>E. coli Fermentation Replay &amp; Modular Lab Setup</h2>
-            <p class="lead muted">
-              Captured directly from the running ScaleUp AI desktop simulator: connect models through verified ports and watch the evidence replay in interactive 3D.
+        <!-- ==================== 3. HOW IT WORKS (3 Simple Cards) ==================== -->
+        <section class="how-it-works-section" id="architecture">
+          <div id="workflow"></div>
+          <div id="system"></div>
+          <div class="section-header">
+            <h2>Simple on the surface. Rigorous underneath.</h2>
+            <p class="section-sub">
+              Three steps from a plain English prompt to an interactive 3D digital twin.
             </p>
           </div>
 
-          <div class="proto-grid">
-            <figure class="proto-fig">
-              <img src="assets/images/workshop.png" alt="ScaleUp AI graph editor: models listed in a palette, an instance form, and a composition canvas." loading="lazy" />
-              <figcaption>Graph editor - compose models from a registered palette, fill their declared inputs, and run or validate the graph.</figcaption>
-            </figure>
-            <figure class="proto-fig">
-              <img src="assets/images/replay3d.png" alt="3D evidence replay of the Zielinski insulin process: fermentation vessel, growth curve, purification results, and a list of what the model cannot tell us." loading="lazy" />
-              <figcaption>3D evidence replay - the fermentation vessel, published growth and purification data, and an explicit list of what the model cannot tell us.</figcaption>
-            </figure>
-            <figure class="proto-fig">
-              <img src="assets/images/composition.png" alt="Composition view showing models connected through declared ports." loading="lazy" />
-              <figcaption>Composition - models connect through declared ports and run in dependency order; incompatible or refused connections are reported, not hidden.</figcaption>
-            </figure>
-          </div>
-
-          <div class="proto-caps">
-            <div class="proto-cap">
-              <div class="coord-stamp">[PORT TYPING]</div>
-              <h4>Compose Models</h4>
-              <p>Registered models (Zielinski insulin process, Ganjave, Morris material balance) are connected through typed, unit-aware ports. Required inputs have no defaults: a missing value blocks execution.</p>
-            </div>
-            <div class="proto-cap">
-              <div class="coord-stamp">[VALIDATION]</div>
-              <h4>Run and Validate</h4>
-              <p>A graph can be validated into an execution plan or executed. Cycles are rejected, and each model runs in its own interpreter subprocess because dependencies cannot co-exist.</p>
-            </div>
-            <div class="proto-cap">
-              <div class="coord-stamp">[FAIL-CLOSED]</div>
-              <h4>Replay Evidence</h4>
-              <p>The 3D replay restates numbers read from a published paper and the accounting identities it supports. It reports no growth kinetics, no oxygen-transfer data, no AU calibration and no purification model - and declares those absences explicitly.</p>
-            </div>
-            <div class="proto-cap">
-              <div class="coord-stamp">[AUTONOMOUS]</div>
-              <h4>Investigate Gaps</h4>
-              <p>Under each missing quantity an Investigate button opens a panel: the model and run it was checked against, the gap in the model's own words, candidate findings from the literature with verbatim quoted passages, a dimension-by-dimension condition comparison, a verdict (incompatible / needs checking / compatible but not yet validated), and ten checkable validation criteria.</p>
-            </div>
-            <div class="proto-cap">
-              <div class="coord-stamp">[STRAIN BRIDGE]</div>
-              <h4>Check Compatibility</h4>
-              <p>A model registry records every model with a stable id, version, digests, ports and units. A compatibility engine assesses whether two models may be composed, with refused pairs reporting the specific difference and what would resolve it.</p>
-            </div>
-            <div class="proto-cap">
-              <div class="coord-stamp">[PROVENANCE]</div>
-              <h4>Preserve Provenance</h4>
-              <p>Every displayed value carries a plain-language provenance label: stated in the source, read from a published figure, calculated from the available data, or not established by the available evidence.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ============================================================ SECTION 06: SCIENTIFIC PROVENANCE -->
-      <section id="example">
-        <div class="wrap">
-          <div class="coord-stamp">[SCIENTIFIC PROOF]</div>
-          <div class="sec-head">
-            <h2>Why Dissolved Oxygen &amp; Strain Compatibility Matter</h2>
-            <p class="lead muted">
-              How ScaleUp tracks bacterial backgrounds and physical aeration limits so you never scale up on bad assumptions.
-            </p>
-          </div>
-
-          <div class="ex-grid">
-            <div class="ex-card">
-              <div class="coord-stamp">[TELEMETRY]</div>
-              <h4>What the Model Exposes</h4>
+          <div class="cards-grid">
+            <div class="feature-card">
+              <div class="card-step-num">01</div>
+              <h3>Describe It</h3>
               <p>
-                The paper reports agitation, aeration, dissolved-oxygen control, pressure, and exact feed profiles only partially - or not at all. The model records these as missing information rather than filling them in, so an engineer can see exactly what is unknown before attempting any prediction.
+                Type the product or wet-lab protocol you want to run. ScaleUp maps out the exact sequence of grinders, tanks, centrifuges, and baths automatically.
               </p>
             </div>
-            <div class="ex-card">
-              <div class="coord-stamp">[STRAIN BOUNDARY]</div>
-              <h4>What a Strain Difference Means</h4>
+
+            <div class="feature-card">
+              <div class="card-step-num">02</div>
+              <h3>Backed by Real Papers (Zero Guessing)</h3>
               <p>
-                A finding reported for a different E. coli strain does not by itself prove evidence invalid. It introduces a compatibility question - same organism, different background - that must be evaluated before the evidence is reused or transferred.
+                Every temperature, pH, and yield curve is locked to real published research. If a number hasn't been proven in a real paper, ScaleUp pauses and tells you instead of making it up.
               </p>
             </div>
-            <div class="ex-card">
-              <div class="coord-stamp">[INTEGRITY]</div>
-              <h4>Why This Matters</h4>
+
+            <div class="feature-card">
+              <div class="card-step-num">03</div>
+              <h3>Watch &amp; Tweak in 3D</h3>
               <p>
-                Preserving evidence and surfacing unresolved questions is the value: the system reports what it does not know, so a human can decide whether a cross-strain result applies, instead of silently adopting it.
+                Play through the whole batch in our Godot 4 3D workbench. Scrub through time, watch the material transform from vessel to vessel, and test what happens before stepping into the lab.
               </p>
             </div>
           </div>
-        </div>
-      </section>
 
-      <!-- ============================================================ SECTION 07: VALIDATE -->
-      <section id="validate">
-        <div class="wrap">
-          <div class="coord-stamp">[LAB VALIDATION]</div>
-          <div class="sec-head">
-            <h2>Tell Us What You Are Trying to Build</h2>
-            <p class="lead muted">
-              Tell us what physical system, chemical reaction, or bioprocess train you are engineering. Submissions generate a structured specification issue in our GitHub repository.
-            </p>
+          <!-- Sleek Clean CTA Banner -->
+          <div class="cta-banner">
+            <div class="cta-banner-content">
+              <h3>Ready to vibecode your physical process?</h3>
+              <p>Launch the interactive 3D workbench directly in your browser.</p>
+            </div>
+            <a class="btn btn-pill btn-primary btn-large" href="simulator/">
+              Launch Simulator &rarr;
+            </a>
           </div>
+        </section>
 
-          <form id="validate-form" class="validate-form">
-            <label>
-              Your Name (optional)
-              <input type="text" name="name" placeholder="Dr. / Eng. Jane Doe" />
-            </label>
-            <label>
-              Email or Preferred Contact
-              <input type="text" name="contact" placeholder="operator@lab.edu or LinkedIn" />
-            </label>
-            <label class="full-span">
-              What physical system or process are you trying to build?
-              <textarea name="goal" rows="3" placeholder="e.g. Continuous solid-liquid leaching, enzymatic hydrolysis, microbial fed-batch..."></textarea>
-            </label>
-            <label class="full-span">
-              Where does your current simulation or experimentation workflow get stuck?
-              <textarea name="pain" rows="3" placeholder="Where current LLMs hallucinate or existing simulation tools fail..."></textarea>
-            </label>
-            <label class="checkbox">
-              <input type="checkbox" name="interest" value="yes" />
-              I am interested in testing the prototype or discussing a pilot.
-            </label>
-            <div class="validate-actions">
-              <button type="button" class="btn btn-primary" id="validate-submit">[ OPEN GITHUB ISSUE WITH MY ANSWERS ]</button>
-              <a class="btn btn-ghost" href="https://github.com/premlalpritish-wq/scaleup-ai-website/issues/new" target="_blank" rel="noopener">[ OPEN DIRECT GITHUB ISSUE ]</a>
+        <!-- ==================== TEAM ==================== -->
+        <section class="team-section" id="team">
+          <div class="team-container">
+            <div class="team-header">
+              <h3>Built by bioprocess engineers and roboticists</h3>
             </div>
-            <p class="validate-note">
-              Submissions open a pre-filled GitHub issue in this repository. No data is sent to a third-party backend; no data is retained by this static site.
-            </p>
-          </form>
-        </div>
-      </section>
-
-      <!-- ============================================================ SECTION 08: TEAM -->
-      <section id="team">
-        <div class="wrap">
-          <div class="coord-stamp">[TEAM]</div>
-          <div class="sec-head">
-            <h2>A Small Team Building a New Kind of Engineering Tool</h2>
-          </div>
-
-          <div class="team">
-            <div class="person">
-              <span class="person-code">[ENGINEERING]</span>
-              <h4>Pritish Premlal</h4>
-              <div class="role">CEO</div>
-            </div>
-            <div class="person">
-              <span class="person-code">[SIMULATION]</span>
-              <h4>Samarpit Nag</h4>
-              <div class="role">CTO</div>
-            </div>
-            <div class="person">
-              <span class="person-code">[PRODUCT]</span>
-              <h4>Sahil Pawar</h4>
-              <div class="role">CPO</div>
+            <div class="team-grid">
+              <div class="person">
+                <span class="person-name">Pritish Premlal</span>
+                <span class="person-role">CEO</span>
+              </div>
+              <div class="person">
+                <span class="person-name">Samarpit Nag</span>
+                <span class="person-role">CTO</span>
+              </div>
+              <div class="person">
+                <span class="person-name">Sahil Pawar</span>
+                <span class="person-role">CPO</span>
+              </div>
             </div>
           </div>
-          <p class="hero-note" style="margin-top: 16px">
-            Listed by name and role only. Our credibility rests on the working prototype you can see above, not on unverifiable claims about individual backgrounds.
-          </p>
-        </div>
-      </section>
+        </section>
+      </main>
 
-      <!-- ============================================================ CTA -->
-      <div class="cta" id="contact">
-        <div class="wrap">
-          <div class="coord-stamp" style="justify-content: center">[GET IN TOUCH]</div>
-          <h2>Help Us Build the Workshop.</h2>
-          <p class="lead muted">
-            We are building an interactive workshop that turns humanity's scientific and engineering knowledge into executable digital twins. If you work on bioprocess engineering, chemical modeling, or pilot scale-up, explore the prototype now.
-          </p>
-          <div class="cta-btns">
-            <a class="btn btn-primary" href="simulator/">[ EXPLORE 3D SIMULATOR → ]</a>
-            <a class="btn btn-ghost" href="#architecture">[ HOW IT WORKS ]</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- ============================================================ FOOTER -->
-      <footer>
-        <div class="wrap foot-in">
-          <div>
-            <strong style="color: var(--text-hi)">ScaleUp AI</strong> - vibecoding for the physical world. Pre-release.
-          </div>
-          <div>
-            ZERO HALLUCINATED SCIENCE // FAIL-CLOSED
-          </div>
+      <!-- Minimal 1-line Footer -->
+      <footer class="site-footer">
+        <div class="footer-container">
+          <p>ScaleUp AI &mdash; Vibecoding for the physical world. Pre-release. Zero hallucinated science.</p>
         </div>
       </footer>
     </div>
