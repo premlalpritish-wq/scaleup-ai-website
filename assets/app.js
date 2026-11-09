@@ -172,7 +172,16 @@
     const pill4 = document.getElementById("pill-metric-4");
 
     if (heroImg && data.img) {
-      heroImg.src = data.img;
+      if (heroImg.getAttribute("src") !== data.img) {
+        heroImg.classList.add("img-swapping");
+        heroImg.src = data.img;
+        if (heroImg.complete) {
+          heroImg.classList.remove("img-swapping");
+        } else {
+          heroImg.onload = () => heroImg.classList.remove("img-swapping");
+          heroImg.onerror = () => heroImg.classList.remove("img-swapping");
+        }
+      }
     }
     if (caption && data.caption) {
       caption.textContent = data.caption;
@@ -316,6 +325,18 @@
     const chips = document.querySelectorAll(".prompt-chip");
     const statusText = document.getElementById("prompt-status-text");
 
+    if (textarea) {
+      textarea.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          const showcase = document.getElementById("showcase");
+          if (showcase && typeof showcase.scrollIntoView === "function") {
+            showcase.scrollIntoView({ behavior: "smooth" });
+          }
+        }
+      });
+    }
+
     chips.forEach((chip) => {
       chip.addEventListener("click", () => {
         chips.forEach((c) => c.classList.remove("active"));
@@ -372,10 +393,47 @@
     sections.forEach((s) => observer.observe(s));
   }
 
+  function preloadStageImages() {
+    const urls = Object.values(SHOWCASE_DATA)
+      .map((d) => d.img)
+      .filter(Boolean);
+    const unique = [...new Set(urls)];
+
+    const runPreload = () => {
+      unique.forEach((src) => {
+        const img = new Image();
+        img.src = src;
+      });
+    };
+
+    if (typeof window !== "undefined") {
+      if ("requestIdleCallback" in window) {
+        window.requestIdleCallback(runPreload);
+      } else if (typeof setTimeout === "function") {
+        setTimeout(runPreload, 1200);
+      }
+    }
+  }
+
+  function wireCardSpotlights() {
+    const cards = document.querySelectorAll(".feature-card, .person");
+    cards.forEach((card) => {
+      card.addEventListener("pointermove", (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        card.style.setProperty("--mouse-x", `${x}px`);
+        card.style.setProperty("--mouse-y", `${y}px`);
+      });
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     wireShowcase();
     wirePromptBox();
     wireLiveSimulation();
     wireNavTracking();
+    wireCardSpotlights();
+    preloadStageImages();
   });
 })();

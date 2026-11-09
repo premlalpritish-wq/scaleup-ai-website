@@ -16,6 +16,17 @@
       property="og:description"
       content="Describe what you want to make in plain English. ScaleUp pulls the real science from published papers and builds an interactive 3D lab simulation in seconds."
     />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://premlalpritish-wq.github.io/scaleup-ai-website/" />
+    <meta property="og:image" content="https://premlalpritish-wq.github.io/scaleup-ai-website/assets/images/showcase/saccharina_6stage_bench_overview.png" />
+    <meta property="og:image:width" content="1600" />
+    <meta property="og:image:height" content="920" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="ScaleUp — Vibecode physical products, grounded in science" />
+    <meta name="twitter:description" content="Describe what you want to make in plain English. ScaleUp pulls the real science from published papers and builds an interactive 3D lab simulation in seconds." />
+    <meta name="twitter:image" content="https://premlalpritish-wq.github.io/scaleup-ai-website/assets/images/showcase/saccharina_6stage_bench_overview.png" />
+    <link rel="canonical" href="https://premlalpritish-wq.github.io/scaleup-ai-website/" />
+    <link rel="preload" as="image" href="assets/images/showcase/saccharina_6stage_bench_overview.png" fetchpriority="high" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -27,6 +38,9 @@
   </head>
 
   <body>
+    <!-- Accessible Skip Link -->
+    <a href="#showcase" class="skip-link">Skip to interactive workbench</a>
+
     <!-- Background subtle ambient lighting -->
     <div class="ambient-glow" aria-hidden="true"></div>
 
@@ -127,6 +141,9 @@
                 id="showcase-hero-img"
                 src="assets/images/showcase/saccharina_6stage_bench_overview.png"
                 alt="ScaleUp 6-stage bioprocess simulation workbench"
+                width="1600"
+                height="920"
+                fetchpriority="high"
               />
               <div class="live-embed-container" id="live-embed-container" style="display: none;">
                 <iframe
@@ -146,7 +163,7 @@
             <!-- Minimal Bottom Bar inside Studio Frame -->
             <div class="window-bottombar">
               <div class="bottombar-info">
-                <p id="showcase-caption" class="showcase-caption">
+                <p id="showcase-caption" class="showcase-caption" aria-live="polite" aria-atomic="true">
                   Full six-stage bioprocess: tracks dried kelp through milling, acid washing, gel dissolution, spin separation, ethanol precipitation, and fibre wet-spinning.
                 </p>
               </div>

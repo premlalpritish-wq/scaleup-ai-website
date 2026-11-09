@@ -80,6 +80,27 @@ body {
   min-height: 100vh;
 }
 
+/* Accessible Skip Link */
+.skip-link {
+  position: absolute;
+  top: -120px;
+  left: 24px;
+  background: var(--accent);
+  color: #ffffff;
+  padding: 12px 22px;
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  font-size: 0.875rem;
+  z-index: 1000;
+  text-decoration: none;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+  top: 24px;
+}
+
 /* ==========================================================================
    Minimal Top Navigation
    ========================================================================== */
@@ -444,14 +465,21 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 420px;
+  aspect-ratio: 1600 / 920;
 }
 
 .window-viewport img {
   width: 100%;
   height: auto;
+  aspect-ratio: 1600 / 920;
   display: block;
   object-fit: contain;
   max-height: 600px;
+  transition: opacity 160ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.window-viewport img.img-swapping {
+  opacity: 0.35;
 }
 
 .hv-caption {
@@ -557,11 +585,28 @@ body {
 }
 
 .feature-card {
+  position: relative;
+  overflow: hidden;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 40px 36px;
   transition: all 0.25s ease;
+}
+
+.feature-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(350px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.05), transparent 75%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.feature-card:hover::before {
+  opacity: 1;
 }
 
 .feature-card:hover {
@@ -653,6 +698,8 @@ body {
 }
 
 .person {
+  position: relative;
+  overflow: hidden;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
@@ -662,6 +709,21 @@ body {
   flex-direction: column;
   gap: 10px;
   transition: all 0.2s ease;
+}
+
+.person::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(350px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.05), transparent 75%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.person:hover::before {
+  opacity: 1;
 }
 
 .person:hover {
