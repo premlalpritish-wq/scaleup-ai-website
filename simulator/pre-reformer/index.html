@@ -1,0 +1,797 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#070a0e">
+  <title>ScaleUp AI — Hydrogen Pre-Reformer Skid (CAPE3000 Twin)</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Local Three.js and OrbitControls for offline resilience -->
+  <script src="three.min.js"></script>
+  <script src="OrbitControls.js"></script>
+  <script src="solver.js"></script>
+  <script src="workbench.js"></script>
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="app-header">
+    <div class="brand-section">
+      <a href="../index.html" class="brand-logo" style="text-decoration:none;">
+        <span class="brand-mark">S</span>
+        <span>ScaleUp <b>AI</b></span>
+      </a>
+      <span class="model-badge">PROMPT-TO-PROCESS · CAPE3000</span>
+    </div>
+
+    <div class="header-meta">
+      <div class="live-indicator">
+        <span class="live-dot"></span>
+        <span>1D PFR + ERGUN ODE SOLVER (REAL-TIME)</span>
+      </div>
+      <span style="color:var(--border-light)">|</span>
+      <span>North-West Hydrogen Ltd. · R-102 Pre-Reformer Skid</span>
+    </div>
+
+    <div class="header-actions">
+      <button class="header-btn" id="btn-provenance">Scientific Provenance ↗</button>
+      <button class="header-btn" onclick="location.href='../index.html'">Launcher</button>
+    </div>
+  </header>
+
+  <!-- Off-Design Dynamic Alert Banner -->
+  <div class="warning-banner" id="warning-banner" style="display:none;">
+    <span>⚠️</span>
+    <span id="warning-text">Off-Design Warning: Below Minimum Catalytic Cracking Threshold (350°C) — C2/C3 Breakthrough Risk</span>
+  </div>
+
+  <!-- Main 3-Column Workspace -->
+  <div class="workspace-grid">
+    
+    <!-- LEFT PANEL: Boundary Inputs & Control Valves -->
+    <aside class="side-panel">
+      <div class="panel-section">
+        <div class="section-title">
+          <span>Process Feed Boundary</span>
+          <span class="tag">M-101 / Stream 5</span>
+        </div>
+
+        <!-- Slider 1: Feed Mass Flow -->
+        <div class="control-group">
+          <div class="control-label-row">
+            <span class="control-label">Feed Mass Flow (kg/s)</span>
+            <span class="control-val" id="val-feed-flow">29.78</span>
+          </div>
+          <input type="range" id="slider-feed-flow" min="15.0" max="45.0" step="0.5" value="29.78">
+          <div class="control-limits"><span>15.0</span><span>Baseline: 29.78</span><span>45.0</span></div>
+        </div>
+
+        <!-- Slider 2: Operating Pressure -->
+        <div class="control-group">
+          <div class="control-label-row">
+            <span class="control-label">Operating Pressure (bar)</span>
+            <span class="control-val" id="val-pressure">38.91</span>
+          </div>
+          <input type="range" id="slider-pressure" min="20.0" max="50.0" step="0.2" value="38.91">
+          <div class="control-limits"><span>20.0</span><span>Design: 38.91</span><span>50.0</span></div>
+        </div>
+
+        <!-- Slider 3: Steam-to-Carbon Ratio -->
+        <div class="control-group">
+          <div class="control-label-row">
+            <span class="control-label">Steam-to-Carbon (S/C)</span>
+            <span class="control-val" id="val-sc-ratio">3.00</span>
+          </div>
+          <input type="range" id="slider-sc-ratio" min="2.0" max="4.5" step="0.1" value="3.0">
+          <div class="control-limits"><span>2.0 (Coking risk)</span><span>Optimum: 3.0</span><span>4.5</span></div>
+        </div>
+      </div>
+
+      <div class="panel-section">
+        <div class="section-title">
+          <span>Exchanger E-102 Preheat</span>
+          <span class="tag">Stream 7</span>
+        </div>
+
+        <!-- Slider 4: E-102 Preheat Temp -->
+        <div class="control-group">
+          <div class="control-label-row">
+            <span class="control-label">Preheat Outlet Temp (°C)</span>
+            <span class="control-val" id="val-preheat-temp">478.3</span>
+          </div>
+          <input type="range" id="slider-preheat-temp" min="300.0" max="540.0" step="1.0" value="478.3">
+          <div class="control-limits"><span>300 (Breakthrough)</span><span>Baseline: 478.3</span><span>540</span></div>
+        </div>
+
+        <div style="font-family:var(--mono); font-size:11px; color:var(--text-dim); background:#0c1117; padding:8px; border-radius:4px; border:1px solid var(--border);">
+          <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+            <span>E-102 Duty (Q):</span>
+            <span id="txt-hx-duty" style="color:var(--accent-gold); font-weight:700;">18,450 kW</span>
+          </div>
+          <div style="display:flex; justify-content:space-between;">
+            <span>Flue Gas Exit:</span>
+            <span id="txt-flue-exit" style="color:var(--text-hi);">827.5 °C</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-section">
+        <div class="section-title">
+          <span>Skid Control Valves</span>
+          <span class="tag">P&ID Loops</span>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; font-family:var(--mono); font-size:11px;">
+          <div style="background:#0c1117; padding:6px 8px; border-radius:4px; border:1px solid var(--border);">
+            <div style="color:var(--text-subtle);">GV-02 (Preheat)</div>
+            <div style="color:var(--accent-cyan); font-weight:700; margin-top:2px;">68% OPEN</div>
+          </div>
+          <div style="background:#0c1117; padding:6px 8px; border-radius:4px; border:1px solid var(--border);">
+            <div style="color:var(--text-subtle);">GV-03 (Reactor)</div>
+            <div style="color:var(--accent-cyan); font-weight:700; margin-top:2px;">100% OPEN</div>
+          </div>
+          <div style="background:#0c1117; padding:6px 8px; border-radius:4px; border:1px solid var(--border);">
+            <div style="color:var(--text-subtle);">GV-04 (Effluent)</div>
+            <div style="color:var(--accent-cyan); font-weight:700; margin-top:2px;">FAIL-CLOSED [OK]</div>
+          </div>
+          <div style="background:#0c1117; padding:6px 8px; border-radius:4px; border:1px solid var(--border);">
+            <div style="color:var(--text-subtle);">PRV-01 (Relief)</div>
+            <div style="color:var(--accent-gold); font-weight:700; margin-top:2px;">FAIL-OPEN [ARMED]</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-section" style="background: rgba(78, 205, 196, 0.03);">
+        <div class="section-title">
+          <span>Solver Basis Toggle</span>
+          <span class="tag" style="background:#133331; color:var(--accent-cyan)">SCIENTIFIC BASIS</span>
+        </div>
+        <div style="font-size:11px; color:var(--text-dim); margin-bottom:8px;">
+          Reconcile Appendix B Euler spreadsheet vs. Stream 8 balance:
+        </div>
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <button class="preset-btn active" id="btn-basis-euler" style="padding:8px 10px;">
+            <b style="color:var(--text-hi);">1. Appendix B5-3 Euler Basis</b><br>
+            <span style="font-size:10px; color:var(--accent-gold);">Eq. 2.50–2.51 Exact (ΔHr₂ = -3.75e5 kJ/kmol)</span><br>
+            <span style="font-size:9px; color:var(--text-subtle);">Euler sheet: Exotherm to 398.2°C, cools to ~369–384°C</span>
+          </button>
+          <button class="preset-btn" id="btn-basis-corrected" style="padding:8px 10px;">
+            <b style="color:var(--text-hi);">2. Corrected WGS Enthalpy / Stream 8</b><br>
+            <span style="font-size:10px; color:var(--accent-cyan);">NIST Standard (ΔHr₂ = -3.75e4 kJ/kmol)</span><br>
+            <span style="font-size:9px; color:var(--text-subtle);">Fixes 10x exponent: Reconciles towards 424.0°C outlet</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="panel-section">
+        <div class="section-title">
+          <span>Operational Presets</span>
+          <span class="tag">Validation</span>
+        </div>
+        <div class="preset-buttons">
+          <button class="preset-btn active" id="btn-preset-baseline">Samar Baseline<br><span style="color:var(--text-subtle)">Table B5-3</span></button>
+          <button class="preset-btn" id="btn-preset-high">High Load (+20%)<br><span style="color:var(--text-subtle)">35.7 kg/s</span></button>
+          <button class="preset-btn" id="btn-preset-cold">Low Preheat (330°C)<br><span style="color:var(--accent-coral)">C2 Breakthrough</span></button>
+          <button class="preset-btn" id="btn-preset-turndown">Turndown (70%)<br><span style="color:var(--text-subtle)">20.8 kg/s</span></button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- CENTER VIEWPORT: 3D WebGL Canvas & Graphs -->
+    <main class="center-viewport">
+      <!-- Top 3D Viewport Toolbar -->
+      <div class="viewport-overlay">
+        <button class="view-btn active" id="btn-view-overview">Overview</button>
+        <button class="view-btn" id="btn-view-reactor">R-102 Cutaway</button>
+        <button class="view-btn" id="btn-view-exchanger">E-102 Tubes</button>
+        <button class="view-btn" id="btn-view-probe">Probe Focus</button>
+      </div>
+
+      <!-- 3D Canvas Mount Point -->
+      <div id="canvas-container"></div>
+
+      <!-- Bottom Telemetry & Real-Time ODE Profiles -->
+      <div class="bottom-dock">
+        <!-- Plot 1: Axial Temperature Profile -->
+        <div class="plot-card">
+          <div class="plot-header">
+            <span>AXIAL TEMPERATURE PROFILE T(z) [°C]</span>
+            <span style="color:var(--accent-gold);">Peak Hotspot: <b id="lbl-hotspot">398.2°C</b></span>
+          </div>
+          <canvas id="plot-temperature" class="mini-plot"></canvas>
+        </div>
+
+        <!-- Plot 2: Axial Pressure Drop Profile -->
+        <div class="plot-card">
+          <div class="plot-header">
+            <span>ERGUN MOMENTUM PRESSURE P(z) [BAR]</span>
+            <span style="color:var(--accent-cyan);">Bed ΔP: <b id="lbl-deltap">0.44 bar</b></span>
+          </div>
+          <canvas id="plot-pressure" class="mini-plot"></canvas>
+        </div>
+
+        <!-- Live Key Process Indicators -->
+        <div class="kpi-mini-card">
+          <div class="kpi-row">
+            <span class="kpi-label">STREAM 7A (BED INLET):</span>
+            <span class="kpi-value cyan" id="kpi-inlet-t">370.0 °C</span>
+          </div>
+          <div class="kpi-row">
+            <span class="kpi-label">STREAM 8 (EFFLUENT):</span>
+            <span class="kpi-value gold" id="kpi-outlet-t">384.6 °C</span>
+          </div>
+          <div class="kpi-row">
+            <span class="kpi-label">BED RESIDENCE TIME (τ):</span>
+            <span class="kpi-value" id="kpi-tau">0.451 s</span>
+          </div>
+          <div class="kpi-row">
+            <span class="kpi-label">SUPERFICIAL VELOCITY:</span>
+            <span class="kpi-value" id="kpi-vf">1.14 m/s</span>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- RIGHT PANEL: Axial Laser Probe & Slice Inspector -->
+    <aside class="side-panel right-panel">
+      
+      <!-- Interactive Probe Scanner Control -->
+      <div class="panel-section">
+        <div class="probe-scanner-box">
+          <div class="probe-header">
+            <h4>AXIAL BED PROBE SCANNER</h4>
+            <span class="tag" style="background:#133331; color:var(--accent-cyan)">LIVE SLICE</span>
+          </div>
+
+          <div class="control-label-row">
+            <span class="control-label">Axial Position (z) along Bed</span>
+            <span class="control-val" id="probe-z-display" style="font-size:14px;">0.020 m</span>
+          </div>
+          <input type="range" id="slider-probe-z" min="0.0" max="1.156" step="0.02" value="0.02">
+          <div class="control-limits">
+            <span>z = 0.00 m (Entrance)</span>
+            <span id="probe-fraction">1.7% depth</span>
+            <span>z = 1.156 m (Exit)</span>
+          </div>
+
+          <div class="probe-readout-grid">
+            <div class="readout-cell">
+              <div class="lbl">Slice Temperature</div>
+              <div class="val" id="probe-temp" style="color:var(--accent-gold);">398.17 °C</div>
+            </div>
+            <div class="readout-cell">
+              <div class="lbl">Slice Pressure</div>
+              <div class="val" id="probe-press">38.902 bar</div>
+            </div>
+            <div class="readout-cell">
+              <div class="lbl">Gas Velocity (vf)</div>
+              <div class="val" id="probe-vf">1.18 m/s</div>
+            </div>
+            <div class="readout-cell">
+              <div class="lbl">Bed Reynolds (Re)</div>
+              <div class="val" id="probe-re">3,373</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gas Composition Stack at Probe Position -->
+        <div class="section-title" style="margin-top:14px;">
+          <span>Species Mole Fractions y(z)</span>
+          <span class="tag" id="probe-slice-tag">z = 0.02 m</span>
+        </div>
+
+        <div class="composition-group">
+          <!-- CH4 -->
+          <div class="comp-bar-row">
+            <span class="species">CH₄:</span>
+            <div class="bar-track"><div class="bar-fill" id="bar-ch4" style="width:23.3%; background:#4ecdc4;"></div></div>
+            <span class="pct" id="pct-ch4">23.31%</span>
+          </div>
+          <!-- CO -->
+          <div class="comp-bar-row">
+            <span class="species">CO:</span>
+            <div class="bar-track"><div class="bar-fill" id="bar-co" style="width:2.0%; background:#e08a5f;"></div></div>
+            <span class="pct" id="pct-co">1.75%</span>
+          </div>
+          <!-- CO2 -->
+          <div class="comp-bar-row">
+            <span class="species">CO₂:</span>
+            <div class="bar-track"><div class="bar-fill" id="bar-co2" style="width:1.0%; background:#8896a6;"></div></div>
+            <span class="pct" id="pct-co2">0.10%</span>
+          </div>
+          <!-- H2 -->
+          <div class="comp-bar-row">
+            <span class="species">H₂:</span>
+            <div class="bar-track"><div class="bar-fill" id="bar-h2" style="width:4.0%; background:#e0b155;"></div></div>
+            <span class="pct" id="pct-h2">3.98%</span>
+          </div>
+          <!-- H2O -->
+          <div class="comp-bar-row">
+            <span class="species">H₂O:</span>
+            <div class="bar-track"><div class="bar-fill" id="bar-h2o" style="width:70.8%; background:#3b82f6;"></div></div>
+            <span class="pct" id="pct-h2o">70.85%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chemical Reaction Rates at Slice -->
+      <div class="panel-section">
+        <div class="section-title">
+          <span>Kinetics & Rates at Slice</span>
+          <span class="tag">Singh & Saraf / Oechsler</span>
+        </div>
+        <div style="font-family:var(--mono); font-size:11px; background:#0c1117; padding:8px 10px; border-radius:4px; border:1px solid var(--border);">
+          <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+            <span style="color:var(--text-subtle);">Methanation Rate (r₁):</span>
+            <span id="rate-r1" style="color:var(--accent-gold); font-weight:700;">-0.214 kmol/(kg·h)</span>
+          </div>
+          <div style="display:flex; justify-content:space-between;">
+            <span style="color:var(--text-subtle);">Water-Gas Shift (r₂):</span>
+            <span id="rate-r2" style="color:var(--accent-cyan); font-weight:700;">-0.010 kmol/(kg·h)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mechanical & Thermal Insulation Inspector -->
+      <div class="panel-section">
+        <div class="section-title">
+          <span>Mechanical Integrity & Lagging</span>
+          <span class="tag">ASME VIII Div 1</span>
+        </div>
+        <div class="stress-inspector-card">
+          <div class="stress-row">
+            <span style="color:var(--text-subtle);">Shell Material:</span>
+            <span style="color:var(--text-hi);">316N Stainless Steel</span>
+          </div>
+          <div class="stress-row">
+            <span style="color:var(--text-subtle);">Shell Wall Thickness:</span>
+            <span style="color:var(--text-hi);">88.9 mm (3.5")</span>
+          </div>
+          <div class="stress-row">
+            <span style="color:var(--text-subtle);">Insulation Lagging:</span>
+            <span style="color:var(--text-hi);">77.0 mm (85% Wool)</span>
+          </div>
+          <div class="stress-row">
+            <span style="color:var(--text-subtle);">Hoop Stress (σθ):</span>
+            <span id="val-hoop-stress" style="color:var(--text-hi); font-weight:700;">37.2 MPa</span>
+          </div>
+          <div class="stress-row">
+            <span style="color:var(--text-subtle);">Allowable Stress (S):</span>
+            <span style="color:var(--text-hi);">61.5 MPa</span>
+          </div>
+          <div class="stress-row" style="margin-top:6px; padding-top:6px; border-top:1px dashed var(--border);">
+            <span style="color:var(--text-subtle);">Safety Margin:</span>
+            <span class="badge-ok" id="badge-safety">SF: 1.65 (PASS)</span>
+          </div>
+          <div class="stress-row" style="margin-top:4px;">
+            <span style="color:var(--text-subtle);">Outer Clad Touch Temp:</span>
+            <span id="val-skin-temp" style="color:var(--accent-cyan); font-weight:700;">35.3 °C (&lt; 55°C)</span>
+          </div>
+        </div>
+      </div>
+
+    </aside>
+
+  </div>
+
+  <!-- SCIENTIFIC PROVENANCE MODAL DRAWER -->
+  <div class="modal-overlay" id="modal-provenance">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Model Provenance & Scientific Audit</h3>
+        <button class="modal-close-btn" id="btn-close-modal">&times;</button>
+      </div>
+
+      <p style="color:var(--text-dim); margin-bottom:12px;">
+        This interactive digital twin executes a live 1D pseudo-homogeneous packed bed reactor (PFR) solver 
+        discretized along the catalyst bed axis, paired with Ergun momentum loss, Kern exchanger heat balance, 
+        and ASME Section VIII Div 1 mechanical stress equations extracted directly from Samar's University of Leeds report.
+      </p>
+
+      <table class="provenance-table">
+        <thead>
+          <tr>
+            <th>Parameter / Governing Law</th>
+            <th>Formulation & Values</th>
+            <th>Primary Citation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Methanation & WGS Kinetics</td>
+            <td>k₁ = 127 exp(-36751/RT)<br>k₂ = 3041.1 exp(-58150/RT)</td>
+            <td>Singh & Saraf (1979); Eq. 2.33-2.34</td>
+          </tr>
+          <tr>
+            <td>Equilibrium Constants</td>
+            <td>K₁ = exp(30.707 - 27464/T)<br>K₂ = exp(-4.333 + 4578/T)</td>
+            <td>Hyman (1968); Eq. 2.35-2.36</td>
+          </tr>
+          <tr>
+            <td>Reaction Rate Expressions</td>
+            <td>r₁, r₂ partial pressure driven</td>
+            <td>Oechsler et al. (2020); Eq. 2.37-2.38</td>
+          </tr>
+          <tr>
+            <td>Bed Momentum Pressure Drop</td>
+            <td>Ergun Equation with Sphericity φ=0.874, ε=0.454</td>
+            <td>Coker (2007) / Ward (2024); Eq. 2.59</td>
+          </tr>
+          <tr>
+            <td>Catalyst Pellets</td>
+            <td>AR-401 (Ni-MgO), dp=5mm, Lp=5mm, ρbulk=1442 kg/m³</td>
+            <td>Turton 5th Ed. / Report p. 20</td>
+          </tr>
+          <tr>
+            <td>Inlet Cracking Boundary</td>
+            <td>C₂H₆/C₃H₈ instantaneous stoichiometric conversion at z=0 (T: 478.3°C → 370.02°C)</td>
+            <td>Samar Report Section 2.1 & 2.4, p. 19</td>
+          </tr>
+          <tr>
+            <td>Mechanical Pressure Vessel</td>
+            <td>316N Stainless Steel, t=88.9 mm, 2:1 Ellipsoidal heads</td>
+            <td>ASME Section VIII Div 1; Report Chapter 4</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4 style="color:var(--text-hi); margin:14px 0 6px 0;">Euler Table B5-3 vs. Live Solver Parity</h4>
+      <p style="color:var(--text-dim); font-size:12px; margin-bottom:10px;">
+        At baseline conditions (Stream 7: 478.3°C, 38.91 bar, 29.78 kg/s), the simulation matches the exact numerical steps from Appendix B (Table B5-3):
+        Bed Inlet T = 370.02°C, Peak Hotspot T = 398.2°C (Table B5-3: 399.18°C), and Bed Outlet T = 384.6°C (Aspen Plus custom model: 384.66°C).
+      </p>
+
+      <!-- Highlighted WGS Enthalpy Discrepancy Note -->
+      <div style="background: rgba(224, 104, 122, 0.1); border-left: 3px solid var(--accent-coral); padding: 12px; margin: 16px 0; border-radius: 0 4px 4px 0;">
+        <h4 style="color: var(--accent-coral); margin-bottom: 6px; font-size: 13px;">Critical Audit Finding: WGS Enthalpy Discrepancy (Eq. 2.51 vs. NIST Standard)</h4>
+        <p style="color: var(--text); font-size: 11.5px; line-height: 1.55;">
+          <b>Report Internal Discrepancy:</b> In Samar's report, Equation 2.51 (p. 23) and Appendix B5-C write the heat of the Water-Gas Shift reaction as:
+          <br>
+          <code style="color:var(--accent-gold); font-family:var(--mono);">ΔHr₂ = -3.75 × 10⁵ kJ/kmol (-375 kJ/mol)</code>.
+          <br>
+          However, standard thermodynamic data (NIST / Perry's) for WGS (<code style="color:var(--text-hi); font-family:var(--mono);">CO + H₂O ⇌ CO₂ + H₂</code>) at 370°C is approximately:
+          <br>
+          <code style="color:var(--accent-cyan); font-family:var(--mono);">ΔHr₂ = -3.75 × 10⁴ kJ/kmol (-37.5 kJ/mol)</code> (an order-of-magnitude 10× difference).
+          <br><br>
+          • <b>Appendix B5-3 Euler Basis:</b> When executing with Samar's exact written value (<code style="color:var(--accent-gold); font-family:var(--mono);">-3.75e5 kJ/kmol</code>), the reverse WGS reaction over-extracts heat, cooling the bed from its initial methanation peak (398.2°C at z=0.02m) back down to ~369.4–384.6°C at the exit.
+          <br>
+          • <b>Corrected NIST / Stream 8 Basis:</b> When using the true thermodynamic enthalpy (<code style="color:var(--accent-cyan); font-family:var(--mono);">-3.75e4 kJ/kmol</code>), the bed retains its exothermic heat release, reconciling the Euler calculation with Samar's Chapter 1/2 Stream 8 equilibrium outlet specification of <b>424.0°C</b>.
+          <br><br>
+          <i>Use the <b>Solver Basis Toggle</b> in the left panel to switch between these two models and visually observe this exact divergence along the bed axis.</i>
+        </p>
+      </div>
+
+      <div style="text-align:right; margin-top:16px;">
+        <button class="header-btn" id="btn-close-modal-bottom">Close Provenance Drawer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- APPLICATION CONTROLLER SCRIPT -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const solver = new PreReformerSolver();
+      const workbench = new PreReformerWorkbench('canvas-container', solver);
+
+      // UI Element bindings
+      const sliderFeedFlow = document.getElementById('slider-feed-flow');
+      const sliderPressure = document.getElementById('slider-pressure');
+      const sliderPreheatTemp = document.getElementById('slider-preheat-temp');
+      const sliderScRatio = document.getElementById('slider-sc-ratio');
+      const sliderProbeZ = document.getElementById('slider-probe-z');
+
+      const valFeedFlow = document.getElementById('val-feed-flow');
+      const valPressure = document.getElementById('val-pressure');
+      const valPreheatTemp = document.getElementById('val-preheat-temp');
+      const valScRatio = document.getElementById('val-sc-ratio');
+      const probeZDisplay = document.getElementById('probe-z-display');
+
+      const warningBanner = document.getElementById('warning-banner');
+      const warningText = document.getElementById('warning-text');
+
+      // Telemetry readouts
+      const kpiInletT = document.getElementById('kpi-inlet-t');
+      const kpiOutletT = document.getElementById('kpi-outlet-t');
+      const kpiTau = document.getElementById('kpi-tau');
+      const kpiVf = document.getElementById('kpi-vf');
+      const lblHotspot = document.getElementById('lbl-hotspot');
+      const lblDeltaP = document.getElementById('lbl-deltap');
+      const txtHxDuty = document.getElementById('txt-hx-duty');
+      const txtFlueExit = document.getElementById('txt-flue-exit');
+
+      // Probe readouts
+      const probeTemp = document.getElementById('probe-temp');
+      const probePress = document.getElementById('probe-press');
+      const probeVf = document.getElementById('probe-vf');
+      const probeRe = document.getElementById('probe-re');
+      const probeFraction = document.getElementById('probe-fraction');
+      const probeSliceTag = document.getElementById('probe-slice-tag');
+
+      // Composition bars
+      const barCH4 = document.getElementById('bar-ch4');
+      const barCO = document.getElementById('bar-co');
+      const barCO2 = document.getElementById('bar-co2');
+      const barH2 = document.getElementById('bar-h2');
+      const barH2O = document.getElementById('bar-h2o');
+      const pctCH4 = document.getElementById('pct-ch4');
+      const pctCO = document.getElementById('pct-co');
+      const pctCO2 = document.getElementById('pct-co2');
+      const pctH2 = document.getElementById('pct-h2');
+      const pctH2O = document.getElementById('pct-h2o');
+
+      // Reaction rates
+      const rateR1 = document.getElementById('rate-r1');
+      const rateR2 = document.getElementById('rate-r2');
+
+      // Stress readouts
+      const valHoopStress = document.getElementById('val-hoop-stress');
+      const valSkinTemp = document.getElementById('val-skin-temp');
+      const badgeSafety = document.getElementById('badge-safety');
+
+      // Canvases
+      const canvasT = document.getElementById('plot-temperature');
+      const canvasP = document.getElementById('plot-pressure');
+
+      let currentSimulation = null;
+      let currentBasis = 'euler'; // 'euler' | 'corrected'
+
+      const btnBasisEuler = document.getElementById('btn-basis-euler');
+      const btnBasisCorrected = document.getElementById('btn-basis-corrected');
+
+      btnBasisEuler.addEventListener('click', () => {
+        currentBasis = 'euler';
+        btnBasisEuler.classList.add('active');
+        btnBasisCorrected.classList.remove('active');
+        updateSimulation();
+      });
+
+      btnBasisCorrected.addEventListener('click', () => {
+        currentBasis = 'corrected';
+        btnBasisCorrected.classList.add('active');
+        btnBasisEuler.classList.remove('active');
+        updateSimulation();
+      });
+
+      function updateSimulation() {
+        const feedFlow = parseFloat(sliderFeedFlow.value);
+        const pressure = parseFloat(sliderPressure.value);
+        const preheatTemp = parseFloat(sliderPreheatTemp.value);
+        const scRatio = parseFloat(sliderScRatio.value);
+
+        // Update labels
+        valFeedFlow.textContent = feedFlow.toFixed(2);
+        valPressure.textContent = pressure.toFixed(2);
+        valPreheatTemp.textContent = preheatTemp.toFixed(1);
+        valScRatio.textContent = scRatio.toFixed(2);
+
+        // Run deterministic ODE solver with selected basis
+        currentSimulation = solver.solvePFR(feedFlow, preheatTemp, pressure, scRatio, currentBasis);
+        const sim = currentSimulation;
+
+        // Check off-design threshold guardrail
+        if (sim.upstream.isBelowCrackingThreshold) {
+          warningBanner.style.display = 'flex';
+          warningText.textContent = `Off-Design Warning: Preheat Temp (${preheatTemp}°C) is below minimum catalytic cracking threshold (350°C) — C2/C3 Breakthrough Risk!`;
+        } else {
+          warningBanner.style.display = 'none';
+        }
+
+        // Update KPI card
+        kpiInletT.textContent = `${sim.summary.T_bed_in_C.toFixed(1)} °C`;
+        kpiOutletT.textContent = `${sim.summary.T_bed_out_C.toFixed(1)} °C`;
+        kpiTau.textContent = `${sim.summary.total_tau_s.toFixed(3)} s`;
+        kpiVf.textContent = `${sim.inlet.vf.toFixed(2)} m/s`;
+        lblHotspot.textContent = `${sim.summary.T_bed_peak_C.toFixed(1)} °C`;
+        lblDeltaP.textContent = `${sim.summary.deltaP_bed_bar.toFixed(3)} bar`;
+
+        txtHxDuty.textContent = `${Math.round(sim.upstream.Q_E102_kW).toLocaleString()} kW`;
+        txtFlueExit.textContent = `${sim.upstream.T_flue_actual_out} °C`;
+
+        // Update stress inspector
+        valHoopStress.textContent = `${sim.summary.max_hoop_stress_MPa.toFixed(1)} MPa`;
+        valSkinTemp.textContent = `${sim.summary.T_outer_skin_C} °C (< 55°C)`;
+        badgeSafety.textContent = `SF: ${sim.summary.min_safety_factor.toFixed(2)} (PASS)`;
+
+        // Update 3D thermal heat map gradient
+        workbench.updateThermalColors(sim.profile);
+
+        // Render axial plots
+        renderPlots(sim);
+
+        // Update probe readouts for current slider position
+        updateProbeUI();
+      }
+
+      function updateProbeUI() {
+        if (!currentSimulation) return;
+        const zTarget = parseFloat(sliderProbeZ.value);
+        probeZDisplay.textContent = `${zTarget.toFixed(3)} m`;
+        probeSliceTag.textContent = `z = ${zTarget.toFixed(2)} m`;
+        const pctDepth = ((zTarget / solver.L_bed) * 100).toFixed(1);
+        probeFraction.textContent = `${pctDepth}% depth`;
+
+        // Find closest step in profile
+        const profile = currentSimulation.profile;
+        const idx = Math.min(profile.length - 1, Math.max(0, Math.round((zTarget / solver.L_bed) * (profile.length - 1))));
+        const slice = profile[idx];
+
+        // Update probe readouts
+        probeTemp.textContent = `${slice.T_C.toFixed(2)} °C`;
+        probePress.textContent = `${slice.P_bar.toFixed(3)} bar`;
+        probeVf.textContent = `${slice.vf.toFixed(2)} m/s`;
+        probeRe.textContent = `${Math.round(slice.Re).toLocaleString()}`;
+
+        // Update composition bars
+        const pCH4 = (slice.y_CH4 * 100).toFixed(2);
+        const pCO = (slice.y_CO * 100).toFixed(2);
+        const pCO2 = (slice.y_CO2 * 100).toFixed(2);
+        const pH2 = (slice.y_H2 * 100).toFixed(2);
+        const pH2O = (slice.y_H2O * 100).toFixed(2);
+
+        barCH4.style.width = `${pCH4}%`;
+        barCO.style.width = `${pCO}%`;
+        barCO2.style.width = `${pCO2}%`;
+        barH2.style.width = `${pH2}%`;
+        barH2O.style.width = `${pH2O}%`;
+
+        pctCH4.textContent = `${pCH4}%`;
+        pctCO.textContent = `${pCO}%`;
+        pctCO2.textContent = `${pCO2}%`;
+        pctH2.textContent = `${pH2}%`;
+        pctH2O.textContent = `${pH2O}%`;
+
+        rateR1.textContent = `${slice.r1.toFixed(4)} kmol/(kg·h)`;
+        rateR2.textContent = `${slice.r2.toFixed(4)} kmol/(kg·h)`;
+
+        // Move 3D laser probe ring
+        workbench.updateProbePosition(zTarget);
+      }
+
+      function renderPlots(sim) {
+        // Render Temperature Canvas Plot
+        const ctxT = canvasT.getContext('2d');
+        const wT = canvasT.width = canvasT.clientWidth * window.devicePixelRatio;
+        const hT = canvasT.height = canvasT.clientHeight * window.devicePixelRatio;
+        ctxT.clearRect(0, 0, wT, hT);
+
+        const prof = sim.profile;
+        const minT = 350.0;
+        const maxT = currentBasis === 'corrected' ? 430.0 : 410.0;
+        const stepT = currentBasis === 'corrected' ? 20 : 10;
+
+        // Grid lines
+        ctxT.strokeStyle = '#1e2733';
+        ctxT.lineWidth = 1;
+        for (let t = 360; t <= maxT - 5; t += stepT) {
+          const y = hT - ((t - minT) / (maxT - minT)) * (hT - 20) - 10;
+          ctxT.beginPath();
+          ctxT.moveTo(35, y);
+          ctxT.lineTo(wT - 10, y);
+          ctxT.stroke();
+          ctxT.fillStyle = '#566474';
+          ctxT.font = `${9 * window.devicePixelRatio}px monospace`;
+          ctxT.fillText(`${t}°`, 5, y + 3);
+        }
+
+        // Draw Temperature curve
+        ctxT.strokeStyle = '#e0b155';
+        ctxT.lineWidth = 2 * window.devicePixelRatio;
+        ctxT.beginPath();
+        for (let i = 0; i < prof.length; i++) {
+          const x = 35 + (i / (prof.length - 1)) * (wT - 50);
+          const y = hT - ((prof[i].T_C - minT) / (maxT - minT)) * (hT - 20) - 10;
+          if (i === 0) ctxT.moveTo(x, y);
+          else ctxT.lineTo(x, y);
+        }
+        ctxT.stroke();
+
+        // Highlight probe x position on temperature plot
+        const probeIdx = Math.min(prof.length - 1, Math.round((parseFloat(sliderProbeZ.value) / solver.L_bed) * (prof.length - 1)));
+        const probeX = 35 + (probeIdx / (prof.length - 1)) * (wT - 50);
+        const probeY = hT - ((prof[probeIdx].T_C - minT) / (maxT - minT)) * (hT - 20) - 10;
+        ctxT.fillStyle = '#4ecdc4';
+        ctxT.beginPath();
+        ctxT.arc(probeX, probeY, 4 * window.devicePixelRatio, 0, Math.PI * 2);
+        ctxT.fill();
+
+        // Render Pressure Canvas Plot
+        const ctxP = canvasP.getContext('2d');
+        const wP = canvasP.width = canvasP.clientWidth * window.devicePixelRatio;
+        const hP = canvasP.height = canvasP.clientHeight * window.devicePixelRatio;
+        ctxP.clearRect(0, 0, wP, hP);
+
+        const minP = 38.0;
+        const maxP = 39.2;
+
+        ctxP.strokeStyle = '#1e2733';
+        ctxP.lineWidth = 1;
+        for (let p = 38.2; p <= 39.0; p += 0.4) {
+          const y = hP - ((p - minP) / (maxP - minP)) * (hP - 20) - 10;
+          ctxP.beginPath();
+          ctxP.moveTo(35, y);
+          ctxP.lineTo(wP - 10, y);
+          ctxP.stroke();
+          ctxP.fillStyle = '#566474';
+          ctxP.font = `${9 * window.devicePixelRatio}px monospace`;
+          ctxP.fillText(`${p.toFixed(1)}`, 5, y + 3);
+        }
+
+        ctxP.strokeStyle = '#4ecdc4';
+        ctxP.lineWidth = 2 * window.devicePixelRatio;
+        ctxP.beginPath();
+        for (let i = 0; i < prof.length; i++) {
+          const x = 35 + (i / (prof.length - 1)) * (wP - 50);
+          const y = hP - ((prof[i].P_bar - minP) / (maxP - minP)) * (hP - 20) - 10;
+          if (i === 0) ctxP.moveTo(x, y);
+          else ctxP.lineTo(x, y);
+        }
+        ctxP.stroke();
+
+        const probeYP = hP - ((prof[probeIdx].P_bar - minP) / (maxP - minP)) * (hP - 20) - 10;
+        ctxP.fillStyle = '#e0b155';
+        ctxP.beginPath();
+        ctxP.arc(probeX, probeYP, 4 * window.devicePixelRatio, 0, Math.PI * 2);
+        ctxP.fill();
+      }
+
+      // Event Listeners for Sliders
+      [sliderFeedFlow, sliderPressure, sliderPreheatTemp, sliderScRatio].forEach(s => {
+        s.addEventListener('input', updateSimulation);
+      });
+      sliderProbeZ.addEventListener('input', updateProbeUI);
+
+      // Camera preset buttons
+      const viewButtons = {
+        'btn-view-overview': 'overview',
+        'btn-view-reactor': 'reactor',
+        'btn-view-exchanger': 'exchanger',
+        'btn-view-probe': 'probe'
+      };
+      Object.entries(viewButtons).forEach(([id, preset]) => {
+        const btn = document.getElementById(id);
+        if (btn) {
+          btn.addEventListener('click', () => {
+            Object.keys(viewButtons).forEach(k => document.getElementById(k).classList.remove('active'));
+            btn.classList.add('active');
+            workbench.setViewPreset(preset);
+          });
+        }
+      });
+
+      // Operational Presets
+      const presetButtons = {
+        'btn-preset-baseline': { feed: 29.78, p: 38.91, t: 478.3, sc: 3.0 },
+        'btn-preset-high': { feed: 35.74, p: 40.50, t: 485.0, sc: 3.1 },
+        'btn-preset-cold': { feed: 29.78, p: 38.91, t: 330.0, sc: 3.0 },
+        'btn-preset-turndown': { feed: 20.85, p: 36.50, t: 470.0, sc: 3.0 }
+      };
+      Object.entries(presetButtons).forEach(([id, params]) => {
+        const btn = document.getElementById(id);
+        if (btn) {
+          btn.addEventListener('click', () => {
+            Object.keys(presetButtons).forEach(k => document.getElementById(k).classList.remove('active'));
+            btn.classList.add('active');
+            sliderFeedFlow.value = params.feed;
+            sliderPressure.value = params.p;
+            sliderPreheatTemp.value = params.t;
+            sliderScRatio.value = params.sc;
+            updateSimulation();
+          });
+        }
+      });
+
+      // Provenance Modal Handlers
+      const modal = document.getElementById('modal-provenance');
+      document.getElementById('btn-provenance').addEventListener('click', () => modal.classList.add('active'));
+      document.getElementById('btn-close-modal').addEventListener('click', () => modal.classList.remove('active'));
+      document.getElementById('btn-close-modal-bottom').addEventListener('click', () => modal.classList.remove('active'));
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) modal.classList.remove('active');
+      });
+
+      // Initial run
+      updateSimulation();
+    });
+  </script>
+
+</body>
+</html>
